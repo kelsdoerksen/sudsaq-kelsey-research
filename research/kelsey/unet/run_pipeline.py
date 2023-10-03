@@ -106,8 +106,8 @@ if __name__ == '__main__':
     print('Grabbing testing data...')
 
     # Testing on 2016 Summer months (June, July August)
-    root_sample_test_dir = '/Users/kelseydoerksen/Desktop/unet/data/{}/zscore_normalization'.format(region)
-    root_label_dir = '/Users/kelseydoerksen/Desktop/unet/data/{}/labels_{}'.format(region, target)
+    root_sample_test_dir = '{}/{}/zscore_normalization'.format(root_data_dir, region)
+    root_label_dir = '{}/{}/labels_{}'.format(root_data_dir, region, target)
 
     img_dir_test = '{}/{}_channels/{}/2016'.format(root_sample_test_dir, channels, analysis_time)
     label_dir_test = '{}/{}/2016'.format(root_label_dir, analysis_time)
