@@ -91,7 +91,9 @@ if __name__ == '__main__':
                  f'\t{unet.n_channels} input channels\n'
                  f'\t{unet.n_classes} output channels (classes)')
 
-    unet.to(device=device)
+    if torch.cuda.is_available():
+        unet.cuda()
+    #unet.to(device=device)
 
     # ---- Grabbing Training Data ----
     # Training on 2005-2015, test on 2016

@@ -85,6 +85,7 @@ def train_model(model,
 
         for i, data in enumerate(train_loader):
             inputs, labels = data
+            inputs, labels = inputs.to(device), labels.to(device)
             # Zero gradients for every batch
             optimizer.zero_grad()  # if set_to_none=True, sets gradients of all optimized torch.Tensors to None, will have a lower memory footprint, can modestly improve performance
 
