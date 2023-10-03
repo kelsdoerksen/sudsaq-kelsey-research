@@ -131,7 +131,7 @@ if __name__ == '__main__':
             save_checkpoint=True)
 
         print('Running Test set...')
-        predict(trained_model, target, aq_test_dataset, experiment, channels, seed, save_dir)
+        predict(trained_model, target, aq_test_dataset, experiment, channels, seed, save_dir, device=device)
 
     if model_type == 'mcdropout':
         trained_model = train_probabilistic_model(model=unet,
@@ -147,4 +147,5 @@ if __name__ == '__main__':
 
         print('Running Test set...')
         # Running probabilistic method to quanitfy UQ
-        predict_probabilistic(trained_model, target, aq_test_dataset, experiment, channels, seed, save_dir)
+        predict_probabilistic(trained_model, target, aq_test_dataset, experiment, channels, seed, save_dir,
+                              device=device)

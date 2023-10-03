@@ -19,7 +19,7 @@ from losses import *
 from utils import *
 
 
-def predict(in_model, target, test_dataset, wandb_experiment, channels, seed, out_dir):
+def predict(in_model, target, test_dataset, wandb_experiment, channels, seed, out_dir, device):
     """
     Predict standard way (no dropout at test time)
     """
@@ -42,6 +42,7 @@ def predict(in_model, target, test_dataset, wandb_experiment, channels, seed, ou
     with torch.no_grad():
         for i, data in enumerate(test_loader):
             inputs, labels = data
+            inputs, labels = inputs.to(device), labels.to(device)
 
             # predict the mask
             outputs = unet(inputs)
@@ -70,7 +71,7 @@ def predict(in_model, target, test_dataset, wandb_experiment, channels, seed, ou
 
 
 
-def predict_probabilistic(in_model, target, test_dataset, wandb_experiment, channels, seed, out_dir):
+def predict_probabilistic(in_model, target, test_dataset, wandb_experiment, channels, seed, out_dir, device):
     """
     Predict probabilistic output with uncertainty
     Currently hardcoding for 2016 as test set, will make this
@@ -103,6 +104,7 @@ def predict_probabilistic(in_model, target, test_dataset, wandb_experiment, chan
         for i, data in enumerate(test_loader):
             sampled_pred_maps, sampled_aleatoric_maps = [], []
             inputs, labels = data
+            inputs, labels = inputs.to(device), labels.to(device)
             gt.append(labels.detach().numpy())
 
             for rep in range(100):
