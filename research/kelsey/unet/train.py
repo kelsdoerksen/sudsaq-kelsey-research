@@ -131,6 +131,7 @@ def train_model(model,
         with torch.no_grad():
             for k, vdata in enumerate(val_loader):
                 vinputs, vlabels = vdata
+                vinputs, vlabels = vinputs.to(device), vlabels.to(device)
                 val_mask = ~torch.isnan(vlabels)
                 voutputs = model(vinputs)
                 # Filter out nans
