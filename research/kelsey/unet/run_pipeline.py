@@ -15,6 +15,7 @@ import wandb
 from utils import *
 from model import *
 from dataset import *
+import logging
 
 def get_args():
     parser = argparse.ArgumentParser(description='Running UNet Pipeline on AQ Dataset')
@@ -39,7 +40,9 @@ def get_args():
                         required=True)
     parser.add_argument('--model_type', help='Model type, must be one of standard, mcdropout, or concrete',
                         required=True)
-    parser.add_argument('--load_saved', help='Load saved model if specified as y or n',
+    parser.add_argument('--data_dir', help='Specify root data directory',
+                        required=True)
+    parser.add_argument('--save_dir', help='Specify root save directory',
                         required=True)
 
     return parser.parse_args()
@@ -53,13 +56,13 @@ if __name__ == '__main__':
     target = args.target
     seed = int(args.seed)
     model_type = args.model_type
-    load_saved = args.load_saved
+    root_data_dir = args.data_dir
+    root_save_dir = args.save_dir
 
     make_deterministic(seed)
 
     # Initializing logging in wandb for experiment
-    experiment = wandb.init(project='U-Net Test', resume='allow', anonymous='must', dir='/Users/kelseydoerksen/Desktop/unet/'
-                                                                                        'wandb')
+    experiment = wandb.init(project='U-Net Test', resume='allow', anonymous='must')
     experiment.config.update(
         dict(epochs=args.epochs, batch_size=args.batch_size, learning_rate=args.lr,
              val_percent=0.1, save_checkpoint=True,
@@ -69,12 +72,11 @@ if __name__ == '__main__':
 
 
     # --- Setting Directories
-    sample_dir_root = '/Users/kelseydoerksen/Desktop/unet/data/{}/zscore_normalization'.format(region)
-    label_dir_root = '/Users/kelseydoerksen/Desktop/unet/data/{}/labels_{}'.format(region, target)
+    sample_dir_root = '{}/{}/zscore_normalization'.format(root_data_dir, region)
+    label_dir_root = '{}/{}/labels_{}'.format(root_data_dir, region, target)
 
     # --- Making save directory
-    root_save_dir = '/Users/kelseydoerksen/Desktop/unet/runs/{}/{}/{}channels'.format(region, target, channels)
-    save_dir = '{}/{}'.format(root_save_dir, experiment.name)
+    save_dir = '{}/{}/{}/{}channels/{}'.format(root_save_dir, region, target, channels, experiment.name)
     if not os.path.exists(save_dir):
         os.mkdir(save_dir)
 
