@@ -210,9 +210,9 @@ def evaluate_probabilistic(model, data_loader, device, num_reps):
             pred_log_vars = torch.mean(sampled_log_vars, axis=0)
 
             # apply mask
-            pred_means = pred_means[mask]
-            pred_log_vars = pred_log_vars[mask]
-            labels = labels[mask]
+            pred_means = pred_means.to(mask.device)[mask]
+            pred_log_vars = pred_log_vars.to(mask.device)[mask]
+            labels = labels.to(mask.device)[mask]
 
             loss = criterion(pred_means, pred_log_vars, labels)
             mse = mse_criterion(pred_means, labels)
