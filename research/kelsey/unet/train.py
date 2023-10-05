@@ -178,7 +178,7 @@ def train_model(model,
 
     return out_model
 
-def evaluate_probabilistic(model, data_loader, num_reps):
+def evaluate_probabilistic(model, data_loader, device, num_reps):
     """
     Function to evalauate the probabilistic model during training.
     model: model of interest
@@ -196,6 +196,7 @@ def evaluate_probabilistic(model, data_loader, num_reps):
         num_iter += 1
         with torch.no_grad():
             inputs, labels = data
+            inputs, labels = inputs.to(device), labels.to(device)
             samp_shape = (num_reps,) + tuple(labels.shape)
             sampled_means = torch.zeros(samp_shape)
             sampled_log_vars = torch.zeros(samp_shape)
@@ -281,6 +282,7 @@ def train_probabilistic_model(model,
         model.train()
         for i, data in enumerate(train_loader):
             inputs, labels = data
+            inputs, labels = inputs.to(device), labels.to(device)
             # Zero gradients for every batch
             optimizer.zero_grad()
 
@@ -333,7 +335,7 @@ def train_probabilistic_model(model,
                 histograms['Gradients/' + tag] = wandb.Histogram(value.grad.data.cpu())
 
         # Run validation
-        val_loss, val_mse = evaluate_probabilistic(model, val_loader, num_reps=20)
+        val_loss, val_mse = evaluate_probabilistic(model, val_loader, device, num_reps=20)
 
         logging.info('Validation MSE score: {}'.format(val_loss))
         try:
