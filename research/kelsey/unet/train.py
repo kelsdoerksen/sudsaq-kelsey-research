@@ -315,7 +315,7 @@ def train_probabilistic_model(model,
         })
         '''
 
-        train_loss, train_mse_loss = evaluate_probabilistic(model, train_loader, num_reps=1)
+        train_loss, train_mse_loss = evaluate_probabilistic(model, train_loader, device=device, num_reps=1)
         experiment.log({
             'train NLL loss': train_loss,
             'train mse': train_mse_loss,
@@ -335,7 +335,7 @@ def train_probabilistic_model(model,
                 histograms['Gradients/' + tag] = wandb.Histogram(value.grad.data.cpu())
 
         # Run validation
-        val_loss, val_mse = evaluate_probabilistic(model, val_loader, device, num_reps=20)
+        val_loss, val_mse = evaluate_probabilistic(model, val_loader, device=device, num_reps=20)
 
         logging.info('Validation MSE score: {}'.format(val_loss))
         try:
