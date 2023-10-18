@@ -1,0 +1,62 @@
+{
+    "os": "macOS-10.16-x86_64-i386-64bit",
+    "python": "3.10.9",
+    "heartbeatAt": "2023-10-06T11:32:39.444472",
+    "startedAt": "2023-10-06T11:32:38.739215",
+    "docker": null,
+    "cuda": null,
+    "args": [
+        "--analysis_date",
+        "summer",
+        "--channels",
+        "39",
+        "--target",
+        "bias",
+        "--region",
+        "Europe",
+        "--seed",
+        "45",
+        "--model_type",
+        "mcdropout",
+        "--save_dir",
+        "/Users/kelseydoerksen/Desktop/unet/runs",
+        "--data_dir",
+        "/Users/kelseydoerksen/Desktop/unet/data"
+    ],
+    "state": "running",
+    "program": "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py",
+    "codePathLocal": "run_pipeline.py",
+    "codePath": "research/kelsey/unet/run_pipeline.py",
+    "git": {
+        "remote": "git@github.com:kelsdoerksen/sudsaq-kelsey-research.git",
+        "commit": "335000531ea50fea634c60cda3c4e13a399404b2"
+    },
+    "email": "kelseydoerksen@gmail.com",
+    "root": "/Users/kelseydoerksen/code/sudsaq-kelsey-research",
+    "host": "Kelseys-MBP",
+    "username": "kelseydoerksen",
+    "executable": "/Users/kelseydoerksen/opt/anaconda3/envs/aq/bin/python",
+    "cpu_count": 4,
+    "cpu_count_logical": 8,
+    "cpu_freq": {
+        "current": 2300,
+        "min": 2300,
+        "max": 2300
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 2300,
+            "min": 2300,
+            "max": 2300
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 465.62699127197266,
+            "used": 20.58318328857422
+        }
+    },
+    "memory": {
+        "total": 16.0
+    }
+}

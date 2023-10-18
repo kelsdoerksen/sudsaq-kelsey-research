@@ -1,0 +1,14 @@
+Grabbing training data...
+Grabbing testing data...
+Training model...
+Training EPOCH 0:
+/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/cuda/amp/grad_scaler.py:120: UserWarning: torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.
+  warnings.warn("torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.")
+Train NLL: 600999.198275862
+Val NLL: 503206.541015625
+Training EPOCH 1:
+Train NLL: 76872.1546336207
+Val NLL: 43143.044921875
+Running Test set...
+test set mse is: 101.43489074707031
+test set rmse is: 10.071489334106445

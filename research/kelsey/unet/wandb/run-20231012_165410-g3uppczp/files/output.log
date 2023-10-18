@@ -1,0 +1,25 @@
+/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/cuda/amp/grad_scaler.py:120: UserWarning: torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.
+  warnings.warn("torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.")
+Grabbing training data...
+Grabbing testing data...
+Training model...
+Training EPOCH 0:
+Train NLL: 600763.1734913794
+Val NLL: 502872.31640625
+Training EPOCH 1:
+Train NLL: 31534.578731142243
+Val NLL: 54719.07775878906
+Training EPOCH 2:
+Train NLL: 26592.846578663793
+Val NLL: 57683.43395996094
+Training EPOCH 3:
+Traceback (most recent call last):
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py", line 137, in <module>
+    trained_model = train_probabilistic_model(model=unet,
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/train.py", line 304, in train_probabilistic_model
+    loss.backward()
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/_tensor.py", line 487, in backward
+    torch.autograd.backward(
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/autograd/__init__.py", line 200, in backward
+    Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+KeyboardInterrupt

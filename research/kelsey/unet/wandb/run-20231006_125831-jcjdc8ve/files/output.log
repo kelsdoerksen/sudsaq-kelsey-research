@@ -1,0 +1,89 @@
+Grabbing training data...
+Grabbing testing data...
+Training model...
+Training EPOCH 0:
+/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/cuda/amp/grad_scaler.py:120: UserWarning: torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.
+  warnings.warn("torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.")
+Train NLL: 600999.198275862
+Val NLL: 503206.541015625
+Training EPOCH 1:
+Train NLL: 76872.1546336207
+Val NLL: 43143.044921875
+Training EPOCH 2:
+Train NLL: 68042.95076778017
+Val NLL: 69692.57739257812
+Training EPOCH 3:
+Train NLL: 65652.3030711207
+Val NLL: 50162.5283203125
+Training EPOCH 4:
+Train NLL: 59456.27310075431
+Val NLL: 50122.14599609375
+Training EPOCH 5:
+Train NLL: 62714.3833512931
+Val NLL: 67327.9853515625
+Training EPOCH 6:
+Train NLL: 57631.25680226293
+Val NLL: 53725.890869140625
+Training EPOCH 7:
+Train NLL: 58352.43527747845
+Val NLL: 53814.58837890625
+Training EPOCH 8:
+Train NLL: 53102.30987338362
+Val NLL: 69763.27453613281
+Training EPOCH 9:
+Train NLL: 54502.30886314655
+Val NLL: 41724.50622558594
+Training EPOCH 10:
+Train NLL: 62211.57650862069
+Val NLL: 58577.63427734375
+Training EPOCH 11:
+Train NLL: 55664.40523976293
+Val NLL: 47753.88684082031
+Training EPOCH 12:
+Train NLL: 59392.86712015086
+Val NLL: 39974.06005859375
+Training EPOCH 13:
+Train NLL: 61876.166015625
+Val NLL: 52967.338623046875
+Training EPOCH 14:
+Train NLL: 57953.190833782326
+Val NLL: 40091.35595703125
+Training EPOCH 15:
+Train NLL: 58987.826037176725
+Val NLL: 45300.96252441406
+Training EPOCH 16:
+Train NLL: 52770.47966056035
+Val NLL: 35844.95397949219
+Training EPOCH 17:
+Train NLL: 50859.88291352371
+Val NLL: 47573.281005859375
+Training EPOCH 18:
+Train NLL: 52999.11415678879
+Val NLL: 40140.825439453125
+Training EPOCH 19:
+Train NLL: 63084.38860452586
+Val NLL: 33864.7841796875
+Training EPOCH 20:
+Traceback (most recent call last):
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py", line 137, in <module>
+    trained_model = train_probabilistic_model(model=unet,
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/train.py", line 309, in train_probabilistic_model
+    train_loss, train_mse_loss = evaluate_probabilistic(model, train_loader, device=device, num_reps=1)
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/train.py", line 194, in evaluate_probabilistic
+    for k, data in enumerate(data_loader):
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 633, in __next__
+    data = self._next_data()
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 677, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/utils/data/_utils/fetch.py", line 51, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/utils/data/_utils/fetch.py", line 51, in <listcomp>
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/utils/data/dataset.py", line 298, in __getitem__
+    return self.dataset[self.indices[idx]]
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/dataset.py", line 22, in __getitem__
+    label_fns = sort(self.label_fns)
+  File "<__array_function__ internals>", line 180, in sort
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/numpy/core/fromnumeric.py", line 1004, in sort
+    a.sort(axis=axis, kind=kind, order=order)
+KeyboardInterrupt

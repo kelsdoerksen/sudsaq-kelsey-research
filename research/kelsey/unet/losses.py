@@ -13,7 +13,7 @@ class NLL(nn.Module):
   def forward(self, pred_mean, pred_log_var, target):
     log_var = -pred_log_var
     precision = torch.exp(-log_var)       # also known as variance
-    return 0.5 * torch.mean(torch.sum(precision * (target - pred_mean)**2 + log_var))
+    return 0.5 * torch.mean(torch.sum(precision * torch.abs((target - pred_mean))**2 + log_var))
 
 
 class beta_NLL(nn.Module):

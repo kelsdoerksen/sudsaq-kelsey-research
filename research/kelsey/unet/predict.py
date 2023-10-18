@@ -91,9 +91,10 @@ def predict_probabilistic(in_model, target, test_dataset, wandb_experiment, chan
     # Data loader for test set
     test_loader = DataLoader(test_dataset, batch_size=10, shuffle=True)
 
-    loss_criterion = beta_NLL()
+    loss_criterion = NLL()
     mse_loss = nn.MSELoss()
     mse_score = 0
+    nll_score = 0
 
     # iterate over the test set
     gt = []
@@ -102,7 +103,7 @@ def predict_probabilistic(in_model, target, test_dataset, wandb_experiment, chan
     ale_unc_list = []
     with torch.no_grad():
         for i, data in enumerate(test_loader):
-            sampled_pred_maps, sampled_aleatoric_maps = [], []
+            sampled_pred_maps, sampled_log_var_maps, sampled_aleatoric_maps = [], [], []
             inputs, labels = data
             inputs, labels = inputs.to(device), labels.to(device)
             gt.append(labels.detach().numpy())
@@ -110,11 +111,13 @@ def predict_probabilistic(in_model, target, test_dataset, wandb_experiment, chan
             for rep in range(100):
                 pred_map_means, pred_map_log_vars = model(inputs)
                 sampled_pred_maps.append(pred_map_means.cpu().detach().numpy())
+                sampled_log_var_maps.append(pred_map_log_vars.cpu().detach().numpy())
                 sampled_aleatoric_maps.append(torch.exp(-pred_map_log_vars).cpu().detach().numpy())
 
             epi_unc_maps = np.var(np.array(sampled_pred_maps), axis=0)          # Epistemic uncertainty calculated via the variance of the predictions
             ale_unc_maps = np.mean(np.array(sampled_aleatoric_maps), axis=0)
             pred_maps = np.mean(np.array(sampled_pred_maps), axis=0)
+            log_var_maps = np.mean(np.array(sampled_log_var_maps), axis=0)
 
             pred_map_list.append(pred_maps)
             epi_unc_list.append(epi_unc_maps)
@@ -124,10 +127,13 @@ def predict_probabilistic(in_model, target, test_dataset, wandb_experiment, chan
             test_mask = ~torch.isnan(labels)
 
             # Applying mask to remove nans
-            no_nan_outputs = pred_maps[test_mask]
-            no_nan_outputs_torch = torch.from_numpy(no_nan_outputs)
+            no_nan_outputs_means = pred_maps[test_mask]
+            no_nan_outputs_log_vars = log_var_maps[test_mask]
+            no_nan_outputs_torch = torch.from_numpy(no_nan_outputs_means)
             labels = labels[test_mask]
             mse_score += mse_loss(no_nan_outputs_torch, labels)
+            nll_score += loss_criterion(torch.from_numpy(no_nan_outputs_means),
+                                        torch.from_numpy(no_nan_outputs_log_vars), labels)
 
     print('test set mse is: {}'.format(mse_score / len(test_loader)))
     print('test set rmse is: {}'.format(np.sqrt((mse_score / len(test_loader)).detach().numpy())))

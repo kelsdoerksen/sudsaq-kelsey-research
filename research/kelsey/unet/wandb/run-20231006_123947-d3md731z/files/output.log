@@ -1,0 +1,66 @@
+Grabbing training data...
+Grabbing testing data...
+Training model...
+Training EPOCH 0:
+/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/cuda/amp/grad_scaler.py:120: UserWarning: torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.
+  warnings.warn("torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.")
+Training EPOCH 1:
+Training EPOCH 2:
+Training EPOCH 3:
+Training EPOCH 4:
+Training EPOCH 5:
+Training EPOCH 6:
+Training EPOCH 7:
+Training EPOCH 8:
+Training EPOCH 9:
+Training EPOCH 10:
+Training EPOCH 11:
+Training EPOCH 12:
+Training EPOCH 13:
+Training EPOCH 14:
+Training EPOCH 15:
+Training EPOCH 16:
+Training EPOCH 17:
+Training EPOCH 18:
+Training EPOCH 19:
+Training EPOCH 20:
+Training EPOCH 21:
+Training EPOCH 22:
+Training EPOCH 23:
+Training EPOCH 24:
+Training EPOCH 25:
+Training EPOCH 26:
+Training EPOCH 27:
+Training EPOCH 28:
+Training EPOCH 29:
+Training EPOCH 30:
+Training EPOCH 31:
+Training EPOCH 32:
+Training EPOCH 33:
+Training EPOCH 34:
+Training EPOCH 35:
+Training EPOCH 36:
+Training EPOCH 37:
+Training EPOCH 38:
+Training EPOCH 39:
+Traceback (most recent call last):
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py", line 137, in <module>
+    trained_model = train_probabilistic_model(model=unet,
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/train.py", line 285, in train_probabilistic_model
+    for i, data in enumerate(train_loader):
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 633, in __next__
+    data = self._next_data()
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 677, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/utils/data/_utils/fetch.py", line 51, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/utils/data/_utils/fetch.py", line 51, in <listcomp>
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/utils/data/dataset.py", line 298, in __getitem__
+    return self.dataset[self.indices[idx]]
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/dataset.py", line 21, in __getitem__
+    image_fns = sort(self.image_fns)
+  File "<__array_function__ internals>", line 180, in sort
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/numpy/core/fromnumeric.py", line 1004, in sort
+    a.sort(axis=axis, kind=kind, order=order)
+KeyboardInterrupt

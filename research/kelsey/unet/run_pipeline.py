@@ -43,9 +43,12 @@ def get_args():
     parser.add_argument('--data_dir', help='Specify root data directory',
                         required=True)
     parser.add_argument('--save_dir', help='Specify root save directory',
+                        required=True),
+    parser.add_argument('--val_percent', help='Validation percentage',
                         required=True)
 
     return parser.parse_args()
+
 
 if __name__ == '__main__':
 
@@ -124,6 +127,7 @@ if __name__ == '__main__':
             dataset=aq_train_dataset,
             save_dir=save_dir,
             experiment=experiment,
+            val_percent=float(args.val_percent),
             epochs=args.epochs,
             batch_size=args.batch_size,
             learning_rate=args.lr,
@@ -140,6 +144,7 @@ if __name__ == '__main__':
                                                   save_dir=save_dir,
                                                   experiment=experiment,
                                                   epochs=args.epochs,
+                                                  val_percent=float(args.val_percent),
                                                   batch_size=args.batch_size,
                                                   learning_rate=args.lr,
                                                   opt = args.optimizer,

@@ -43,8 +43,8 @@ def train_model(model,
                 batch_size: int,
                 learning_rate: float,
                 opt,
+                val_percent,
                 weight_decay: float = 0,
-                val_percent: float = 0.1,
                 save_checkpoint: bool=True,
                 ):
 
@@ -187,39 +187,45 @@ def evaluate_probabilistic(model, data_loader, device, num_reps):
     """
     sum_loss = 0.0
     sum_mse = 0.0
-    num_iter = 0.0
 
     criterion = NLL()
     mse_criterion = nn.MSELoss()
-    for k, data in enumerate(data_loader):
-        model.train()
-        num_iter += 1
-        with torch.no_grad():
+    with torch.no_grad():
+        for k, data in enumerate(data_loader):
+            model.train()
             inputs, labels = data
             inputs, labels = inputs.to(device), labels.to(device)
-            samp_shape = (num_reps,) + tuple(labels.shape)
-            sampled_means = torch.zeros(samp_shape)
-            sampled_log_vars = torch.zeros(samp_shape)
+            sampled_means = []
+            sampled_log_vars = []
             mask = ~torch.isnan(labels)
             for rep in range(num_reps):
                 means, log_vars = model(inputs)
-                sampled_means[rep] = means
-                sampled_log_vars[rep] = log_vars
+                sampled_means.append(means.cpu().detach().numpy())
+                sampled_log_vars.append(log_vars.cpu().detach().numpy())
 
-            pred_means = torch.mean(sampled_means, axis=0)
-            pred_log_vars = torch.mean(sampled_log_vars, axis=0)
+            pred_means = np.mean(np.array(sampled_means), axis=0)
+            pred_log_vars = np.mean(np.array(sampled_log_vars), axis=0)
 
             # apply mask
-            pred_means = pred_means.to(mask.device)[mask]
-            pred_log_vars = pred_log_vars.to(mask.device)[mask]
-            labels = labels.to(mask.device)[mask]
+            pred_means = pred_means[mask]
+            pred_log_vars = pred_log_vars[mask]
+            labels = labels[mask]
+
+            pred_means = torch.from_numpy(pred_means)
+            pred_log_vars = torch.from_numpy(pred_log_vars)
 
             loss = criterion(pred_means, pred_log_vars, labels)
             mse = mse_criterion(pred_means, labels)
 
-        sum_loss += loss.item()
-        sum_mse += mse.item()
-    return sum_loss/num_iter, sum_mse/num_iter
+            # Add batch loss to total
+            sum_loss += loss.item()
+            sum_mse += mse.item()
+
+        # Get avg loss which is total loss divided by number of batches == length of data loader
+        avg_loss = sum_loss/len(data_loader)
+        avg_mse = sum_mse/len(data_loader)
+
+    return avg_loss, avg_mse
 
 
 def train_probabilistic_model(model,
@@ -231,8 +237,8 @@ def train_probabilistic_model(model,
                               batch_size: int,
                               learning_rate: float,
                               opt,
+                              val_percent,
                               weight_decay: float = 1e-3,
-                              val_percent: float = 0.1,
                               save_checkpoint: bool=True,
                               ):
 
@@ -304,18 +310,8 @@ def train_probabilistic_model(model,
             epoch_loss += loss.item()
             mse_loss += mse_loss.item()
 
-        '''
-        experiment.log({
-            'train NLL loss': epoch_loss/len(train_loader),
-            'train mse': mse_loss.item()/len(train_loader),
-            'train rmse': np.sqrt(mse_loss.item()/len(train_loader)),
-            'step': global_step,
-            'epoch': epoch,
-            'optimizer': opt
-        })
-        '''
-
-        train_loss, train_mse_loss = evaluate_probabilistic(model, train_loader, device=device, num_reps=1)
+        train_loss_1, train_mse_loss_1 = evaluate_probabilistic(model, train_loader, device=device, num_reps=1)
+        train_loss, train_mse_loss = evaluate_probabilistic(model, train_loader, device=device, num_reps=5)
         experiment.log({
             'train NLL loss': train_loss,
             'train mse': train_mse_loss,
@@ -325,6 +321,8 @@ def train_probabilistic_model(model,
             'optimizer': opt
         })
 
+        print('Train NLL for 5 reps: {}'.format(train_loss))
+        print('Train NLL for 1 reps: {}'.format(train_loss_1))
         # Validation
         histograms = {}
         for tag, value in model.named_parameters():
@@ -335,9 +333,29 @@ def train_probabilistic_model(model,
                 histograms['Gradients/' + tag] = wandb.Histogram(value.grad.data.cpu())
 
         # Run validation
-        val_loss, val_mse = evaluate_probabilistic(model, val_loader, device=device, num_reps=20)
+        for i, data in enumerate(val_loader):
+            inputs, labels = data
+            inputs, labels = inputs.to(device), labels.to(device)
+            # Zero gradients for every batch
+            optimizer.zero_grad()
 
-        logging.info('Validation MSE score: {}'.format(val_loss))
+            pred_map_means, pred_map_log_vars = model(inputs)
+
+            # Filter out nans to ignore for bias to calculate losses
+            mask = ~torch.isnan(labels)
+            pred_map_means = pred_map_means[mask]
+            labels = labels[mask]
+            pred_map_log_vars = pred_map_log_vars[mask]
+
+            val_loss = criterion(pred_map_means, pred_map_log_vars, labels)
+            val_mse = mse_criterion(pred_map_means, labels)
+            val_loss += loss.item()
+            val_mse += mse_loss.item()
+
+        val_loss, val_mse = evaluate_probabilistic(model, val_loader, device=device, num_reps=5)
+
+        logging.info('Validation MSE score: {}'.format(val_mse))
+        print('Val NLL: {}'.format(val_loss))
         try:
             experiment.log({
                 'learning rate': optimizer.param_groups[0]['lr'],

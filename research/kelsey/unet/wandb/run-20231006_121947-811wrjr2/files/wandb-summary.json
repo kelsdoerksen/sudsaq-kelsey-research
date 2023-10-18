@@ -1,0 +1,1 @@
+{"train NLL loss": 29059981.34375, "train mse": 354.9864501953125, "train rmse": 18.841083526611328, "step": 29, "epoch": 0, "optimizer": "adam", "_timestamp": 1696591203.4205928, "_runtime": 15.830256700515747, "_step": 0, "_wandb": {"runtime": 231}}

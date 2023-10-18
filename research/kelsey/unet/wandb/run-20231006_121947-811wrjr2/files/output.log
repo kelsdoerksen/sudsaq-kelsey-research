@@ -1,0 +1,36 @@
+Grabbing training data...
+Grabbing testing data...
+Training model...
+Training EPOCH 0:
+/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/cuda/amp/grad_scaler.py:120: UserWarning: torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.
+  warnings.warn("torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.")
+> /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/train.py(219)evaluate_probabilistic()
+    218
+--> 219             loss = criterion(pred_means, pred_log_vars, labels)
+    220             mse = mse_criterion(pred_means, labels)
+(7756,)
+(7756,)
+torch.Size([7756])
+*** TypeError: exp(): argument 'input' (position 1) must be Tensor, not numpy.ndarray
+tensor(702336.3125)
+Traceback (most recent call last):
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py", line 137, in <module>
+    trained_model = train_probabilistic_model(model=unet,
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/train.py", line 329, in train_probabilistic_model
+    val_loss, val_mse = evaluate_probabilistic(model, val_loader, device=device, num_reps=20)
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/train.py", line 219, in evaluate_probabilistic
+    loss = criterion(pred_means, pred_log_vars, labels)
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/train.py", line 219, in evaluate_probabilistic
+    loss = criterion(pred_means, pred_log_vars, labels)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+bdb.BdbQuit
+If you suspect this is an IPython 8.7.0 bug, please report it at:
+    https://github.com/ipython/ipython/issues
+or send an email to the mailing list at ipython-dev@python.org
+You can print a more detailed traceback right now with "%tb", or use "%debug"
+to interactively debug it.
+Extra-detailed tracebacks for bug-reporting purposes can be enabled via:
+    %config Application.verbose_crash=True
