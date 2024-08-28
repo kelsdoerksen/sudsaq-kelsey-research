@@ -1,0 +1,124 @@
+Grabbing training data...
+Grabbing testing data...
+Training lower bound model...
+Training EPOCH 0:
+> /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/dataset.py(30)__getitem__()
+     29         ipdb.set_trace()
+---> 30         label_class = load('{}'.format(label_fp))
+     31         multichannel_image = self.transform(multichannel_image)
+/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/cuda/amp/grad_scaler.py:120: UserWarning: torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.
+  warnings.warn("torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.")
+array([[[ 4.2366581 ,  3.13566661,  1.96903181, ..., -0.55166048,
+         -0.30286035,  1.30979836],
+        [ 3.3509562 ,  0.58262718, -0.0722161 , ..., -0.22588368,
+          0.41443199,  1.52161825],
+        [ 2.02894282,  2.09484005,  1.32116687, ...,  2.97259831,
+          3.75583386,  4.8697052 ],
+        ...,
+        [ 1.84140778,  1.60225689,  1.10888255, ..., -0.64423972,
+         -0.54429883, -0.54861522],
+        [ 1.55961168,  1.08610666, -0.09756844, ..., -0.6721288 ,
+         -0.63057965, -0.56632286],
+        [ 0.4078002 ,  0.08185881, -0.52786535, ..., -0.6799528 ,
+         -0.67981321, -0.67025322]],
+       [[-0.67190278, -0.67190278, -0.67190278, ..., -0.12605071,
+         -0.61503744, -0.6107927 ],
+        [-0.67190278, -0.67190278, -0.67190278, ...,  1.39971161,
+          0.15390432, -0.55934364],
+        [-0.67190278, -0.67190278, -0.67190278, ..., -0.5090279 ,
+         -0.66712123, -0.67146724],
+        ...,
+        [-0.28325817, -0.37014654, -0.39707413, ..., -0.34648362,
+         -0.28130403, -0.42561507],
+        [ 0.24247274,  0.08568313, -0.22422981, ..., -0.38108608,
+         -0.37058783, -0.46436667],
+        [ 0.17656235,  0.06668334, -0.01946104, ..., -0.20112877,
+         -0.28498253, -0.2803292 ]],
+       [[-0.55056453, -0.55053324, -0.55081671, ..., -0.50767297,
+         -0.50444782, -0.52569377],
+        [-0.55305415, -0.55121011, -0.55053967, ..., -0.52830893,
+         -0.53024906, -0.53315425],
+        [-0.55285299, -0.55078769, -0.54801929, ..., -0.5330705 ,
+         -0.5336473 , -0.53186077],
+        ...,
+        [-0.47766492, -0.47147834, -0.4658035 , ...,  5.14717913,
+          2.83396292,  1.73915744],
+        [-0.48143524, -0.48210901, -0.47311851, ...,  4.6032443 ,
+          3.29052329,  1.84627748],
+        [-0.46820998, -0.47127065, -0.46963859, ...,  2.60832977,
+          2.50345874,  1.94629884]],
+       ...,
+       [[ 0.16653568,  0.16653226,  0.16653125, ...,  0.16787007,
+          0.16749741,  0.16731773],
+        [ 0.16654438,  0.16651309,  0.16654082, ...,  0.1678178 ,
+          0.16835833,  0.16939472],
+        [ 0.16654259,  0.16653213,  0.16650249, ...,  0.16675091,
+          0.16866554,  0.17353682],
+        ...,
+        [ 0.05191161,  0.24373624, -0.06009809, ...,  0.16645856,
+          0.16634567,  0.16647683],
+        [ 0.02077647,  0.06021239, -1.01388299, ...,  0.16584662,
+          0.16644351,  0.16644229],
+        [-0.79745799, -0.60621768, -0.63358176, ...,  0.16313468,
+          0.16047722,  0.15960139]],
+       [[-0.5276528 , -0.40218917,  0.67758662, ...,  0.98084587,
+          1.56839383,  1.79521418],
+        [-1.11652195, -0.03985062,  0.2077883 , ...,  1.09050786,
+          1.7579062 ,  1.82291996],
+        [-1.18078399, -1.21759164,  0.62544662, ...,  1.43426859,
+          1.19597125,  0.83475399],
+        ...,
+        [-0.32457602, -0.25280249, -1.11908829, ..., -1.68801427,
+         -1.76619983, -1.74535155],
+        [-0.39608055, -0.28989163, -0.01192962, ..., -1.13657975,
+         -1.17039764, -1.25453377],
+        [-1.25469708, -0.92706531, -0.12177468, ..., -0.3564474 ,
+         -0.48406476, -0.88587403]],
+       [[ 0.3732906 ,  0.27331886, -0.62046236, ...,  0.70827746,
+         -1.23513377, -2.57000613],
+        [ 0.95880413,  0.22287592, -0.55133373, ...,  0.65646315,
+         -1.24493408, -1.8856256 ],
+        [ 0.97634184,  0.96813309, -0.44986841, ..., -0.26317674,
+         -0.10542627,  0.47550607],
+        ...,
+        [-1.47874749, -1.25795865, -0.09761021, ...,  0.48172548,
+          0.51336044,  0.53154051],
+        [-1.58520031, -1.63634324, -1.84946227, ..., -0.01133352,
+         -0.05069425,  0.06132791],
+        [-0.63775623, -0.68600672, -1.83005047, ..., -1.4691782 ,
+         -1.1185745 , -0.34872311]]])
+(28, 31, 49)
+(1, 31, 49)
+Traceback (most recent call last):
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py", line 122, in <module>
+    run_cqr(unet, device, aq_train_dataset, aq_test_dataset, save_dir, experiment, 0.1, args.channels,
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py", line 235, in run_cqr
+    lower_bound = cqr_training_loop(model, train_loader, lower_criterion, optimizer, grad_scaler, epochs, experiment,
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py", line 36, in cqr_training_loop
+    for i, data in enumerate(data_loader):
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 633, in __next__
+    data = self._next_data()
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 677, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/utils/data/_utils/fetch.py", line 51, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/utils/data/_utils/fetch.py", line 51, in <listcomp>
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/utils/data/dataset.py", line 298, in __getitem__
+    return self.dataset[self.indices[idx]]
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/dataset.py", line 30, in __getitem__
+    label_class = load('{}'.format(label_fp))
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/dataset.py", line 30, in __getitem__
+    label_class = load('{}'.format(label_fp))
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+bdb.BdbQuit
+If you suspect this is an IPython 8.7.0 bug, please report it at:
+    https://github.com/ipython/ipython/issues
+or send an email to the mailing list at ipython-dev@python.org
+You can print a more detailed traceback right now with "%tb", or use "%debug"
+to interactively debug it.
+Extra-detailed tracebacks for bug-reporting purposes can be enabled via:
+    %config Application.verbose_crash=True

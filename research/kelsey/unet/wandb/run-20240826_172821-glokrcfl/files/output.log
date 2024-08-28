@@ -1,0 +1,46 @@
+Grabbing training data...
+Grabbing testing data...
+Training lower bound model...
+Training EPOCH 0:
+> /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/dataset.py(30)__getitem__()
+     29         ipdb.set_trace()
+---> 30         label_class = load('{}'.format(label_fp))
+     31         multichannel_image = self.transform(multichannel_image)
+/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/cuda/amp/grad_scaler.py:120: UserWarning: torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.
+  warnings.warn("torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.")
+<class 'numpy.ndarray'>
+(28, 31, 49)
+hi
+Traceback (most recent call last):
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py", line 122, in <module>
+    run_cqr(unet, device, aq_train_dataset, aq_test_dataset, save_dir, experiment, 0.1, args.channels,
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py", line 235, in run_cqr
+    lower_bound = cqr_training_loop(model, train_loader, lower_criterion, optimizer, grad_scaler, epochs, experiment,
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py", line 36, in cqr_training_loop
+    for i, data in enumerate(data_loader):
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 633, in __next__
+    data = self._next_data()
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 677, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/utils/data/_utils/fetch.py", line 51, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/utils/data/_utils/fetch.py", line 51, in <listcomp>
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/utils/data/dataset.py", line 298, in __getitem__
+    return self.dataset[self.indices[idx]]
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/dataset.py", line 30, in __getitem__
+    ipdb.set_trace()
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/dataset.py", line 30, in __getitem__
+    ipdb.set_trace()
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+bdb.BdbQuit
+If you suspect this is an IPython 8.7.0 bug, please report it at:
+    https://github.com/ipython/ipython/issues
+or send an email to the mailing list at ipython-dev@python.org
+You can print a more detailed traceback right now with "%tb", or use "%debug"
+to interactively debug it.
+Extra-detailed tracebacks for bug-reporting purposes can be enabled via:
+    %config Application.verbose_crash=True

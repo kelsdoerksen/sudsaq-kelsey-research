@@ -1,0 +1,22 @@
+Grabbing training data...
+Grabbing testing data...
+Training lower bound model...
+Training EPOCH 0:
+/Users/kelseydoerksen/opt/anaconda3/envs/sudsaq-uq/lib/python3.10/site-packages/torch/cuda/amp/grad_scaler.py:126: UserWarning: torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.
+  warnings.warn(
+Training EPOCH 1:
+Training upper bound model...
+Training EPOCH 0:
+Training EPOCH 1:
+Traceback (most recent call last):
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py", line 131, in <module>
+    run_cqr(unet, device, aq_train_dataset, aq_test_dataset, save_dir, experiment, 0.1, args.channels,
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py", line 211, in run_cqr
+    uncal_coverage = calculate_coverage(uncal_lower_preds, uncal_upper_preds, test_loader)
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py", line 131, in calculate_coverage
+    lower_bound = lower_bound.flatten()
+AttributeError: 'list' object has no attribute 'flatten'
+Predicting lower bounds...
+test set loss is: 16.383743286132812
+Predicting upper bounds...
+test set loss is: 2.134387254714966

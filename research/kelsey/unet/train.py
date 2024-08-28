@@ -16,23 +16,17 @@ from dataset import *
 from metrics import *
 import numpy as np
 from model import *
-import os
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 import logging
-from tqdm import tqdm
-import argparse
 from torch.utils.data import DataLoader, random_split
 import wandb
 from torch import optim
 from pathlib import Path
-import argparse
-from torchsummary import summary
-import random
 from predict import *
 from losses import *
 from utils import *
+
 
 def train_model(model,
                 device,
@@ -96,6 +90,7 @@ def train_model(model,
 
             # Add mask before calculating loss to remove nans
             outputs = outputs[mask]
+            labels = labels[mask]
             labels = labels[mask]
 
             loss = criterion(outputs, labels)       # Calculate loss
@@ -177,6 +172,7 @@ def train_model(model,
                out_model)
 
     return out_model
+
 
 def evaluate_probabilistic(model, data_loader, device, num_reps):
     """
@@ -310,7 +306,6 @@ def train_probabilistic_model(model,
             epoch_loss += loss.item()
             mse_loss += mse_loss.item()
 
-        train_loss_1, train_mse_loss_1 = evaluate_probabilistic(model, train_loader, device=device, num_reps=1)
         train_loss, train_mse_loss = evaluate_probabilistic(model, train_loader, device=device, num_reps=5)
         experiment.log({
             'train NLL loss': train_loss,
@@ -322,7 +317,152 @@ def train_probabilistic_model(model,
         })
 
         print('Train NLL for 5 reps: {}'.format(train_loss))
-        print('Train NLL for 1 reps: {}'.format(train_loss_1))
+        # Validation
+        histograms = {}
+        for tag, value in model.named_parameters():
+            tag = tag.replace('/', '.')
+            if not (torch.isinf(value) | torch.isnan(value)).any():
+                histograms['Weights/' + tag] = wandb.Histogram(value.data.cpu())
+            if not (torch.isinf(value.grad) | torch.isnan(value.grad)).any():
+                histograms['Gradients/' + tag] = wandb.Histogram(value.grad.data.cpu())
+
+        # Run validation
+        for i, data in enumerate(val_loader):
+            inputs, labels = data
+            inputs, labels = inputs.to(device), labels.to(device)
+            # Zero gradients for every batch
+            optimizer.zero_grad()
+
+            pred_map_means, pred_map_log_vars = model(inputs)
+
+            # Filter out nans to ignore for bias to calculate losses
+            mask = ~torch.isnan(labels)
+            pred_map_means = pred_map_means[mask]
+            labels = labels[mask]
+            pred_map_log_vars = pred_map_log_vars[mask]
+
+            val_loss = criterion(pred_map_means, pred_map_log_vars, labels)
+            val_mse = mse_criterion(pred_map_means, labels)
+            val_loss += loss.item()
+            val_mse += mse_loss.item()
+
+        val_loss, val_mse = evaluate_probabilistic(model, val_loader, device=device, num_reps=5)
+
+        logging.info('Validation MSE score: {}'.format(val_mse))
+        print('Val NLL: {}'.format(val_loss))
+        try:
+            experiment.log({
+                'learning rate': optimizer.param_groups[0]['lr'],
+                'validation NLL loss': val_loss,
+                'validation MSE loss': val_mse,
+                'validation RMSE': np.sqrt(val_mse),
+                'step': global_step,
+                'epoch': epoch,
+                **histograms
+            })
+        except:
+            pass
+
+        '''
+        if save_checkpoint:
+            out_model = '{}/checkpoint_epoch{}.pth'.format(save_dir, epoch)
+            Path(save_dir).mkdir(parents=True, exist_ok=True)
+            torch.save({'epoch': epoch,
+                        'state_dict': model.state_dict(),
+                        'optimizer': optimizer.state_dict()},
+                       out_model)
+            logging.info(f'Checkpoint {epoch} saved!')
+        '''
+
+    # Saving model at end of epoch with experiment name
+    out_model = '{}/{}_last_epoch.pth'.format(save_dir, experiment.name)
+    Path(save_dir).mkdir(parents=True, exist_ok=True)
+    torch.save({'epoch': epoch,
+                'state_dict': model.state_dict(),
+                'optimizer': optimizer.state_dict()},
+               out_model)
+
+    return out_model
+
+
+def train_cqr_model(model,
+                              device,
+                              dataset,
+                              save_dir,
+                              experiment,
+                              epochs: int,
+                              batch_size: int,
+                              learning_rate: float,
+                              opt,
+                              val_percent,
+                              weight_decay: float = 1e-3,
+                              save_checkpoint: bool=True,
+                              ):
+
+    # --- Split dataset into training and validation
+    n_val = int(len(dataset) * val_percent)
+    n_train = len(dataset) - n_val
+    train_set, val_set = random_split(dataset, [n_train, n_val], generator=torch.Generator().manual_seed(0))
+
+    # --- DataLoaders
+    train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True)
+    val_loader = DataLoader(val_set, batch_size=batch_size, shuffle=True)
+
+
+    # --- Initialize small random log_weights
+    torch.nn.init.normal_(model.log_var.conv.weight, mean=0.0, std=1e-6)
+    torch.nn.init.normal_(model.log_var.conv.bias, mean=0.0, std=1e-6)
+
+    # --- Setting up optimizer
+    optimizer = optim.Adam(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
+
+    # --- Setting up loss
+    criterion = AllQuantileLoss()
+
+    grad_scaler = torch.cuda.amp.GradScaler()
+
+    global_step = 0
+    epoch_number = 0
+    epoch_loss = 0.0
+    for epoch in range(epochs):
+        print('Training EPOCH {}:'.format(epoch_number))
+        epoch_number += 1
+        model.train()
+        for i, data in enumerate(train_loader):
+            inputs, labels = data
+            inputs, labels = inputs.to(device), labels.to(device)
+            # Zero gradients for every batch
+            optimizer.zero_grad()
+
+            lower_bound, upper_bound = model(inputs)
+
+            # Filter out nans to ignore for bias to calculate losses
+            mask = ~torch.isnan(labels)
+            lower_bound = lower_bound[mask]
+            labels = labels[mask]
+            upper_bound = upper_bound[mask]
+
+            loss = criterion(pred_map_means, pred_map_log_vars, labels)
+            loss.backward()
+            optimizer.step()
+
+            global_step += 1
+
+            mse_loss = mse_criterion(pred_map_means, labels)
+            epoch_loss += loss.item()
+            mse_loss += mse_loss.item()
+
+        train_loss, train_mse_loss = evaluate_probabilistic(model, train_loader, device=device, num_reps=5)
+        experiment.log({
+            'train NLL loss': train_loss,
+            'train mse': train_mse_loss,
+            'train rmse': np.sqrt(train_mse_loss),
+            'step': global_step,
+            'epoch': epoch,
+            'optimizer': opt
+        })
+
+        print('Train NLL for 5 reps: {}'.format(train_loss))
         # Validation
         histograms = {}
         for tag, value in model.named_parameters():

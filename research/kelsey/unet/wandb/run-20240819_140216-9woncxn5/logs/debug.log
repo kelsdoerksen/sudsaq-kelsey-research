@@ -1,0 +1,30 @@
+2024-08-19 14:02:16,684 INFO    MainThread:6954 [wandb_setup.py:_flush():76] Current SDK version is 0.16.6
+2024-08-19 14:02:16,685 INFO    MainThread:6954 [wandb_setup.py:_flush():76] Configure stats pid to 6954
+2024-08-19 14:02:16,685 INFO    MainThread:6954 [wandb_setup.py:_flush():76] Loading settings from /Users/kelseydoerksen/.config/wandb/settings
+2024-08-19 14:02:16,685 INFO    MainThread:6954 [wandb_setup.py:_flush():76] Loading settings from /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/wandb/settings
+2024-08-19 14:02:16,685 INFO    MainThread:6954 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2024-08-19 14:02:16,685 INFO    MainThread:6954 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2024-08-19 14:02:16,685 INFO    MainThread:6954 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'research/kelsey/unet/run_pipeline.py', 'program_abspath': '/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py', 'program': '/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py'}
+2024-08-19 14:02:16,686 INFO    MainThread:6954 [wandb_setup.py:_flush():76] Applying login settings: {'anonymous': 'must'}
+2024-08-19 14:02:16,686 INFO    MainThread:6954 [wandb_init.py:_log_setup():521] Logging user logs to /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/wandb/run-20240819_140216-9woncxn5/logs/debug.log
+2024-08-19 14:02:16,686 INFO    MainThread:6954 [wandb_init.py:_log_setup():522] Logging internal logs to /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/wandb/run-20240819_140216-9woncxn5/logs/debug-internal.log
+2024-08-19 14:02:16,686 INFO    MainThread:6954 [wandb_init.py:init():561] calling init triggers
+2024-08-19 14:02:16,686 INFO    MainThread:6954 [wandb_init.py:init():568] wandb.init called with sweep_config: {}
+config: {}
+2024-08-19 14:02:16,686 INFO    MainThread:6954 [wandb_init.py:init():611] starting backend
+2024-08-19 14:02:16,686 INFO    MainThread:6954 [wandb_init.py:init():615] setting up manager
+2024-08-19 14:02:16,690 INFO    MainThread:6954 [backend.py:_multiprocessing_setup():105] multiprocessing start_methods=spawn,fork,forkserver, using: spawn
+2024-08-19 14:02:16,693 INFO    MainThread:6954 [wandb_init.py:init():623] backend started and connected
+2024-08-19 14:02:16,701 INFO    MainThread:6954 [wandb_init.py:init():715] updated telemetry
+2024-08-19 14:02:16,753 INFO    MainThread:6954 [wandb_init.py:init():748] communicating run to backend with 90.0 second timeout
+2024-08-19 14:02:17,317 INFO    MainThread:6954 [wandb_run.py:_on_init():2357] communicating current version
+2024-08-19 14:02:17,458 INFO    MainThread:6954 [wandb_run.py:_on_init():2366] got version response upgrade_message: "wandb version 0.17.7 is available!  To upgrade, please run:\n $ pip install wandb --upgrade"
+
+2024-08-19 14:02:17,459 INFO    MainThread:6954 [wandb_init.py:init():799] starting run threads in backend
+2024-08-19 14:02:21,036 INFO    MainThread:6954 [wandb_run.py:_console_start():2335] atexit reg
+2024-08-19 14:02:21,036 INFO    MainThread:6954 [wandb_run.py:_redirect():2190] redirect: wrap_raw
+2024-08-19 14:02:21,037 INFO    MainThread:6954 [wandb_run.py:_redirect():2255] Wrapping output streams.
+2024-08-19 14:02:21,037 INFO    MainThread:6954 [wandb_run.py:_redirect():2280] Redirects installed.
+2024-08-19 14:02:21,037 INFO    MainThread:6954 [wandb_init.py:init():842] run started, returning control to user process
+2024-08-19 14:02:21,038 INFO    MainThread:6954 [wandb_run.py:_config_callback():1347] config_cb None None {'epochs': 1, 'batch_size': 32, 'learning_rate': 0.001, 'val_percent': 0.1, 'save_checkpoint': True, 'n_channels': 32, 'analysis_period': 'summer', 'target': 'bias'}
+2024-08-19 14:13:32,744 WARNING MsgRouterThr:6954 [router.py:message_loop():77] message_loop has been closed

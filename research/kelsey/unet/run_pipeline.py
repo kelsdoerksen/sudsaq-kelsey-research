@@ -5,17 +5,15 @@ Pipeline script to:
 3. Plot results using analysis/plotting_results.py
 """
 
-import torch
-import torch.nn as nn
 import argparse
-import os
-from train import *
 from predict import *
-import wandb
-from utils import *
-from model import *
-from dataset import *
 import logging
+import sys
+from run_cqr import *
+
+sys.path.append(os.path.abspath(os.path.join(os.getcwd() + '/submodules/cqr')))
+sys.path.append(os.path.abspath(os.path.join(os.getcwd() + '/submodules/nonconformist')))
+
 
 def get_args():
     parser = argparse.ArgumentParser(description='Running UNet Pipeline on AQ Dataset')
@@ -38,7 +36,7 @@ def get_args():
                         required=True)
     parser.add_argument('--seed', help='Seed to set to make model deterministic',
                         required=True)
-    parser.add_argument('--model_type', help='Model type, must be one of standard, mcdropout, or concrete',
+    parser.add_argument('--model_type', help='Model type, must be one of standard, mcdropout, concrete, cqr',
                         required=True)
     parser.add_argument('--data_dir', help='Specify root data directory',
                         required=True)
@@ -61,6 +59,7 @@ if __name__ == '__main__':
     model_type = args.model_type
     root_data_dir = args.data_dir
     root_save_dir = args.save_dir
+    test_year = args.test_year
 
     make_deterministic(seed)
 
@@ -73,51 +72,57 @@ if __name__ == '__main__':
              target=target)
     )
 
-
     # --- Setting Directories
     sample_dir_root = '{}/{}/zscore_normalization'.format(root_data_dir, region)
     label_dir_root = '{}/{}/labels_{}'.format(root_data_dir, region, target)
 
     # --- Making save directory
-    save_dir = '{}/{}/{}/{}channels/{}'.format(root_save_dir, region, target, channels, experiment.name)
+    save_dir = '{}/{}/{}/{}channels/{}_{}_{}_{}'.format(root_save_dir, region, target, channels, experiment.name,
+                                                     region, analysis_time, model_type)
     if not os.path.exists(save_dir):
         os.mkdir(save_dir)
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     logging.info(f'Using device {device}')
-    if model_type == 'standard':
+    if model_type in ['standard', 'cqr']:
         unet = models.UNet(n_channels=channels, n_classes=1)
-    if model_type == 'mcdropout':
+    if model_type in ['mcdropout']:
         unet = models.MCDropoutProbabilisticUNet(n_channels=channels, n_classes=1)
-
+    '''
     logging.info(f'Network:\n'
                  f'\t{unet.n_channels} input channels\n'
                  f'\t{unet.n_classes} output channels (classes)')
+    '''
 
     if torch.cuda.is_available():
         unet.cuda()
     #unet.to(device=device)
 
     # ---- Grabbing Training Data ----
-    # Training on 2005-2015, test on 2016
+    # Training on 2005-2019, test on 2020
     print('Grabbing training data...')
-    train_sample_dir = '{}/{}_channels/{}/2005-2015'.format(sample_dir_root, channels, analysis_time)
-    train_label_dir = '{}/{}/2005-2015'.format(label_dir_root, analysis_time)
+    train_sample_dir = '{}/{}_channels/{}/2005-2019'.format(sample_dir_root, channels, analysis_time)
+    train_label_dir = '{}/{}/2005-2019'.format(label_dir_root, analysis_time)
 
-    aq_train_dataset = AQDataset(train_sample_dir, train_label_dir)
+    aq_train_dataset = AQDataset(train_sample_dir, train_label_dir, channels, region)
 
     # --- Grabbing Testing Data ----
-    # Hardcoded for 2016
+    # Hardcoded for 2020
     print('Grabbing testing data...')
 
-    # Testing on 2016 Summer months (June, July August)
+    # Testing on 2020 Summer months (June, July August)
     root_sample_test_dir = '{}/{}/zscore_normalization'.format(root_data_dir, region)
     root_label_dir = '{}/{}/labels_{}'.format(root_data_dir, region, target)
 
-    img_dir_test = '{}/{}_channels/{}/2016'.format(root_sample_test_dir, channels, analysis_time)
-    label_dir_test = '{}/{}/2016'.format(root_label_dir, analysis_time)
+    img_dir_test = '{}/{}_channels/{}/{}'.format(root_sample_test_dir, channels, analysis_time, test_year)
+    label_dir_test = '{}/{}/{}'.format(root_label_dir, analysis_time, test_year)
 
-    aq_test_dataset = AQDataset(img_dir_test, label_dir_test)
+    aq_test_dataset = AQDataset(img_dir_test, label_dir_test, channels, region)
+
+    if model_type == 'cqr':
+        run_cqr(unet, device, aq_train_dataset, aq_test_dataset, save_dir, experiment, 0.1, args.channels,
+                args.epochs, args.batch_size, args.lr, 0, save_checkpoint=True)
+
 
     print('Training model...')
     if model_type == 'standard':
@@ -125,7 +130,7 @@ if __name__ == '__main__':
             model=unet,
             device=device,
             dataset=aq_train_dataset,
-            save_dir=save_dir,
+            save_dir=args.save_dir,
             experiment=experiment,
             val_percent=float(args.val_percent),
             epochs=args.epochs,

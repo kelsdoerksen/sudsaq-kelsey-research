@@ -5,14 +5,9 @@ Script to predict on test set after training model
 from dataset import *
 import numpy as np
 from model import *
-import os
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
-import logging
-from torch.utils.data import DataLoader, random_split
-from torch import optim
-from pathlib import Path
+from torch.utils.data import DataLoader
 from train import *
 from operator import add
 from losses import *
@@ -32,7 +27,7 @@ def predict(in_model, target, test_dataset, wandb_experiment, channels, seed, ou
     unet.eval()
 
     # Data loader for test set
-    test_loader = DataLoader(test_dataset, batch_size=10, shuffle=True)
+    test_loader = DataLoader(test_dataset, batch_size=10, shuffle=False)    # Set shuffle to false to preserve order of data for timeseries generation
 
     loss_criterion = nn.MSELoss()
     mse_score = 0

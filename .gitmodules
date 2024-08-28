@@ -1,0 +1,9 @@
+[submodule "cqr"]
+	path = cqr
+	url = https://github.com/yromano/cqr.git
+[submodule "research/kelsey/submodules/cqr"]
+	path = research/kelsey/submodules/cqr
+	url = https://github.com/yromano/cqr.git
+[submodule "research/kelsey/submodules/nonconformist"]
+	path = research/kelsey/submodules/nonconformist
+	url = https://github.com/donlnz/nonconformist

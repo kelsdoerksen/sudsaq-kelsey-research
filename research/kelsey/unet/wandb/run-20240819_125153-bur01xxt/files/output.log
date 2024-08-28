@@ -1,0 +1,20 @@
+Grabbing training data...
+Grabbing testing data...
+Training lower bound model...
+Training EPOCH 0:
+/Users/kelseydoerksen/opt/anaconda3/envs/sudsaq-uq/lib/python3.10/site-packages/torch/cuda/amp/grad_scaler.py:126: UserWarning: torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.
+  warnings.warn(
+Training EPOCH 1:
+Training upper bound model...
+Training EPOCH 0:
+Training EPOCH 1:
+Predicting lower bounds...
+Traceback (most recent call last):
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py", line 131, in <module>
+    run_cqr(unet, device, aq_train_dataset, aq_test_dataset, save_dir, experiment, 0.1, args.channels,
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py", line 200, in run_cqr
+    lower_preds = cqr_testing_loop(lower_bound, 'lower', 'bias', test_loader, lower_criterion,
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py", line 122, in cqr_testing_loop
+    np.save('{}/{}channels_{}_pred_{}_{}.npy'.format(out_dir, channels, target, i), preds[i], model_type)
+IndexError: Replacement index 4 out of range for positional args tuple
+test set loss is: 16.383743286132812

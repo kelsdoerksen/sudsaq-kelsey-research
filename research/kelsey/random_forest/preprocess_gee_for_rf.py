@@ -10,17 +10,28 @@ combined_data_dir = '/Users/kelseyd/Desktop/random_forest/data/momo_and_gee'
 years = ['2005','2006','2007','2008','2009','2010','2011','2012','2013','2014','2015','2016']
 months_dict = {'june': 30,
                'july': 31,
-               'august': 31}
+               'aug': 31}
 
 
-def generate_features(x, gee_data, month_query):
+def generate_features(x, gee_data, gee_band, month_query):
     """
     x: xarray dataset
     gee_data: gee data name
+    gee_band: gee data band
     """
+    features = []
+    if gee_data == 'nightlight':
+        features = ['nightlight.{}.var'.format(gee_band), 'nightlight.{}.mean'.format(gee_band),
+                    'nightlight.{}.max'.format(gee_band), 'nightlight.{}.min'.format(gee_band)]
+        data = x.to_array().stack({'loc': ['lat', 'lon']})
+        data = data.transpose('loc', 'variable')
+        df = pd.DataFrame(data=data.values, columns=features)
+        month_length = months_dict[month_query]
+        df_monthly = pd.concat([df] * month_length)
+        return df_monthly
+
     dummy_date = x.time.values[0]  # Dummy date to filter since GEE modis, pop is constant vals
     subset_ds = x.sel(time=dummy_date)
-    features = []
     if gee_data == 'modis':
         features = ['modis.mode', 'modis.var', 'modis.evg_conif', 'modis.evg_broad', 'modis.dcd_needle',
                     'modis.dcd_broad', 'modis.mix_forest', 'modis.cls_shrub', 'modis.open_shrub', 'modis.woody_savanna',
@@ -41,7 +52,7 @@ def filter_bounds(xr_ds, extent):
     """
     Filter xarray bounds
     input: xr_ds: xarray dataset to filter
-    imput: extent: extent to clip bounds by
+    input: extent: extent to clip bounds by
     """
     if extent == 'na':
         min_lat = 20.748
@@ -91,7 +102,35 @@ def grab_pop(query_year, geo_extent):
     pop_filtered = filter_bounds(pop_ds, geo_extent)
     return pop_filtered
 
-geo = 'eu'
+def grab_nightlight(query_year, query_month, band, geo_extent, filepath):
+    """
+    Grab correct nightlight array
+    :query_year: year we are processing data for
+    :query_month: month we are processing data for
+    :geo_extent: geographic extent of data
+    :filepath: location of gee file to process
+    """
+    nl_ds = xr.open_dataset('{}/nightlight_{}_{}_{}_{}_buffersize_55500_with_time.nc'.format(
+        filepath, band, query_month, query_year, geo_extent))
+    return nl_ds
+
+nightlight_years = ['2012', '2013', '2014', '2015', '2016']
+months = ['aug','july','june']
+bands = ['avg_rad', 'cf_cvg']
+geo = 'north_america'
+save_dir = '/Volumes/PRO-G40/sudsaq/random_forest/nightlight_data_rf/northamerica'
+data_dir = '/Volumes/PRO-G40/sudsaq/gee_nightlight_data'
+
+for y in nightlight_years:
+    for m in months:
+        for b in bands:
+            print('Running for nightlight band {} dataset for year: {}, month: {}'.format(b, y, m))
+            nightlight = grab_nightlight(y, m, b, geo, data_dir)
+            nightlight_features = generate_features(nightlight, 'nightlight', b, m)
+            nightlight_features.to_csv('{}/{}_{}_{}_nightlight_features.csv'.format(save_dir, y, m, b))
+
+'''
+geo = 'eu' # specify geographic extent here
 if geo == 'na':
     geo_name = 'NorthAmerica'
 if geo == 'eu':
@@ -115,3 +154,4 @@ for y in years:
         print('Processing for month: {}'.format(m))
         pop_features = generate_features(pop, 'pop', m)
         pop_features.to_csv('{}/{}_{}_population_features.csv'.format(save_dir, y, m))
+'''

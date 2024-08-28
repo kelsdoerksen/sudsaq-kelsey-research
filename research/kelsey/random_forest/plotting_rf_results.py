@@ -138,7 +138,7 @@ def plot_histogram(target, pred, dir, region, analysis_time):
     if analysis_time in ['june', 'july', 'august']:
         plt.ylim(0, 700)
     else:
-        plt.ylim(0, 4000)
+        plt.ylim(0, 9000)
 
     # save histogram data to plot with unet
     df = pd.DataFrame()
@@ -397,15 +397,15 @@ def calculating_spatial_results(df_sorted, target, analysis_date, save_directory
 
 
 # Read in file of interest
-aoi = 'Europe'
-target = 'bias'
-num_channels = 39
+aoi = 'NorthAmerica'
+target = 'mda8'
+num_channels = 9
 analysis_period = 'summer'
 '''
 results_dir = '/Users/kelseyd/Desktop/random_forest/runs/{}/{}/{}channels/{}'.format(aoi, target, num_channels,
                                                                                 analysis_period)
 '''
-results_dir = '/Users/kelseydoerksen/Desktop/sudsaq_rf/runs/{}/bias/{}channels/summer'.format(aoi, num_channels)
+results_dir = '/Users/kelseydoerksen/Desktop/sudsaq/rf/runs/{}/mda8/{}channels/summer'.format(aoi, num_channels)
 
 
 # Subset yhat (predictions), y_true (groundtruth)
@@ -423,11 +423,11 @@ y_true = results_df['label']
 # Spatial Map
 
 print('plotting spatial results')
-calculating_spatial_results(results_df, target, analysis_period, results_dir, aoi)
+#calculating_spatial_results(results_df, target, analysis_period, results_dir, aoi)
 
 # Plot true vs predicted
 #print('Plotting y_test vs y_hat')
-truth_vs_predicted(y_true, yhat, results_dir, aoi)
+#truth_vs_predicted(y_true, yhat, results_dir, aoi)
 
 
 # Plot histogram

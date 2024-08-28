@@ -1,0 +1,13 @@
+Grabbing training data...
+Grabbing testing data...
+Training model...
+Training EPOCH 0:
+/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/cuda/amp/grad_scaler.py:120: UserWarning: torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.
+  warnings.warn("torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.")
+Train NLL for 5 reps: 635309.66015625
+Traceback (most recent call last):
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py", line 141, in <module>
+    trained_model = train_probabilistic_model(model=unet,
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/train.py", line 324, in train_probabilistic_model
+    print('Train NLL for 1 reps: {}'.format(train_loss_1))
+NameError: name 'train_loss_1' is not defined

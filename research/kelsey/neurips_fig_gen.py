@@ -9,29 +9,32 @@ import pandas as pd
 
 # --- Histogram plotting
 def plot_hist(gt, pred_sixteen, pred_thirtynine, x_min, name):
-    save_dir = '/Users/kelseydoerksen/Desktop/Neurips_Results'
+    save_dir = '/Users/kelseydoerksen/Desktop/ML4PS_CameraReady'
     bins = np.linspace(int(x_min), 60, 500)
     plt.hist(gt, bins, histtype='step', label=['target'])
     plt.hist(pred_sixteen, bins, histtype='step', label=['16-channel prediction'])
     plt.hist(pred_thirtynine, bins, histtype='step', label=['39-channel prediction'])
     #plt.legend(loc='upper left')
+    plt.ylim(0, 100)
     plt.xlabel('Bias')
     plt.ylabel('Count')
     plt.tight_layout()
-    #plt.savefig('{}/{}_hist.png'.format(save_dir, name))
-    #plt.close()
+    plt.savefig('{}/{}_hist.png'.format(save_dir, name))
+    plt.close()
     plt.show()
 
 
-unet_dir = '/Users/kelseydoerksen/Desktop/unet/runs/Europe/bias'
-rf_dir = '/Users/kelseydoerksen/Desktop/sudsaq_rf/runs/Europe/bias'
+unet_dir = '/Users/kelseydoerksen/Desktop/sudsaq/unet/runs/Europe/bias'
+rf_dir = '/Users/kelseydoerksen/Desktop/sudsaq/rf/runs/Europe/bias'
 
 # Plotting RF Hist
+
 rf_16 = pd.read_csv('{}/16channels/summer/histogram_data.csv'.format(rf_dir))
 rf_39 = pd.read_csv('{}/39channels/summer/histogram_data.csv'.format(rf_dir))
 rf_gt = rf_16['gt']
 rf_pred_16 = rf_16['pred']
 rf_pred_39 = rf_39['pred']
+
 
 # Plotting UNet Hist
 unet_16 = pd.read_csv('{}/16channels/worthy-fire-378/histogram_data.csv'.format(unet_dir))

@@ -8,19 +8,10 @@ testing year 2016
 """
 
 import numpy as np
-from sklearn.model_selection import KFold
-from sklearn.model_selection import GridSearchCV
 from sklearn.utils import shuffle
 import os
-import logging
 from sklearn.ensemble import RandomForestRegressor
-import xarray as xr
-from tqdm import tqdm
 import pandas as pd
-from scipy import stats
-import matplotlib.pyplot as plt
-import argparse
-import math
 from sklearn.metrics    import (
     mean_absolute_percentage_error,
     mean_squared_error,
@@ -28,13 +19,8 @@ from sklearn.metrics    import (
 )
 from joblib import dump
 from sklearn.inspection import permutation_importance
-from scipy.stats import pearsonr
 import argparse
 import math
-import cartopy.crs as ccrs
-from cartopy.mpl.gridliner import LONGITUDE_FORMATTER, LATITUDE_FORMATTER
-from matplotlib import colors
-from numpy import moveaxis
 
 root_dir = '/Users/kelseydoerksen/Desktop/sudsaq_rf'
 
@@ -179,6 +165,20 @@ def load_train_data(analysis_time, pred_target, n_features, region):
     n_features (9, 32, 39 supported)
     Hard coded that 2005-2015 is the training data
     """
+
+    sample_dir = '/Volumes/PRO-G40/sudsaq/random_forest/rf_sample_data_northamerica/gee_only_combined'
+    target_dir = '/Volumes/PRO-G40/sudsaq/random_forest/tmp_target'
+
+    sample_list = []
+    years = ['2012', '2013', '2014', '2015']
+    for y in years:
+        sample_list.append(pd.read_csv('{}/{}_august_combined_gee.csv'.format(sample_dir, y)))
+
+    df_samples = pd.concat(sample_list)
+    df_labels = pd.read_csv('{}/august_2012-2015_target.csv'.format(target_dir))
+
+
+    '''
     df_samples = []
     df_labels = []
 
@@ -192,6 +192,8 @@ def load_train_data(analysis_time, pred_target, n_features, region):
     target_june = pd.read_csv('{}/june_2005-2015_target.csv'.format(target_dir))
     target_july = pd.read_csv('{}/july_2005-2015_target.csv'.format(target_dir))
     target_august = pd.read_csv('{}/august_2005-2015_target.csv'.format(target_dir))
+    
+    
 
 
     if analysis_time == 'summer':
@@ -206,6 +208,7 @@ def load_train_data(analysis_time, pred_target, n_features, region):
     if analysis_time == 'august':
         df_samples = [samples_august]
         df_labels = [target_august]
+    '''
 
     return df_samples, df_labels
 
@@ -241,6 +244,12 @@ def load_test_data(analysis_time, pred_target, n_features, region):
     n_features (9, 32, 39 supported)
     Hard coded that 2016 is test year
     """
+
+    test_labels = pd.read_csv('/Volumes/PRO-G40/sudsaq/random_forest/target/NorthAmerica/mda8/august_2016_target_with_coords.csv')
+    test_samples = pd.read_csv('/Volumes/PRO-G40/sudsaq/random_forest/rf_sample_data_northamerica/gee_only_combined/'
+                               '2016_august_combined_gee.csv')
+
+    '''
     df_samples = []
     df_labels = []
 
@@ -269,6 +278,8 @@ def load_test_data(analysis_time, pred_target, n_features, region):
         df_labels = [target_august]
 
     return df_samples, df_labels
+    '''
+    return test_samples, test_labels
 
 
 args = get_args()
@@ -282,19 +293,26 @@ if aoi == 'na':
 if aoi == 'eu':
     full_geo_name = 'Europe'
 
+'''
 results_dir = '/Users/kelseydoerksen/Desktop/sudsaq_rf/runs/{}/{}/{}channels/{}'.format(full_geo_name, target,
                                                                                      num_features, analysis_period)
+'''
+
+results_dir = '/Volumes/PRO-G40/sudsaq/random_forest/tmp_results'
 
 # --- Loading Training Data ---
 train_df_data, train_df_target = load_train_data(analysis_period, target, num_features, full_geo_name)
-X_train, y_train = get_X_and_y_train(train_df_data, train_df_target)
+#X_train, y_train = get_X_and_y_train(train_df_data, train_df_target)
 
 # --- Loading Testing Data ---
 test_df_data, test_df_target = load_test_data(analysis_period, target, num_features, full_geo_name)
-X_test, y_test = get_X_and_y_test(test_df_data, test_df_target)
+#X_test, y_test = get_X_and_y_test(test_df_data, test_df_target)
 
-lat_list = list(y_test['lat'])
-lon_list = list(y_test['lon'])
+#lat_list = list(y_test['lat'])
+#lon_list = list(y_test['lon'])
+
+import ipdb
+ipdb.set_trace()
 
 if num_features == '39':
     train_cols_to_drop = ['index', 'index.1']

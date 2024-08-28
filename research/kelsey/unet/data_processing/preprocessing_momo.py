@@ -5,21 +5,31 @@ images and labels over North American extent for UNet
 
 import numpy as np
 import xarray as xr
-from numpy import moveaxis
 import datetime as dt
-import os
 import argparse
 from scipy import stats
 
-parser = argparse.ArgumentParser(description='Preprocessing MOMOChem for UNet')
-parser.add_argument('--month', help='Month of query')
 
+def get_args():
+    parser = argparse.ArgumentParser(description='Preprocessing MOMOChem for UNet')
+    parser.add_argument('--month', help='Month of query')
+    parser.add_argument('--region', help='Location, na, eu or global')
+    parser.add_argument('--year', help='Year of query, supports 2005-2020')
+    parser.add_argument('--sample_dir', help='Directory that sample data is stored to query')
+    parser.add_argument('--label_dir', help='Directory that label data is stored to query')
+    parser.add_argument('--save_dir', help='Save directory of data')
+    return parser.parse_args()
 
-# Top nine features from July RF experiments
+month_dict = {
+    '06': 'june',
+    '07': 'july',
+    '08': 'august'
+}
 
+'''
+# Old: Top nine features from July RF experiments
 feature_list = ['momo.2dsfc.NH3', 'momo.2dsfc.PROD.HOX', 'momo.2dsfc.DMS', 'momo.co',
                 'momo.2dsfc.HNO3', 'momo.2dsfc.BrONO2', 'momo.t', 'momo.no2', 'momo.2dsfc.PAN']
-'''
 # Added features Science PIs identified
 feature_list = ['momo.ps', 'momo.2dsfc.HO2', 'momo.2dsfc.C5H8', 'momo.olrc', 'momo.oh', 'momo.slrc', 'momo.so2']
 '''
@@ -103,7 +113,7 @@ def zscore_normalize_array(array):
     norm_array = stats.zscore(array, axis=None)
     return norm_array
 
-def generate_samples(sample_ds, save_month):
+def generate_samples(sample_ds, feature_list, save_dir):
     """
     Generate n-channel array samples from nc momochem xarrays.
     Pseudo code:
@@ -112,13 +122,14 @@ def generate_samples(sample_ds, save_month):
     this in a list for each variable, so would have 9 lists, one per var
     of length 31 for each day in July
     """
-    save_dir = '/Users/kelseyd/Desktop/unet/data/NorthAmerica/zscore_normalization/momo/9_channels/{}'.format(save_month)
-    date_list = list(sample_ds.coords['time'].values)
+    date_list = sample_ds.coords['time'].values.tolist()
+    date_list = [np.datetime64(x, "ns") for x in date_list]
 
     # iterate through each day in dataset per feature
     for doy in date_list:
         multi_channel_list = []
         for feature in feature_list:
+            print('Processing feature: {}'.format(feature))
             ds_filt = sample_ds.sel(indexers={'time': doy})
             ds_feature = ds_filt[feature]
             arr = ds_feature.to_numpy()
@@ -130,20 +141,23 @@ def generate_samples(sample_ds, save_month):
         np.save('{}/{}_sample'.format(save_dir, save_name_date), img)
 
 
-def generate_labels(label_list, save_month):
+def generate_labels(label_ds, save_dir):
     """
     Generate array labels from nc momochem xarrays
     """
-    save_dir = '/Users/kelseyd/Desktop/unet/data/NorthAmerica/labels_ozone/{}'.format(save_month)
-    for label in label_list:
-        save_name_date = str(label.coords['time'].values)[0:10]
-        label.load()
-        label_np = label.to_numpy()
+    date_list = label_ds.coords['time'].values.tolist()
+    date_list = [np.datetime64(x, "ns") for x in date_list]
+
+    # iterate through each day in dataset per feature
+    for doy in date_list:
+        save_name_date = str(doy)[0:10]
+        ds_filt = label_ds.sel(indexers={'time': doy})
+        label_np = ds_filt.to_array()
         print('Saving file: {}'.format(save_name_date))
         np.save('{}/{}_label'.format(save_dir, save_name_date), label_np)
 
 
-def daily(ds):
+def daily(ds, feature_list):
     """
     Aligns a dataset to a daily average
     """
@@ -217,6 +231,8 @@ def filter_bounds(xr_ds, extent):
         max_lat = 64.485
         min_lon = -9.0
         max_lon = 24.75
+    if extent == 'globe':
+        return xr_ds
 
     cropped_ds = xr_ds.sel(lat=slice(min_lat, max_lat), lon=slice(min_lon, max_lon))
 
@@ -230,7 +246,7 @@ def daily_mda8(label_ds, m_length):
     m: month of query
     """
     # Select timestamp starting with startime and increment by one day
-    start_date = list(label_ds.coords['time'].values)[0]
+    start_date = label_ds.coords['time'].values.tolist()[0]
     print('Generating labels for year {}'.format(str(start_date)[0:4]))
     increment = 24
     label_list = []
@@ -252,22 +268,22 @@ def format_lon(x):
     return x.sortby(x.lon)
 
 
-def run_generate_samples(x, m):
+def run_generate_samples(x, m, features, save_dir):
     """
-    x: xarray
-    m: month of query
-    extent: geographic extent of sample
+    :param: x: xarray of data
+    param: m: month of query
+    param: featrues: list of features from data
     """
     print('--- Generating n-channel samples ---')
     # Daily data
-    daily_ds = daily(x)
+    #daily_ds = daily(x, features)
     # Load ds
-    daily_ds.load()
-    # Generate the 10-channel sample
-    generate_samples(daily_ds, m)
+    #daily_ds.load()
+    # Generate the n-channel sample
+    generate_samples(x, features, save_dir)
 
 
-def run_generate_labels(x, m):
+def run_generate_labels(x, m, save_dir):
     """
     x: xarray
     m: month of query
@@ -282,38 +298,36 @@ def run_generate_labels(x, m):
     if m == 'aug':
         month_length = 31
 
-    labels = daily_mda8(x, month_length)
-    generate_labels(labels, m)
+    #labels = daily_mda8(x, month_length)
+    generate_labels(x, save_dir)
 
-#args = parser.parse_args()
-#month = args.month
-#month_str = month_dict[month]
+if __name__ == '__main__':
+    args = get_args()
+    sample_dir = args.sample_dir
+    label_dir = args.label_dir
+    month = args.month
+    year = args.year
+    geo_extent = args.region
+    save_dir = args.save_dir
 
-month_dict = {
-    '06': 'june'
-}
-# Running functions to generate labels and samples
-years = ['2006', '2007', '2008', '2009','2010',
-         '2011', '2012', '2013', '2014', '2015', '2016']
+    print('--- Loading Data for year {}---'.format(year))
+    sample_ds = xr.open_dataset('{}/{}/{}/test.data.nc'.format(sample_dir, month, year))
+    label_ds = xr.open_dataset('{}/{}/{}/test.target.nc'.format(label_dir, month, year))
 
-# Specify geographic extent to generate samples
-geo_extent = 'na'
+    # Get list of features from xarray
+    features = [i for i in sample_ds.data_vars]
 
-for month in month_dict.keys():
-    print('--- Loading Data for month {} ---'.format(month_dict[month]))
-    for y in years:
-        print('--- Loading Data for year {}---'.format(y))
-        ds = xr.open_mfdataset(["/Volumes/MLIA_active_data/data_SUDSAQ/data/momo/{}/{}.nc".format(y, month)])
+    # Format lon
+    #ds = format_lon(ds)
 
-        # Format lon
-        ds = format_lon(ds)
+    # Subsample over extent, na or eu supported
+    filt_sample_ds = filter_bounds(sample_ds, geo_extent)
 
-        # Subsample over extent, na or eu supported
-        filt_ds = filter_bounds(ds, geo_extent)
+    filt_label_ds = filter_bounds(label_ds, geo_extent)
 
-        # Generate samples
-        run_generate_samples(filt_ds, month_dict[month])
+    # Generate samples
+    run_generate_samples(filt_sample_ds, month, features, save_dir)
 
-        # Generate labels
-        #run_generate_labels(filt_ds, month_dict[month])
+    # Generate labels
+    run_generate_labels(filt_label_ds, month, save_dir)
 

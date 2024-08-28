@@ -5,24 +5,15 @@ to use in n-channel image input for UNet
 
 import numpy as np
 import xarray as xr
-from numpy import moveaxis
-import datetime as dt
-import os
 from scipy import stats
 
 """
 Pseudo-code:
-1. Read in momo data
+1. Read in gee data
 2. Subset over region of interest
 3. Save
-
--> I think it makes more sense to just append the data based on the date of the other data each time I want to run 
-it, (or rather, let's generate the gee stuff first as arrays and then run another script to append but have this
-done separately so I can keep the individual datasets
 """
 
-root_dir = "/Volumes/MLIA_active_data/data_SUDSAQ/gee_correct"
-root_save_dir = "/Users/kelseyd/Desktop/unet/data/NorthAmerica/zscore_normalization/gee"
 
 def max_min_normalize_array(array):
   '''
@@ -39,30 +30,28 @@ def zscore_normalize_array(array):
     """
     Apply zscore normalization to array
     """
-    norm_array = stats.zscore(array, axis=None)
+    norm_array = stats.zscore(array, axis=None, nan_policy='omit')
     return norm_array
 
-def generate_array(x, gee_dataset_name):
+def generate_array(x, gee_dataset_name, save_dir, year, region):
     """
     Generate array from xr dataset
     input x: dataset
     input gee_dataset_name: gee dataset of interest
     """
     var_list = [i for i in x.data_vars]
-    dummy_date = x.time.values[0]   # Dummy date to filter since GEE modis, pop is constant vals
-    subset_ds = x.sel(time=dummy_date)
     multichannel_list = []
     for feature in var_list:
-        ds_feature = subset_ds[feature]
+        ds_feature = x[feature]
         arr = ds_feature.to_numpy()
         norm_arr = zscore_normalize_array(arr)
         multichannel_list.append(norm_arr)
 
-    save_name_date = str(dummy_date)[0:4]
     img = np.array(multichannel_list)
+    img = np.nan_to_num(img)
 
     # Save gee array
-    np.save('{}/{}/{}_{}_array'.format(root_save_dir, gee_dataset_name, save_name_date, gee_dataset_name), img)
+    np.save('{}/{}_{}_{}_array.npy'.format(save_dir, gee_dataset_name, year, region), img)
 
 
 def format_lon(x):
@@ -95,13 +84,13 @@ def filter_bounds(xr_ds, extent):
 
     return cropped_ds
 
+gee_dir = '/Volumes/PRO-G40/sudsaq/GEE'
 
 # --- Processing Population ---
-years = ['2005','2010','2015']
+years = ['2005','2010','2015', '2020']
 for y in years:
     print('--- Processing Population GEE to array for year {} ---'.format(y))
-    ds = xr.open_mfdataset(["/Volumes/MLIA_active_data/data_SUDSAQ/gee_correct/population/"
-                            "pop_{}_globe_buffersize_55500_with_time.nc".format(y)])
+    ds = xr.open_dataset('{}/pop_population_density_{}_globe_buffersize_55500_with_time'.format(gee_dir, y))
 
     # Format lon
     ds = format_lon(ds)
@@ -110,23 +99,24 @@ for y in years:
     filt_ds = filter_bounds(ds, 'na')
 
     # Make array
-    generate_array(filt_ds, 'population')
+    generate_array(filt_ds, 'population', '/Volumes/PRO-G40/sudsaq/GEE', y, 'NorthAmerica')
 
+'''
 # --- Processing modis ---
 years = ['2005', '2006', '2007', '2008', '2009','2010',
-         '2011', '2012', '2013', '2014', '2015', '2016']
+         '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020']
 for y in years:
     print('--- Processing MODIS GEE to array for year {} ---'.format(y))
-    ds = xr.open_mfdataset(["/Volumes/MLIA_active_data/data_SUDSAQ/gee_correct/modis/"
-                            "modis_{}_globe_buffersize_55500_with_time.nc".format(y)])
+    ds = xr.open_dataset('{}/modis_LC_Type1_{}_globe_buffersize_55500_with_time.nc'.format(gee_dir, y))
     # Format lon
     ds = format_lon(ds)
 
     # Subsample over north america
-    filtered_ds = filter_bounds(ds, 'na')
+    filtered_ds = filter_bounds(ds, 'eu')
 
     # Make array
-    generate_array(filtered_ds, 'modis')
+    generate_array(filtered_ds, 'modis', '/Volumes/PRO-G40/sudsaq/GEE', y, 'Europe')
+'''
 
 
 

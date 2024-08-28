@@ -1,0 +1,25 @@
+Grabbing training data...
+Grabbing testing data...
+Training lower bound model...
+Training EPOCH 0:
+/Users/kelseydoerksen/opt/anaconda3/envs/sudsaq-uq/lib/python3.10/site-packages/torch/cuda/amp/grad_scaler.py:126: UserWarning: torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.
+  warnings.warn(
+Training EPOCH 1:
+Training EPOCH 2:
+Training EPOCH 3:
+Training EPOCH 4:
+Training upper bound model...
+Training EPOCH 0:
+Training EPOCH 1:
+Training EPOCH 2:
+Training EPOCH 3:
+Training EPOCH 4:
+Predicting lower bounds...
+Traceback (most recent call last):
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py", line 131, in <module>
+    run_cqr(unet, device, aq_train_dataset, aq_test_dataset, save_dir, experiment, 0.1, args.channels,
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py", line 198, in run_cqr
+    lower_preds = cqr_testing_loop(lower_bound, 'lower', 'bias', test_datatset, lower_criterion,
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py", line 92, in cqr_testing_loop
+    in_model.eval()
+AttributeError: 'str' object has no attribute 'eval'

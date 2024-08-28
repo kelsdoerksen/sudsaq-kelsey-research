@@ -1,0 +1,32 @@
+/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/cuda/amp/grad_scaler.py:120: UserWarning: torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.
+  warnings.warn("torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.")
+Traceback (most recent call last):
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py", line 122, in <module>
+    run_cqr(unet, device, aq_train_dataset, aq_test_dataset, save_dir, experiment, 0.1, args.channels,
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py", line 235, in run_cqr
+    lower_bound = cqr_training_loop(model, train_loader, lower_criterion, optimizer, grad_scaler, epochs, experiment,
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py", line 42, in cqr_training_loop
+    outputs = model(inputs)  # predict on input
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/model/models.py", line 28, in forward
+    x1 = self.inc(x)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/model/unet_modules.py", line 33, in forward
+    return self.double_conv(x)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/nn/modules/container.py", line 217, in forward
+    input = module(input)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/nn/modules/conv.py", line 463, in forward
+    return self._conv_forward(input, self.weight, self.bias)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/nn/modules/conv.py", line 459, in _conv_forward
+    return F.conv2d(input, weight, bias, self.stride,
+RuntimeError: Given groups=1, weight of size [32, 28, 3, 3], expected input[32, 49, 28, 31] to have 28 channels, but got 49 channels instead
+Grabbing training data...
+Grabbing testing data...
+Training lower bound model...
+Training EPOCH 0:

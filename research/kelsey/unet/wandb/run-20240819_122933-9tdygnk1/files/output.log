@@ -1,0 +1,51 @@
+Grabbing training data...
+Grabbing testing data...
+Training EPOCH 0:
+/Users/kelseydoerksen/opt/anaconda3/envs/sudsaq-uq/lib/python3.10/site-packages/torch/cuda/amp/grad_scaler.py:126: UserWarning: torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.
+  warnings.warn(
+Training EPOCH 1:
+Training EPOCH 2:
+Training EPOCH 3:
+Training EPOCH 4:
+Training EPOCH 5:
+Training EPOCH 6:
+Training EPOCH 7:
+Training EPOCH 8:
+Training EPOCH 9:
+Training EPOCH 0:
+Training EPOCH 1:
+Training EPOCH 2:
+Training EPOCH 3:
+Training EPOCH 4:
+Training EPOCH 5:
+Training EPOCH 6:
+Training EPOCH 7:
+Training EPOCH 8:
+Training EPOCH 9:
+Traceback (most recent call last):
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py", line 131, in <module>
+    run_cqr(unet, device, aq_train_dataset, aq_test_dataset, save_dir, experiment, 0.1, args.channels,
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py", line 186, in run_cqr
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py", line 95, in cqr_testing_loop
+    outputs = in_model(inputs)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/sudsaq-uq/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/sudsaq-uq/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/model/models.py", line 33, in forward
+    x6 = self.up1(x5, x4)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/sudsaq-uq/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/sudsaq-uq/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/model/unet_modules.py", line 101, in forward
+    x1 = self.up(x1)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/sudsaq-uq/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1511, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/sudsaq-uq/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1520, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/sudsaq-uq/lib/python3.10/site-packages/torch/nn/modules/upsampling.py", line 157, in forward
+    return F.interpolate(input, self.size, self.scale_factor, self.mode, self.align_corners,
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/sudsaq-uq/lib/python3.10/site-packages/torch/nn/functional.py", line 4049, in interpolate
+    raise NotImplementedError("Got 3D input, but bilinear mode needs 4D input")
+NotImplementedError: Got 3D input, but bilinear mode needs 4D input

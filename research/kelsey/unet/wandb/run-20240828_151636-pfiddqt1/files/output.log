@@ -1,0 +1,123 @@
+Grabbing training data...
+Grabbing testing data...
+Training lower bound model...
+Training EPOCH 0:
+> /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/losses.py(102)forward()
+    101         # Mask nans first
+--> 102         mask = ~torch.isnan(y_true)
+    103         # Add mask before calculating loss to remove nans
+/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/cuda/amp/grad_scaler.py:120: UserWarning: torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.
+  warnings.warn("torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.")
+tensor([[[[    nan,     nan,     nan,  ...,     nan,     nan,     nan],
+          [    nan,     nan,     nan,  ...,     nan,     nan,     nan],
+          [    nan,     nan,     nan,  ...,     nan,     nan,     nan],
+          ...,
+          [    nan,     nan,     nan,  ...,     nan,     nan,     nan],
+          [    nan,     nan,     nan,  ...,     nan,     nan,     nan],
+          [    nan,     nan,     nan,  ...,     nan,     nan,     nan]]],
+        [[[-0.0301, -0.0257, -0.0327,  ..., -0.0212, -0.0237, -0.0328],
+          [-0.0356, -0.0331, -0.0325,  ..., -0.0325, -0.0292, -0.0310],
+          [-0.0374, -0.0338, -0.0243,  ..., -0.0308, -0.0285, -0.0251],
+          ...,
+          [-0.0234, -0.0117,  0.0032,  ..., -0.0251, -0.0155, -0.0282],
+          [-0.0310, -0.0251, -0.0212,  ..., -0.0330, -0.0308, -0.0273],
+          [-0.0298, -0.0288, -0.0313,  ..., -0.0296, -0.0308, -0.0287]]],
+        [[[    nan,     nan,     nan,  ...,     nan,     nan,     nan],
+          [    nan,     nan,     nan,  ...,     nan,     nan,     nan],
+          [    nan,     nan,     nan,  ...,     nan,     nan,     nan],
+          ...,
+          [    nan,     nan,     nan,  ...,     nan,     nan,     nan],
+          [    nan,     nan,     nan,  ...,     nan,     nan,     nan],
+          [    nan,     nan,     nan,  ...,     nan,     nan,     nan]]],
+        ...,
+        [[[    nan,     nan,     nan,  ...,     nan,     nan,     nan],
+          [    nan,     nan,     nan,  ...,     nan,     nan,     nan],
+          [    nan,     nan,     nan,  ...,     nan,     nan,     nan],
+          ...,
+          [    nan,     nan,     nan,  ...,     nan,     nan,     nan],
+          [    nan,     nan,     nan,  ...,     nan,     nan,     nan],
+          [    nan,     nan,     nan,  ...,     nan,     nan,     nan]]],
+        [[[-0.0266, -0.0328, -0.0307,  ..., -0.0237, -0.0262, -0.0286],
+          [-0.0336, -0.0311, -0.0225,  ..., -0.0329, -0.0195, -0.0324],
+          [-0.0319, -0.0360, -0.0361,  ..., -0.0276, -0.0269, -0.0281],
+          ...,
+          [-0.0152,  0.0011, -0.0391,  ..., -0.0199, -0.0170, -0.0290],
+          [-0.0240, -0.0381, -0.0178,  ..., -0.0218, -0.0241, -0.0248],
+          [-0.0255, -0.0267, -0.0188,  ..., -0.0270, -0.0388, -0.0263]]],
+        [[[-0.0311, -0.0291, -0.0328,  ..., -0.0213, -0.0307, -0.0326],
+          [-0.0300, -0.0337, -0.0277,  ..., -0.0344, -0.0264, -0.0308],
+          [-0.0381, -0.0270, -0.0301,  ..., -0.0264, -0.0340, -0.0287],
+          ...,
+          [-0.0319, -0.0135, -0.0153,  ..., -0.0203, -0.0264, -0.0284],
+          [-0.0291, -0.0207, -0.0186,  ..., -0.0314, -0.0312, -0.0263],
+          [-0.0300, -0.0274, -0.0292,  ..., -0.0323, -0.0327, -0.0273]]]],
+       grad_fn=<ConvolutionBackward0>)
+torch.Size([32, 1, 31, 49])
+tensor([[[[    nan,     nan,     nan,  ...,     nan,     nan,     nan],
+          [    nan,     nan,     nan,  ...,     nan,     nan,     nan],
+          [    nan,     nan,     nan,  ...,     nan,     nan,     nan],
+          ...,
+          [    nan,     nan,     nan,  ...,     nan,     nan,     nan],
+          [    nan,     nan,     nan,  ...,     nan,     nan,     nan],
+          [    nan,     nan,     nan,  ...,     nan,     nan,     nan]]],
+        [[[    nan,     nan,     nan,  ...,     nan,     nan,     nan],
+          [    nan,     nan,     nan,  ...,     nan,     nan,     nan],
+          [    nan,     nan,     nan,  ...,     nan,     nan,     nan],
+          ...,
+          [    nan,     nan,     nan,  ...,     nan,     nan,     nan],
+          [    nan,     nan, 16.1459,  ...,     nan,     nan,     nan],
+          [    nan,     nan,     nan,  ...,     nan,     nan,     nan]]],
+        [[[    nan,     nan,     nan,  ...,     nan,     nan,     nan],
+          [    nan,     nan,     nan,  ...,     nan,     nan,     nan],
+          [    nan,     nan,     nan,  ...,     nan,     nan,     nan],
+          ...,
+          [    nan,     nan,     nan,  ...,     nan,     nan,     nan],
+          [    nan,     nan, 21.0910,  ...,     nan,     nan,     nan],
+          [    nan,     nan,     nan,  ...,     nan,     nan,     nan]]],
+        ...,
+        [[[    nan,     nan,     nan,  ...,     nan,     nan,     nan],
+          [    nan,     nan,     nan,  ...,     nan,     nan,     nan],
+          [    nan,     nan,     nan,  ...,     nan,     nan,     nan],
+          ...,
+          [    nan,     nan,     nan,  ...,     nan,     nan,     nan],
+          [    nan,     nan, 36.6137,  ...,     nan,     nan,     nan],
+          [    nan,     nan,     nan,  ...,     nan,     nan,     nan]]],
+        [[[    nan,     nan,     nan,  ...,     nan,     nan,     nan],
+          [    nan,     nan,     nan,  ...,     nan,     nan,     nan],
+          [    nan,     nan,     nan,  ...,     nan,     nan,     nan],
+          ...,
+          [    nan,     nan,     nan,  ...,     nan,     nan,     nan],
+          [    nan,     nan, 25.0040,  ...,     nan,     nan,     nan],
+          [    nan,     nan,     nan,  ...,     nan,     nan,     nan]]],
+        [[[    nan,     nan,     nan,  ...,     nan,     nan,     nan],
+          [    nan,     nan,     nan,  ...,     nan,     nan,     nan],
+          [    nan,     nan,     nan,  ...,     nan,     nan,     nan],
+          ...,
+          [    nan,     nan,     nan,  ...,     nan,     nan,     nan],
+          [    nan,     nan, 25.6225,  ...,     nan,     nan,     nan],
+          [    nan,     nan,     nan,  ...,     nan,     nan,     nan]]]])
+Traceback (most recent call last):
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py", line 123, in <module>
+    run_cqr(unet, device, aq_train_dataset, aq_test_dataset, save_dir, experiment, 0.1, args.channels,
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py", line 235, in run_cqr
+    lower_bound = cqr_training_loop(model, train_loader, lower_criterion, optimizer, grad_scaler, epochs, experiment,
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py", line 44, in cqr_training_loop
+    loss = loss_criterion(outputs, labels)  # Calculate loss
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/losses.py", line 102, in forward
+    mask = ~torch.isnan(y_true)
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/losses.py", line 102, in forward
+    mask = ~torch.isnan(y_true)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+bdb.BdbQuit
+If you suspect this is an IPython 8.7.0 bug, please report it at:
+    https://github.com/ipython/ipython/issues
+or send an email to the mailing list at ipython-dev@python.org
+You can print a more detailed traceback right now with "%tb", or use "%debug"
+to interactively debug it.
+Extra-detailed tracebacks for bug-reporting purposes can be enabled via:
+    %config Application.verbose_crash=True

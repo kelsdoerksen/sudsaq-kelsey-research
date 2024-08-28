@@ -1,0 +1,20 @@
+Grabbing training data...
+Grabbing testing data...
+Training lower bound model...
+Training EPOCH 0:
+/Users/kelseydoerksen/opt/anaconda3/envs/sudsaq-uq/lib/python3.10/site-packages/torch/cuda/amp/grad_scaler.py:126: UserWarning: torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.
+  warnings.warn(
+Training upper bound model...
+Training EPOCH 0:
+Predicting lower bounds...
+test set loss is: 1.7319480180740356
+Predicting upper bounds...
+Traceback (most recent call last):
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py", line 131, in <module>
+    run_cqr(unet, device, aq_train_dataset, aq_test_dataset, save_dir, experiment, 0.1, args.channels,
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py", line 238, in run_cqr
+    uncal_coverage = calculate_coverage(uncal_lower_preds_t, uncal_upper_preds_t, test_loader)
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py", line 160, in calculate_coverage
+    if y_true[i].isna():
+AttributeError: 'numpy.float32' object has no attribute 'isna'
+test set loss is: 15.849461555480957

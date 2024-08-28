@@ -1,0 +1,49 @@
+Grabbing training data...
+Grabbing testing data...
+Training lower bound model...
+Training EPOCH 0:
+/Users/kelseydoerksen/opt/anaconda3/envs/sudsaq-uq/lib/python3.10/site-packages/torch/cuda/amp/grad_scaler.py:126: UserWarning: torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.
+  warnings.warn(
+Training EPOCH 1:
+Training upper bound model...
+Training EPOCH 0:
+Training EPOCH 1:
+Predicting lower bounds...
+test set loss is: 16.383743286132812
+Predicting upper bounds...
+test set loss is: 2.134387254714966
+> /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py(133)calculate_coverage()
+    132     ipdb.set_trace()
+--> 133     out_of_bound = 0
+    134     N = len(y_true)
+3
+> /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py(134)calculate_coverage()
+    133     out_of_bound = 0
+--> 134     N = len(y_true)
+    135
+--Call--
+> /Users/kelseydoerksen/opt/anaconda3/envs/sudsaq-uq/lib/python3.10/site-packages/torch/utils/data/dataloader.py(457)__len__()
+    456
+--> 457     def __len__(self) -> int:
+    458         if self._dataset_kind == _DatasetKind.Iterable:
+Traceback (most recent call last):
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py", line 131, in <module>
+    run_cqr(unet, device, aq_train_dataset, aq_test_dataset, save_dir, experiment, 0.1, args.channels,
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py", line 207, in run_cqr
+    calculate_coverage(lower_bound, upper_bound, test_loader)
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py", line 134, in calculate_coverage
+    N = len(y_true)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/sudsaq-uq/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 457, in __len__
+    def __len__(self) -> int:
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/sudsaq-uq/lib/python3.10/bdb.py", line 92, in trace_dispatch
+    return self.dispatch_call(frame, arg)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/sudsaq-uq/lib/python3.10/bdb.py", line 137, in dispatch_call
+    if self.quitting: raise BdbQuit
+bdb.BdbQuit
+If you suspect this is an IPython 8.25.0 bug, please report it at:
+    https://github.com/ipython/ipython/issues
+or send an email to the mailing list at ipython-dev@python.org
+You can print a more detailed traceback right now with "%tb", or use "%debug"
+to interactively debug it.
+Extra-detailed tracebacks for bug-reporting purposes can be enabled via:
+    %config Application.verbose_crash=True

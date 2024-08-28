@@ -1,0 +1,99 @@
+Grabbing training data...
+Grabbing testing data...
+Training lower bound model...
+Training EPOCH 0:
+/Users/kelseydoerksen/opt/anaconda3/envs/sudsaq-uq/lib/python3.10/site-packages/torch/cuda/amp/grad_scaler.py:126: UserWarning: torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.
+  warnings.warn(
+Training EPOCH 1:
+Training EPOCH 2:
+Training EPOCH 3:
+Training EPOCH 4:
+Training EPOCH 5:
+Training EPOCH 6:
+Training EPOCH 7:
+Training EPOCH 8:
+Training EPOCH 9:
+Training EPOCH 10:
+Training EPOCH 11:
+Training EPOCH 12:
+Training EPOCH 13:
+Training EPOCH 14:
+Training EPOCH 15:
+Training EPOCH 16:
+Training EPOCH 17:
+Training EPOCH 18:
+Training EPOCH 19:
+Training EPOCH 20:
+Training EPOCH 21:
+Training EPOCH 22:
+Training EPOCH 23:
+Training EPOCH 24:
+Training EPOCH 25:
+Training EPOCH 26:
+Training EPOCH 27:
+Training EPOCH 28:
+Training EPOCH 29:
+Training EPOCH 30:
+Training EPOCH 31:
+Training EPOCH 32:
+Training EPOCH 33:
+Training EPOCH 34:
+Training EPOCH 35:
+Training EPOCH 36:
+Training EPOCH 37:
+Training EPOCH 38:
+Training EPOCH 39:
+Training upper bound model...
+Training EPOCH 0:
+Training EPOCH 1:
+Training EPOCH 2:
+Training EPOCH 3:
+Training EPOCH 4:
+Training EPOCH 5:
+Training EPOCH 6:
+Training EPOCH 7:
+Training EPOCH 8:
+Training EPOCH 9:
+Training EPOCH 10:
+Training EPOCH 11:
+Training EPOCH 12:
+Training EPOCH 13:
+Training EPOCH 14:
+Training EPOCH 15:
+Training EPOCH 16:
+Training EPOCH 17:
+Training EPOCH 18:
+Training EPOCH 19:
+Training EPOCH 20:
+Training EPOCH 21:
+Training EPOCH 22:
+Training EPOCH 23:
+Training EPOCH 24:
+Training EPOCH 25:
+Training EPOCH 26:
+Training EPOCH 27:
+Training EPOCH 28:
+Training EPOCH 29:
+Training EPOCH 30:
+Training EPOCH 31:
+Training EPOCH 32:
+Training EPOCH 33:
+Training EPOCH 34:
+Training EPOCH 35:
+Training EPOCH 36:
+Training EPOCH 37:
+Training EPOCH 38:
+Training EPOCH 39:
+Predicting lower bounds...
+test set loss is: 10.75097942352295
+Predicting upper bounds...
+test set loss is: 1.1467251777648926
+Quantile Regression Coverage without conformal is: 0.05101102941176472
+Predicting lower bounds on calibration set...
+test set loss is: 13.50709342956543
+Predicting upper bounds on calibration set...
+test set loss is: 13.502119064331055
+Calculating qyhat for calibration...
+Calibrating Test set predictions...
+Conformalized Quantile Regression Coverage is: 0.9436274509803921
+Training model...
