@@ -1,0 +1,91 @@
+2024-09-01 19:12:24,379 INFO    MainThread:16710 [wandb_setup.py:_flush():76] Current SDK version is 0.15.11
+2024-09-01 19:12:24,379 INFO    MainThread:16710 [wandb_setup.py:_flush():76] Configure stats pid to 16710
+2024-09-01 19:12:24,379 INFO    MainThread:16710 [wandb_setup.py:_flush():76] Loading settings from /Users/kelseydoerksen/.config/wandb/settings
+2024-09-01 19:12:24,379 INFO    MainThread:16710 [wandb_setup.py:_flush():76] Loading settings from /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/wandb/settings
+2024-09-01 19:12:24,379 INFO    MainThread:16710 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2024-09-01 19:12:24,379 INFO    MainThread:16710 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2024-09-01 19:12:24,379 INFO    MainThread:16710 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'research/kelsey/unet/run_pipeline.py', 'program_abspath': '/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py', 'program': '/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py'}
+2024-09-01 19:12:24,379 INFO    MainThread:16710 [wandb_setup.py:_flush():76] Applying login settings: {'anonymous': 'must'}
+2024-09-01 19:12:24,379 INFO    MainThread:16710 [wandb_init.py:_log_setup():528] Logging user logs to /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/wandb/run-20240901_191224-wfszv8my/logs/debug.log
+2024-09-01 19:12:24,379 INFO    MainThread:16710 [wandb_init.py:_log_setup():529] Logging internal logs to /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/wandb/run-20240901_191224-wfszv8my/logs/debug-internal.log
+2024-09-01 19:12:24,380 INFO    MainThread:16710 [wandb_init.py:init():568] calling init triggers
+2024-09-01 19:12:24,380 INFO    MainThread:16710 [wandb_init.py:init():575] wandb.init called with sweep_config: {}
+config: {}
+2024-09-01 19:12:24,380 INFO    MainThread:16710 [wandb_init.py:init():618] starting backend
+2024-09-01 19:12:24,380 INFO    MainThread:16710 [wandb_init.py:init():622] setting up manager
+2024-09-01 19:12:24,382 INFO    MainThread:16710 [backend.py:_multiprocessing_setup():105] multiprocessing start_methods=spawn,fork,forkserver, using: spawn
+2024-09-01 19:12:24,383 INFO    MainThread:16710 [wandb_init.py:init():628] backend started and connected
+2024-09-01 19:12:24,388 INFO    MainThread:16710 [wandb_init.py:init():720] updated telemetry
+2024-09-01 19:12:24,432 INFO    MainThread:16710 [wandb_init.py:init():753] communicating run to backend with 90.0 second timeout
+2024-09-01 19:12:24,490 INFO    Thread-1 (wrapped_target):16710 [retry.py:__call__():172] Retry attempt failed:
+Traceback (most recent call last):
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/urllib3/connectionpool.py", line 703, in urlopen
+    httplib_response = self._make_request(
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/urllib3/connectionpool.py", line 386, in _make_request
+    self._validate_conn(conn)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/urllib3/connectionpool.py", line 1042, in _validate_conn
+    conn.connect()
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/urllib3/connection.py", line 414, in connect
+    self.sock = ssl_wrap_socket(
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/urllib3/util/ssl_.py", line 449, in ssl_wrap_socket
+    ssl_sock = _ssl_wrap_socket_impl(
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/urllib3/util/ssl_.py", line 493, in _ssl_wrap_socket_impl
+    return ssl_context.wrap_socket(sock, server_hostname=server_hostname)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/ssl.py", line 513, in wrap_socket
+    return self.sslsocket_class._create(
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/ssl.py", line 1104, in _create
+    self.do_handshake()
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/ssl.py", line 1375, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLCertVerificationError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: invalid CA certificate (_ssl.c:1007)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/requests/adapters.py", line 489, in send
+    resp = conn.urlopen(
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/urllib3/connectionpool.py", line 787, in urlopen
+    retries = retries.increment(
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/urllib3/util/retry.py", line 592, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='api.wandb.ai', port=443): Max retries exceeded with url: /graphql (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: invalid CA certificate (_ssl.c:1007)')))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/wandb/sdk/internal/internal_api.py", line 366, in execute
+    return self.client.execute(*args, **kwargs)  # type: ignore
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/wandb/vendor/gql-0.2.0/wandb_gql/client.py", line 52, in execute
+    result = self._get_result(document, *args, **kwargs)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/wandb/vendor/gql-0.2.0/wandb_gql/client.py", line 60, in _get_result
+    return self.transport.execute(document, *args, **kwargs)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/wandb/sdk/lib/gql_request.py", line 58, in execute
+    request = self.session.post(self.url, **post_args)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/requests/sessions.py", line 635, in post
+    return self.request("POST", url, data=data, json=json, **kwargs)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/requests/sessions.py", line 587, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/requests/sessions.py", line 701, in send
+    r = adapter.send(request, **kwargs)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/requests/adapters.py", line 563, in send
+    raise SSLError(e, request=request)
+requests.exceptions.SSLError: HTTPSConnectionPool(host='api.wandb.ai', port=443): Max retries exceeded with url: /graphql (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: invalid CA certificate (_ssl.c:1007)')))
+2024-09-01 19:12:41,035 WARNING MainThread:16710 [wandb_init.py:init():1192] interrupted
+Traceback (most recent call last):
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/wandb/sdk/wandb_init.py", line 1170, in init
+    run = wi.init()
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/wandb/sdk/wandb_init.py", line 756, in init
+    result = run_init_handle.wait(
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/wandb/sdk/lib/mailbox.py", line 283, in wait
+    found, abandoned = self._slot._get_and_clear(timeout=wait_timeout)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/wandb/sdk/lib/mailbox.py", line 130, in _get_and_clear
+    if self._wait(timeout=timeout):
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/wandb/sdk/lib/mailbox.py", line 126, in _wait
+    return self._event.wait(timeout=timeout)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/threading.py", line 607, in wait
+    signaled = self._cond.wait(timeout)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/threading.py", line 324, in wait
+    gotit = waiter.acquire(True, timeout)
+KeyboardInterrupt

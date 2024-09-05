@@ -1,0 +1,19 @@
+/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/cuda/amp/grad_scaler.py:120: UserWarning: torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.
+  warnings.warn("torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.")
+Grabbing training data...
+Grabbing testing data...
+Training EPOCH 0:
+quantiles_train Quantile loss is: 36.03536319732666
+test set loss is: 14.372615814208984
+Quantile Regression Coverage without conformal is: 0.8812809359532023
+Predicting on calibration set...
+test set loss is: 14.198783874511719
+Calculating qyhat for calibration...
+Traceback (most recent call last):
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py", line 136, in <module>
+    run_cqr(unet, device, aq_train_dataset, aq_test_dataset, save_dir, experiment, 0.2, args.channels,
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py", line 285, in run_cqr
+    qyhat = calibrate_qyhat(cal_loader, uncal_predictions_c, alpha)
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py", line 221, in calibrate_qyhat
+    s = np.amax([np.array(lower_list) - np.array(y_true), np.array(y_true) - np.array(upper_list)], axis=0)
+ValueError: operands could not be broadcast together with shapes (97024,) (85158,)

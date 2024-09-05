@@ -1,0 +1,20 @@
+Grabbing training data...
+Grabbing testing data...
+Training lower bound model...
+Training EPOCH 0:
+lower_train Pinball loss is: 1.4659924847739083
+Training upper bound model...
+Training EPOCH 0:
+upper_train Pinball loss is: 13.386882322175163
+Predicting lower bounds...
+test set loss is: nan
+Predicting upper bounds...
+test set loss is: nan
+/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/cuda/amp/grad_scaler.py:120: UserWarning: torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.
+  warnings.warn("torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.")
+Traceback (most recent call last):
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py", line 121, in <module>
+    run_cqr(unet, device, aq_train_dataset, aq_test_dataset, save_dir, experiment, 0.1, args.channels,
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py", line 277, in run_cqr
+    uncal_upper_preds_t = cqr_testing_loop(lower_bound, 'upper_test', 'bias', test_loader, upper_criterion,
+KeyboardInterrupt

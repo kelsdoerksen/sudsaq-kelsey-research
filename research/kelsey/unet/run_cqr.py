@@ -13,10 +13,12 @@ from pathlib import Path
 from torch import optim
 from losses import *
 from utils import *
+import random
 
 
 def cqr_training_loop(model,
                       data_loader,
+                      val_data_loader,
                       loss_criterion,
                       optimizer,
                       grad_scaler,
@@ -25,6 +27,7 @@ def cqr_training_loop(model,
                       device,
                       model_type,
                       save_dir):
+
     global_step = 0
     epoch_number = 0
     for epoch in range(epochs):
@@ -39,8 +42,7 @@ def cqr_training_loop(model,
             # Zero gradients for every batch
             optimizer.zero_grad()
 
-            outputs = model(inputs)  # predict on input
-
+            outputs = model(inputs)  # predict quantiles on input
             loss = loss_criterion(outputs, labels)  # Calculate loss
 
             grad_scaler.scale(
@@ -52,11 +54,35 @@ def cqr_training_loop(model,
             epoch_loss += loss.item()
 
         experiment.log({
-            '{}_train Pinball loss'.format(model_type): epoch_loss / len(data_loader),
+            '{}_train Quantile loss'.format(model_type): epoch_loss / len(data_loader),
             '{}_step'.format(model_type): global_step,
             '{}_epoch'.format(model_type): epoch,
             '{}_optimizer'.format(model_type): 'adam'
         })
+
+        print('{}_train Quantile loss is: {}'.format(model_type, epoch_loss / len(data_loader)))
+
+        # Run validation
+        model.eval()
+        # Disable gradient computation and reduce memory consumption.
+        running_vloss = 0.0
+        with torch.no_grad():
+            for k, vdata in enumerate(val_data_loader):
+                vinputs, vlabels = vdata
+                vinputs, vlabels = vinputs.to(device), vlabels.to(device)
+                voutputs = model(vinputs)
+                vloss = loss_criterion(voutputs, vlabels)
+                running_vloss += vloss
+
+        avg_vloss = running_vloss / len(val_data_loader)
+        # scheduler.step(avg_vloss)
+
+        try:
+            experiment.log({
+                '{}_val Quantile loss'.format(model_type): avg_vloss
+            })
+        except:
+            pass
 
     # Saving model at end of epoch with experiment name
     out_model = '{}/{}_{}_last_epoch.pth'.format(save_dir, experiment.name, model_type)
@@ -81,9 +107,8 @@ def cqr_testing_loop(in_model,
     """
     Predict standard way
     """
-
     # Setting model to eval mode
-    pred_model = models.UNet(n_channels=int(channels), n_classes=1)
+    pred_model = models.CQRUNet(n_channels=int(channels), quantiles = [0.1, 0.5, 0.9])
     pred_model.load_state_dict(torch.load(in_model)['state_dict'])
     pred_model.eval()
 
@@ -108,13 +133,16 @@ def cqr_testing_loop(in_model,
     print('test set loss is: {}'.format(loss_score / len(test_dataset)))
 
     wandb_experiment.log({
-        'Test set Pinball Loss_{}'.format(model_type): loss_score / len(test_dataset),
+        'Test set Quantile Loss_{}'.format(model_type): loss_score / len(test_dataset),
     })
 
-    if model_type in ['lower_test', 'upper_test']:
-        for i in range(len(gt)):
-            np.save('{}/{}channels_{}_groundtruth_{}.npy'.format(out_dir, channels, target, i), gt[i])
-            np.save('{}/{}channels_{}_pred_{}_{}.npy'.format(out_dir, channels, target, i, model_type), preds[i])
+    for i in range(len(gt)):
+        np.save('{}/{}channels_{}_pred_{}_{}_lower.npy'.format(out_dir, channels, target, model_type, i),
+                preds[i][:,0,:,:])
+        np.save('{}/{}channels_{}_pred_{}_{}_med.npy'.format(out_dir, channels, target, model_type, i),
+                preds[i][:, 1, :, :])
+        np.save('{}/{}channels_{}_pred_{}_{}_upper.npy'.format(out_dir, channels, target, model_type, i),
+                preds[i][:, 2, :, :])
 
     return preds
 
@@ -139,12 +167,12 @@ def calculate_coverage(lower, upper, y_data):
     upper_list = []
     for i in range(len(lower)):
         low = lower[i]
-        low = low[y_mask[i]]
+        low = low[y_mask[0][i][0]]
         low_list = list(low.flatten())
         lower_list.extend(low_list)
 
         up = upper[i]
-        up = up[y_mask[i]]
+        up = up[y_mask[0][i][0]]
         up_list = list(up.flatten())
         upper_list.extend(up_list)
 
@@ -158,7 +186,7 @@ def calculate_coverage(lower, upper, y_data):
     return 1 - out_of_bound / N
 
 
-def calibrate_qyhat(y_data, lower, upper, alpha):
+def calibrate_qyhat(y_data, predictions, alpha):
     """
     Calibrate bounds with qyhat based on calibration predictions
     """
@@ -176,14 +204,14 @@ def calibrate_qyhat(y_data, lower, upper, alpha):
 
     lower_list = []
     upper_list = []
-    for i in range(len(lower)):
-        low = lower[i]
-        low = low[y_mask[i]]
+    for i in range(len(predictions)):
+        low = predictions[i][:,0,:,:]
+        low = low[y_mask[i][:,0,:,:]]
         low_list = list(low.flatten())
         lower_list.extend(low_list)
 
-        up = upper[i]
-        up = up[y_mask[i]]
+        up = predictions[i][:,2,:,:]
+        up = up[y_mask[i][:,0,:,:]]
         up_list = list(up.flatten())
         upper_list.extend(up_list)
 
@@ -193,6 +221,28 @@ def calibrate_qyhat(y_data, lower, upper, alpha):
 
     return q_yhat
 
+
+def get_mse(predictions, groundtruth):
+    y_true = []
+    y_mask = []
+    for i, data in enumerate(groundtruth):
+        input, label = data
+        # Mask nans, we don't care about these
+        mask = ~torch.isnan(label)
+        y_mask.append(mask)
+        label = label[mask]
+        label_np = label.numpy()
+        label_list = list(label_np.flatten())
+        y_true.extend(label_list)
+
+    preds_list = []
+    for i in range(len(predictions)):
+        pred = predictions[i][:, 0, :, :]
+        pred = pred[y_mask[i][:, 0, :, :]]
+        pred_list = list(pred.flatten())
+        preds_list.extend(pred_list)
+
+    return np.mean((np.array(preds_list) - np.array(y_true))**2)
 
 def run_cqr(model,
             device,
@@ -210,19 +260,90 @@ def run_cqr(model,
     """
     Run CQR
     """
+    seed = random.randint(0, 1000)
     # --- Split training dataset into training, and calibration
     n_cal = int(len(train_dataset) * 0.5)
     n_train = len(train_dataset) - n_cal
-    train_set, cal_set = random_split(train_dataset, [n_train, n_cal], generator=torch.Generator().manual_seed(0))
+    train_set, cal_set = random_split(train_dataset, [n_train, n_cal], generator=torch.Generator().manual_seed(seed))
+
+    # --- Split training dataset into train and val to monitor for overfitting
+    n_val = int(len(train_set) * 0.1)
+    n_train_final = len(train_set) - n_val
+    train_set, val_set = random_split(train_set, [n_train_final, n_val], generator=torch.Generator().manual_seed(seed))
 
     # --- DataLoaders
     train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True)
+    val_loader = DataLoader(val_set, batch_size=batch_size, shuffle=True)
     cal_loader = DataLoader(cal_set, batch_size=batch_size, shuffle=True)
     test_loader = DataLoader(test_datatset, batch_size=batch_size, shuffle=True)
 
     # --- Setting up optimizer
     optimizer = optim.Adam(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
 
+    # --- Getting quantiles from alpha
+    lower_q = alpha/2
+    upper_q = 1-(alpha/2)
+
+    quantiles = [lower_q, 0.5, upper_q]
+    criterion = NoNaNQuantileLoss(quantiles)
+    grad_scaler = torch.cuda.amp.GradScaler()
+    trained_model = cqr_training_loop(model, train_loader, val_loader, criterion, optimizer, grad_scaler, epochs, experiment,
+                                    device, 'quantiles', save_dir)
+
+    # Predict on test set
+    uncal_predictions_t = cqr_testing_loop(trained_model, 'uncalibrated', 'bias', test_loader, criterion, experiment,
+                                   channels, save_dir, device)
+
+    # --- Calculate the coverage from the un-calibrated predictions
+    uncal_coverage = calculate_coverage(uncal_predictions_t[0][:,0,:,:], uncal_predictions_t[0][:,2,:,:], test_loader)
+    print('Quantile Regression Coverage without conformal is: {}'.format(uncal_coverage))
+
+    # --- Predict lower and upper on calibration set
+    print('Predicting on calibration set...')
+    uncal_predictions_c = cqr_testing_loop(trained_model, 'calibration_samples', 'bias', cal_loader, criterion,
+                                           experiment, channels, save_dir, device)
+
+    # --- Calculate qyhat
+    print('Calculating qyhat for calibration...')
+    qyhat = calibrate_qyhat(cal_loader, uncal_predictions_c, alpha)
+
+    # --- Calibrate prediction intervals on the test set predictions
+    print('Calibrating Test set predictions...')
+    cal_lower_preds_t = []
+    cal_upper_preds_t = []
+    cal_med_preds_t = []
+    for i in range(len(uncal_predictions_t)):
+        cal_lower_preds_t.append(uncal_predictions_t[i] - qyhat)
+        cal_upper_preds_t.append(uncal_predictions_t[i] + qyhat)
+        cal_med_preds_t.append(uncal_predictions_t[i])
+        np.save('{}/{}channels_bias_pred_lower_cal_{}.npy'.format(save_dir, channels, i), cal_lower_preds_t[i])
+        np.save('{}/{}channels_bias_pred_upper_cal_{}.npy'.format(save_dir, channels, i), cal_upper_preds_t[i])
+        np.save('{}/{}channels_bias_pred_med_cal_{}.npy'.format(save_dir, channels, i), cal_med_preds_t[i])
+
+    gt = []
+    for i, data in enumerate(test_loader):
+        inputs, labels = data
+        # Append first to preserve image shape for future plotting
+        gt.append(labels.detach().numpy())
+    for i in range(len(gt)):
+        np.save('{}/{}channels_bias_groundtruth_{}.npy'.format(save_dir, channels, i), gt[i])
+
+    # --- Calculate coverage with calibrated predictions
+    cal_coverage = calculate_coverage(cal_lower_preds_t[0][:,0,:,:], cal_upper_preds_t[0][:,2,:,:], test_loader)
+    print('Conformalized Quantile Regression Coverage is: {}'.format(cal_coverage))
+
+    # --- Calculcate RMSE with calibrated predictions
+    mse = get_mse(cal_med_preds_t, test_loader)
+    rmse = np.sqrt(mse)
+    print('RMSE is: {}'.format(rmse))
+
+    experiment.log({
+        'CQR coverage': cal_coverage,
+        'RMSE': rmse
+    })
+
+    '''
+    # Old, training individual models
     # Setting up loss
     lower_criterion = NoNaNPinballLoss(alpha / 2)
     upper_criterion = NoNaNPinballLoss(1 - alpha / 2)
@@ -232,10 +353,10 @@ def run_cqr(model,
 
     # --- Fit lower and upper bound models on training data
     print('Training lower bound model...')
-    lower_bound = cqr_training_loop(model, train_loader, lower_criterion, optimizer, grad_scaler, epochs, experiment,
+    lower_bound = cqr_training_loop(model, train_loader, val_loader, lower_criterion, optimizer, grad_scaler, epochs, experiment,
                                     device, 'lower', save_dir)
     print('Training upper bound model...')
-    upper_bound = cqr_training_loop(model, train_loader, upper_criterion, optimizer, grad_scaler, epochs, experiment,
+    upper_bound = cqr_training_loop(model, train_loader, val_loader, upper_criterion, optimizer, grad_scaler, epochs, experiment,
                                     device, 'upper', save_dir)
 
     # --- Predict lower and upper on test set
@@ -243,7 +364,7 @@ def run_cqr(model,
     uncal_lower_preds_t = cqr_testing_loop(lower_bound, 'lower_test', 'bias', test_loader, lower_criterion,
                      experiment, channels, save_dir, device)
     print('Predicting upper bounds...')
-    uncal_upper_preds_t = cqr_testing_loop(lower_bound, 'upper_test', 'bias', test_loader, upper_criterion,
+    uncal_upper_preds_t = cqr_testing_loop(upper_bound, 'upper_test', 'bias', test_loader, upper_criterion,
                      experiment, channels, save_dir, device)
 
     # --- Calculate the coverage from the un-calibrated predictions
@@ -258,6 +379,7 @@ def run_cqr(model,
     uncal_upper_preds_c = cqr_testing_loop(upper_bound, 'upper_cal', 'bias', cal_loader, lower_criterion,
                      experiment, channels, save_dir, device)
 
+    
     # --- Calculate qyhat
     print('Calculating qyhat for calibration...')
     qyhat = calibrate_qyhat(cal_loader, uncal_lower_preds_c, uncal_upper_preds_c, alpha)
@@ -279,3 +401,4 @@ def run_cqr(model,
     experiment.log({
         'CQR coverage': cal_coverage
     })
+    '''

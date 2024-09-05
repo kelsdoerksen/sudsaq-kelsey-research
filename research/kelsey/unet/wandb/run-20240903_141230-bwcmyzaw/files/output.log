@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py", line 112, in <module>
+    train_years.remove(int(test_year+1))
+TypeError: can only concatenate str (not "int") to str

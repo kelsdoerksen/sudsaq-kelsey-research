@@ -1,0 +1,1 @@
+{"lower_train Pinball loss": 1.0570807797568185, "lower_step": 238, "lower_epoch": 33, "lower_optimizer": "adam", "_timestamp": 1725031273.5738251, "_runtime": 2441.8205292224884, "_step": 67, "lower_val Pinball loss": 1.083479404449463, "_wandb": {"runtime": 2467}}

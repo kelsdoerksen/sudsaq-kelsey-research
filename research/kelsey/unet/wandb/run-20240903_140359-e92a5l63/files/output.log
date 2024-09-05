@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py", line 114, in <module>
+    aq_train_dataset = AQDataset(train_sample_dir, train_label_dir, channels, region)
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/dataset.py", line 18, in __init__
+    self.label_fns = os.listdir(label_dir)
+FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/PRO-G40/sudsaq/unet/data/NorthAmerica/labels_bias/june/y'
+Grabbing training data...

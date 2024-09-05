@@ -10,6 +10,7 @@ from predict import *
 import logging
 import sys
 from run_cqr import *
+from torch.utils.data import ConcatDataset
 
 sys.path.append(os.path.abspath(os.path.join(os.getcwd() + '/submodules/cqr')))
 sys.path.append(os.path.abspath(os.path.join(os.getcwd() + '/submodules/nonconformist')))
@@ -44,6 +45,8 @@ def get_args():
                         required=True),
     parser.add_argument('--val_percent', help='Validation percentage',
                         required=True)
+    parser.add_argument('--tag', help='Wandb tag')
+    parser.add_argument('--wandb_status', default='offline', help='Specify if offline or online experiment')
 
     return parser.parse_args()
 
@@ -55,21 +58,23 @@ if __name__ == '__main__':
     analysis_time = args.analysis_date
     region = args.region
     target = args.target
-    seed = int(args.seed)
     model_type = args.model_type
     root_data_dir = args.data_dir
     root_save_dir = args.save_dir
     test_year = args.test_year
+    epochs = args.epochs
+    tag = args.tag
+    wandb_status = args.wandb_status
+    seed = args.seed
 
-    make_deterministic(seed)
 
     # Initializing logging in wandb for experiment
-    experiment = wandb.init(project='U-Net Test', resume='allow', anonymous='must')
+    experiment = wandb.init(project='U-Net Test', resume='allow', anonymous='must', tags=[tag])
     experiment.config.update(
         dict(epochs=args.epochs, batch_size=args.batch_size, learning_rate=args.lr,
              val_percent=0.1, save_checkpoint=True,
              n_channels=channels, analysis_period=analysis_time,
-             target=target)
+             target=target, region=region, model=model_type, test_year=test_year)
     )
 
     # --- Setting Directories
@@ -77,40 +82,48 @@ if __name__ == '__main__':
     label_dir_root = '{}/{}/labels_{}'.format(root_data_dir, region, target)
 
     # --- Making save directory
-    save_dir = '{}/{}/{}/{}channels/{}_{}_{}_{}'.format(root_save_dir, region, target, channels, experiment.name,
-                                                     region, analysis_time, model_type)
+    if wandb_status == 'online':
+        save_dir = '{}/{}/{}/{}channels/{}_{}_{}_{}_{}epochs'.format(root_save_dir, region, target, channels, experiment.name,
+                                                         region, analysis_time, model_type, epochs)
+    else:
+        save_dir = '{}/{}/{}/{}channels/{}_{}_{}_{}_{}epochs'.format(root_save_dir, region, target, channels,
+                                                                     experiment.id,
+                                                                     region, analysis_time, model_type, epochs)
     if not os.path.exists(save_dir):
         os.mkdir(save_dir)
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     logging.info(f'Using device {device}')
-    if model_type in ['standard', 'cqr']:
+    if model_type in ['standard']:
         unet = models.UNet(n_channels=channels, n_classes=1)
+    if model_type in ['cqr']:
+        unet = models.CQRUNet(n_channels=channels, quantiles=[0.1, 0.5, 0.9])
     if model_type in ['mcdropout']:
         unet = models.MCDropoutProbabilisticUNet(n_channels=channels, n_classes=1)
-    '''
-    logging.info(f'Network:\n'
-                 f'\t{unet.n_channels} input channels\n'
-                 f'\t{unet.n_classes} output channels (classes)')
-    '''
 
     if torch.cuda.is_available():
         unet.cuda()
     #unet.to(device=device)
 
     # ---- Grabbing Training Data ----
-    # Training on 2005-2019, test on 2020
+    # Hardcoding to be test year either 2019 or 2020
+    years = [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020]
+    train_years = years
+    train_years.remove(int(test_year))
+    if test_year == '2019':
+        train_years.remove(int(test_year)+1)
     print('Grabbing training data...')
-    train_sample_dir = '{}/{}_channels/{}/2005-2019'.format(sample_dir_root, channels, analysis_time)
-    train_label_dir = '{}/{}/2005-2019'.format(label_dir_root, analysis_time)
+    aq_train = []
+    for y in train_years:
+        train_sample_dir = '{}/{}_channels/{}/{}'.format(sample_dir_root, channels, analysis_time, y)
+        train_label_dir = '{}/{}/{}'.format(label_dir_root, analysis_time, y)
+        aq_dataset = AQDataset(train_sample_dir, train_label_dir, channels, region)
+        aq_train.append(aq_dataset)
 
-    aq_train_dataset = AQDataset(train_sample_dir, train_label_dir, channels, region)
+    aq_train_dataset = ConcatDataset(aq_train)
 
     # --- Grabbing Testing Data ----
-    # Hardcoded for 2020
     print('Grabbing testing data...')
-
-    # Testing on 2020 Summer months (June, July August)
     root_sample_test_dir = '{}/{}/zscore_normalization'.format(root_data_dir, region)
     root_label_dir = '{}/{}/labels_{}'.format(root_data_dir, region, target)
 
@@ -124,8 +137,8 @@ if __name__ == '__main__':
                 args.epochs, args.batch_size, args.lr, 0, save_checkpoint=True)
 
 
-    print('Training model...')
     if model_type == 'standard':
+        print('Training model...')
         trained_model = train_model(
             model=unet,
             device=device,
@@ -143,6 +156,7 @@ if __name__ == '__main__':
         predict(trained_model, target, aq_test_dataset, experiment, channels, seed, save_dir, device=device)
 
     if model_type == 'mcdropout':
+        print('Training model...')
         trained_model = train_probabilistic_model(model=unet,
                                                   device=device,
                                                   dataset=aq_train_dataset,

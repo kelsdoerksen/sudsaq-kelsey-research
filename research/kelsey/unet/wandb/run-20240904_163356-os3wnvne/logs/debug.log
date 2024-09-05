@@ -1,0 +1,30 @@
+2024-09-04 16:33:56,050 INFO    MainThread:68820 [wandb_setup.py:_flush():76] Current SDK version is 0.15.11
+2024-09-04 16:33:56,051 INFO    MainThread:68820 [wandb_setup.py:_flush():76] Configure stats pid to 68820
+2024-09-04 16:33:56,051 INFO    MainThread:68820 [wandb_setup.py:_flush():76] Loading settings from /Users/kelseydoerksen/.config/wandb/settings
+2024-09-04 16:33:56,051 INFO    MainThread:68820 [wandb_setup.py:_flush():76] Loading settings from /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/wandb/settings
+2024-09-04 16:33:56,051 INFO    MainThread:68820 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2024-09-04 16:33:56,051 INFO    MainThread:68820 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2024-09-04 16:33:56,051 INFO    MainThread:68820 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'research/kelsey/unet/run_pipeline.py', 'program_abspath': '/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py', 'program': '/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py'}
+2024-09-04 16:33:56,051 INFO    MainThread:68820 [wandb_setup.py:_flush():76] Applying login settings: {'anonymous': 'must'}
+2024-09-04 16:33:56,051 INFO    MainThread:68820 [wandb_init.py:_log_setup():528] Logging user logs to /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/wandb/run-20240904_163356-os3wnvne/logs/debug.log
+2024-09-04 16:33:56,051 INFO    MainThread:68820 [wandb_init.py:_log_setup():529] Logging internal logs to /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/wandb/run-20240904_163356-os3wnvne/logs/debug-internal.log
+2024-09-04 16:33:56,051 INFO    MainThread:68820 [wandb_init.py:init():568] calling init triggers
+2024-09-04 16:33:56,051 INFO    MainThread:68820 [wandb_init.py:init():575] wandb.init called with sweep_config: {}
+config: {}
+2024-09-04 16:33:56,051 INFO    MainThread:68820 [wandb_init.py:init():618] starting backend
+2024-09-04 16:33:56,051 INFO    MainThread:68820 [wandb_init.py:init():622] setting up manager
+2024-09-04 16:33:56,053 INFO    MainThread:68820 [backend.py:_multiprocessing_setup():105] multiprocessing start_methods=spawn,fork,forkserver, using: spawn
+2024-09-04 16:33:56,055 INFO    MainThread:68820 [wandb_init.py:init():628] backend started and connected
+2024-09-04 16:33:56,058 INFO    MainThread:68820 [wandb_init.py:init():720] updated telemetry
+2024-09-04 16:33:56,090 INFO    MainThread:68820 [wandb_init.py:init():753] communicating run to backend with 90.0 second timeout
+2024-09-04 16:33:56,522 INFO    MainThread:68820 [wandb_run.py:_on_init():2220] communicating current version
+2024-09-04 16:33:56,640 INFO    MainThread:68820 [wandb_run.py:_on_init():2229] got version response upgrade_message: "wandb version 0.17.8 is available!  To upgrade, please run:\n $ pip install wandb --upgrade"
+
+2024-09-04 16:33:56,640 INFO    MainThread:68820 [wandb_init.py:init():804] starting run threads in backend
+2024-09-04 16:34:10,480 INFO    MainThread:68820 [wandb_run.py:_console_start():2199] atexit reg
+2024-09-04 16:34:10,481 INFO    MainThread:68820 [wandb_run.py:_redirect():2054] redirect: wrap_raw
+2024-09-04 16:34:10,481 INFO    MainThread:68820 [wandb_run.py:_redirect():2119] Wrapping output streams.
+2024-09-04 16:34:10,481 INFO    MainThread:68820 [wandb_run.py:_redirect():2144] Redirects installed.
+2024-09-04 16:34:10,482 INFO    MainThread:68820 [wandb_init.py:init():845] run started, returning control to user process
+2024-09-04 16:34:10,483 INFO    MainThread:68820 [wandb_run.py:_config_callback():1324] config_cb None None {'epochs': 200, 'batch_size': 32, 'learning_rate': 0.001, 'val_percent': 0.1, 'save_checkpoint': True, 'n_channels': 28, 'analysis_period': 'june', 'target': 'bias', 'region': 'NorthAmerica', 'model': 'cqr', 'test_year': '2019'}
+2024-09-04 16:44:41,590 WARNING MsgRouterThr:68820 [router.py:message_loop():77] message_loop has been closed

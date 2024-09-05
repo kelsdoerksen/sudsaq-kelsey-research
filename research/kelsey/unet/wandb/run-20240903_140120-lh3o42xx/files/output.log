@@ -1,0 +1,6 @@
+
+Grabbing training data...
+Traceback (most recent call last):
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py", line 110, in <module>
+    for y in train_years:
+TypeError: 'NoneType' object is not iterable

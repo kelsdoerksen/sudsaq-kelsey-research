@@ -1,0 +1,397 @@
+Grabbing training data...
+Grabbing testing data...
+Training lower bound model...
+Training EPOCH 0:
+lower_train Pinball loss is: 1.0753006764820643
+Training EPOCH 1:
+lower_train Pinball loss is: 1.0808945894241333
+Training EPOCH 2:
+lower_train Pinball loss is: 1.0617287925311498
+Training EPOCH 3:
+lower_train Pinball loss is: 1.0358002185821533
+Training EPOCH 4:
+lower_train Pinball loss is: 1.0269375869206019
+Training EPOCH 5:
+lower_train Pinball loss is: 1.0449819564819336
+Training EPOCH 6:
+lower_train Pinball loss is: 1.0523039272853307
+Training EPOCH 7:
+lower_train Pinball loss is: 1.0211844273975916
+Training EPOCH 8:
+lower_train Pinball loss is: 1.0061399170330592
+Training EPOCH 9:
+lower_train Pinball loss is: 1.0164989488465446
+Training EPOCH 10:
+lower_train Pinball loss is: 1.0075027176312037
+Training EPOCH 11:
+lower_train Pinball loss is: 1.0044462425368172
+Training EPOCH 12:
+lower_train Pinball loss is: 0.972907270703997
+Training EPOCH 13:
+lower_train Pinball loss is: 0.9925404872213092
+Training EPOCH 14:
+lower_train Pinball loss is: 0.9673069715499878
+Training EPOCH 15:
+lower_train Pinball loss is: 0.9548406686101641
+Training EPOCH 16:
+lower_train Pinball loss is: 0.9527866670063564
+Training EPOCH 17:
+lower_train Pinball loss is: 0.9547410011291504
+Training EPOCH 18:
+lower_train Pinball loss is: 0.9356093321527753
+Training EPOCH 19:
+lower_train Pinball loss is: 0.9273254701069423
+Training EPOCH 20:
+lower_train Pinball loss is: 0.9154283574649266
+Training EPOCH 21:
+lower_train Pinball loss is: 0.9073980110032218
+Training EPOCH 22:
+lower_train Pinball loss is: 0.9082162124770028
+Training EPOCH 23:
+lower_train Pinball loss is: 0.9156340275491986
+Training EPOCH 24:
+lower_train Pinball loss is: 0.893514701298305
+Training EPOCH 25:
+lower_train Pinball loss is: 0.8881137711661202
+Training EPOCH 26:
+lower_train Pinball loss is: 0.8903045058250427
+Training EPOCH 27:
+lower_train Pinball loss is: 0.8854348574365888
+Training EPOCH 28:
+lower_train Pinball loss is: 0.8750463042940412
+Training EPOCH 29:
+lower_train Pinball loss is: 0.8772368005343846
+Training EPOCH 30:
+lower_train Pinball loss is: 0.8537267701966422
+Training EPOCH 31:
+lower_train Pinball loss is: 0.8677070311137608
+Training EPOCH 32:
+lower_train Pinball loss is: 0.8683970059667315
+Training EPOCH 33:
+lower_train Pinball loss is: 0.8423008578164237
+Training EPOCH 34:
+lower_train Pinball loss is: 0.84446667773383
+Training EPOCH 35:
+lower_train Pinball loss is: 0.8308688487325396
+Training EPOCH 36:
+lower_train Pinball loss is: 0.8294547029903957
+Training EPOCH 37:
+lower_train Pinball loss is: 0.8283636569976807
+Training EPOCH 38:
+lower_train Pinball loss is: 0.8125764897891453
+Training EPOCH 39:
+lower_train Pinball loss is: 0.8111426745142255
+Training EPOCH 40:
+lower_train Pinball loss is: 0.8134518180574689
+Training EPOCH 41:
+lower_train Pinball loss is: 0.7935121059417725
+Training EPOCH 42:
+lower_train Pinball loss is: 0.7911015919276646
+Training EPOCH 43:
+lower_train Pinball loss is: 0.7901542271886554
+Training EPOCH 44:
+lower_train Pinball loss is: 0.7765833139419556
+Training EPOCH 45:
+lower_train Pinball loss is: 0.7649060487747192
+Training EPOCH 46:
+lower_train Pinball loss is: 0.771587244101933
+Training EPOCH 47:
+lower_train Pinball loss is: 0.7557230080877032
+Training EPOCH 48:
+lower_train Pinball loss is: 0.7557395696640015
+Training EPOCH 49:
+lower_train Pinball loss is: 0.7488423926489693
+Training EPOCH 50:
+lower_train Pinball loss is: 0.7473441873277936
+Training EPOCH 51:
+lower_train Pinball loss is: 0.755504310131073
+Training EPOCH 52:
+lower_train Pinball loss is: 0.7424636568341937
+Training EPOCH 53:
+lower_train Pinball loss is: 0.7427101220403399
+Training EPOCH 54:
+lower_train Pinball loss is: 0.7441760982785907
+Training EPOCH 55:
+lower_train Pinball loss is: 0.7344850642340524
+Training EPOCH 56:
+lower_train Pinball loss is: 0.7304172260420663
+Training EPOCH 57:
+lower_train Pinball loss is: 0.7289238061223712
+Training EPOCH 58:
+lower_train Pinball loss is: 0.7224043181964329
+Training EPOCH 59:
+lower_train Pinball loss is: 0.7183752741132464
+Training EPOCH 60:
+lower_train Pinball loss is: 0.715633613722665
+Training EPOCH 61:
+lower_train Pinball loss is: 0.7030449339321682
+Training EPOCH 62:
+lower_train Pinball loss is: 0.6998088700430733
+Training EPOCH 63:
+lower_train Pinball loss is: 0.6904122573988778
+Training EPOCH 64:
+lower_train Pinball loss is: 0.6836348516600472
+Training EPOCH 65:
+lower_train Pinball loss is: 0.6819619536399841
+Training EPOCH 66:
+lower_train Pinball loss is: 0.6818804400307792
+Training EPOCH 67:
+lower_train Pinball loss is: 0.689218384878976
+Training EPOCH 68:
+lower_train Pinball loss is: 0.6844068680490766
+Training EPOCH 69:
+lower_train Pinball loss is: 0.6772000023296901
+Training EPOCH 70:
+lower_train Pinball loss is: 0.6732340369905744
+Training EPOCH 71:
+lower_train Pinball loss is: 0.6618333373750959
+Training EPOCH 72:
+lower_train Pinball loss is: 0.6591689671788897
+Training EPOCH 73:
+lower_train Pinball loss is: 0.6575552310262408
+Training EPOCH 74:
+lower_train Pinball loss is: 0.6564644830567496
+Training EPOCH 75:
+lower_train Pinball loss is: 0.6529116289956229
+Training EPOCH 76:
+lower_train Pinball loss is: 0.6635615910802569
+Training EPOCH 77:
+lower_train Pinball loss is: 0.6614331517900739
+Training EPOCH 78:
+lower_train Pinball loss is: 0.6511209862572807
+Training EPOCH 79:
+lower_train Pinball loss is: 0.6492082136017936
+Training EPOCH 80:
+lower_train Pinball loss is: 0.6513084428650993
+Training EPOCH 81:
+lower_train Pinball loss is: 0.6453402468136379
+Training EPOCH 82:
+lower_train Pinball loss is: 0.638256413596017
+Training EPOCH 83:
+lower_train Pinball loss is: 0.6290751695632935
+Training EPOCH 84:
+lower_train Pinball loss is: 0.6327911359923226
+Training EPOCH 85:
+lower_train Pinball loss is: 0.6296052506991795
+Training EPOCH 86:
+lower_train Pinball loss is: 0.6232459204537528
+Training EPOCH 87:
+lower_train Pinball loss is: 0.6327720539910453
+Training EPOCH 88:
+lower_train Pinball loss is: 0.6312386563846043
+Training EPOCH 89:
+lower_train Pinball loss is: 0.6282806311334882
+Training EPOCH 90:
+lower_train Pinball loss is: 0.6230974878583636
+Training EPOCH 91:
+lower_train Pinball loss is: 0.6152502128056118
+Training EPOCH 92:
+lower_train Pinball loss is: 0.6196765388761248
+Training EPOCH 93:
+lower_train Pinball loss is: 0.6245476092611041
+Training EPOCH 94:
+lower_train Pinball loss is: 0.6420842323984418
+Training EPOCH 95:
+lower_train Pinball loss is: 0.630700979913984
+Training EPOCH 96:
+lower_train Pinball loss is: 0.6238075409616742
+Training EPOCH 97:
+lower_train Pinball loss is: 0.6205626811300006
+Training EPOCH 98:
+lower_train Pinball loss is: 0.6133832931518555
+Training EPOCH 99:
+lower_train Pinball loss is: 0.6136472480637687
+Training upper bound model...
+Training EPOCH 0:
+upper_train Pinball loss is: 3.653810058321272
+Training EPOCH 1:
+upper_train Pinball loss is: 1.6025598730359758
+Training EPOCH 2:
+upper_train Pinball loss is: 1.3212718282427107
+Training EPOCH 3:
+upper_train Pinball loss is: 1.2056119441986084
+Training EPOCH 4:
+upper_train Pinball loss is: 1.1746273381369454
+Training EPOCH 5:
+upper_train Pinball loss is: 1.1435323102133614
+Training EPOCH 6:
+upper_train Pinball loss is: 1.1276649066380091
+Training EPOCH 7:
+upper_train Pinball loss is: 1.0993033136640276
+Training EPOCH 8:
+upper_train Pinball loss is: 1.1060226474489485
+Training EPOCH 9:
+upper_train Pinball loss is: 1.0905997923442297
+Training EPOCH 10:
+upper_train Pinball loss is: 1.077494808605739
+Training EPOCH 11:
+upper_train Pinball loss is: 1.0727741037096297
+Training EPOCH 12:
+upper_train Pinball loss is: 1.06621515750885
+Training EPOCH 13:
+upper_train Pinball loss is: 1.060463241168431
+Training EPOCH 14:
+upper_train Pinball loss is: 1.0498837573187692
+Training EPOCH 15:
+upper_train Pinball loss is: 1.038823229925973
+Training EPOCH 16:
+upper_train Pinball loss is: 1.0476181677409582
+Training EPOCH 17:
+upper_train Pinball loss is: 1.0282867210251945
+Training EPOCH 18:
+upper_train Pinball loss is: 1.0209833553859167
+Training EPOCH 19:
+upper_train Pinball loss is: 1.0169226271765572
+Training EPOCH 20:
+upper_train Pinball loss is: 1.0116193635123116
+Training EPOCH 21:
+upper_train Pinball loss is: 1.0175630790846688
+Training EPOCH 22:
+upper_train Pinball loss is: 1.0027854783194405
+Training EPOCH 23:
+upper_train Pinball loss is: 0.9996830480439323
+Training EPOCH 24:
+upper_train Pinball loss is: 0.9926910400390625
+Training EPOCH 25:
+upper_train Pinball loss is: 0.9934906959533691
+Training EPOCH 26:
+upper_train Pinball loss is: 0.9982230918748038
+Training EPOCH 27:
+upper_train Pinball loss is: 0.982923686504364
+Training EPOCH 28:
+upper_train Pinball loss is: 0.9802092569214957
+Training EPOCH 29:
+upper_train Pinball loss is: 0.9738613877977643
+Training EPOCH 30:
+upper_train Pinball loss is: 0.9728225980486188
+Training EPOCH 31:
+upper_train Pinball loss is: 0.9699514082499913
+Training EPOCH 32:
+upper_train Pinball loss is: 0.9702355435916356
+Training EPOCH 33:
+upper_train Pinball loss is: 0.989044555595943
+Training EPOCH 34:
+upper_train Pinball loss is: 0.9712670360292707
+Training EPOCH 35:
+upper_train Pinball loss is: 0.964405391897474
+Training EPOCH 36:
+upper_train Pinball loss is: 0.9572105407714844
+Training EPOCH 37:
+upper_train Pinball loss is: 0.9532909223011562
+Training EPOCH 38:
+upper_train Pinball loss is: 0.9544965369360787
+Training EPOCH 39:
+upper_train Pinball loss is: 0.9513395939554486
+Training EPOCH 40:
+upper_train Pinball loss is: 0.9480352486882891
+Training EPOCH 41:
+upper_train Pinball loss is: 0.9411530920437404
+Training EPOCH 42:
+upper_train Pinball loss is: 0.9343553355761937
+Training EPOCH 43:
+upper_train Pinball loss is: 0.930981423173632
+Training EPOCH 44:
+upper_train Pinball loss is: 0.9404828037534442
+Training EPOCH 45:
+upper_train Pinball loss is: 0.929134692464556
+Training EPOCH 46:
+upper_train Pinball loss is: 0.9175064138003758
+Training EPOCH 47:
+upper_train Pinball loss is: 0.9225829924855914
+Training EPOCH 48:
+upper_train Pinball loss is: 0.9332900473049709
+Training EPOCH 49:
+upper_train Pinball loss is: 0.9243230138506208
+Training EPOCH 50:
+upper_train Pinball loss is: 0.9148254139082772
+Training EPOCH 51:
+upper_train Pinball loss is: 0.9156966975757054
+Training EPOCH 52:
+upper_train Pinball loss is: 0.9065141677856445
+Training EPOCH 53:
+upper_train Pinball loss is: 0.907727871622358
+Training EPOCH 54:
+upper_train Pinball loss is: 0.9022522398403713
+Training EPOCH 55:
+upper_train Pinball loss is: 0.9054906708853585
+Training EPOCH 56:
+upper_train Pinball loss is: 0.8989354201725551
+Training EPOCH 57:
+upper_train Pinball loss is: 0.8914230636187962
+Training EPOCH 58:
+upper_train Pinball loss is: 0.8914308547973633
+Training EPOCH 59:
+upper_train Pinball loss is: 0.900677067892892
+Training EPOCH 60:
+upper_train Pinball loss is: 0.885057943207877
+Training EPOCH 61:
+upper_train Pinball loss is: 0.8956649473735264
+Training EPOCH 62:
+upper_train Pinball loss is: 0.8901129109518868
+Training EPOCH 63:
+upper_train Pinball loss is: 0.8888791629246303
+Training EPOCH 64:
+upper_train Pinball loss is: 0.8835539562361581
+Training EPOCH 65:
+upper_train Pinball loss is: 0.8831767695290702
+Training EPOCH 66:
+upper_train Pinball loss is: 0.8940471751349313
+Training EPOCH 67:
+upper_train Pinball loss is: 0.8689149703298297
+Training EPOCH 68:
+upper_train Pinball loss is: 0.8689697555133274
+Training EPOCH 69:
+upper_train Pinball loss is: 0.8768112829753331
+Training EPOCH 70:
+upper_train Pinball loss is: 0.8702274816376823
+Training EPOCH 71:
+upper_train Pinball loss is: 0.8618834699903216
+Training EPOCH 72:
+upper_train Pinball loss is: 0.8707855599267142
+Training EPOCH 73:
+upper_train Pinball loss is: 0.8631752559116909
+Training EPOCH 74:
+upper_train Pinball loss is: 0.8694398403167725
+Training EPOCH 75:
+upper_train Pinball loss is: 0.8529954212052482
+Training EPOCH 76:
+upper_train Pinball loss is: 0.8510118552616665
+Training EPOCH 77:
+upper_train Pinball loss is: 0.8527771404811314
+Training EPOCH 78:
+upper_train Pinball loss is: 0.8548320276396615
+Training EPOCH 79:
+upper_train Pinball loss is: 0.8478516510554722
+Training EPOCH 80:
+upper_train Pinball loss is: 0.8663904241153172
+Training EPOCH 81:
+upper_train Pinball loss is: 0.8516310283115932
+Training EPOCH 82:
+upper_train Pinball loss is: 0.8426715731620789
+Training EPOCH 83:
+upper_train Pinball loss is: 0.8497784733772278
+Training EPOCH 84:
+upper_train Pinball loss is: 0.8389928085463387
+Training EPOCH 85:
+upper_train Pinball loss is: 0.8333207198551723
+Training EPOCH 86:
+upper_train Pinball loss is: 0.8386098827634539
+Training EPOCH 87:
+upper_train Pinball loss is: 0.8408414891787938
+Training EPOCH 88:
+upper_train Pinball loss is: 0.8315601604325431
+Training EPOCH 89:
+/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/cuda/amp/grad_scaler.py:120: UserWarning: torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.
+  warnings.warn("torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.")
+Traceback (most recent call last):
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py", line 127, in <module>
+    run_cqr(unet, device, aq_train_dataset, aq_test_dataset, save_dir, experiment, 0.1, args.channels,
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py", line 271, in run_cqr
+    upper_bound = cqr_training_loop(model, train_loader, val_loader, upper_criterion, optimizer, grad_scaler, epochs, experiment,
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py", line 49, in cqr_training_loop
+    loss).backward()
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/_tensor.py", line 487, in backward
+    torch.autograd.backward(
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/autograd/__init__.py", line 200, in backward
+    Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+KeyboardInterrupt

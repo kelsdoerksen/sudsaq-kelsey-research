@@ -1,0 +1,38 @@
+Grabbing training data...
+Grabbing testing data...
+Training EPOCH 0:
+/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/cuda/amp/grad_scaler.py:120: UserWarning: torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.
+  warnings.warn("torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.")
+quantiles_train Quantile loss is: 70.10486634572347
+test set loss is: 23.113985061645508
+Quantile Regression Coverage without conformal is: 0.24036298185090743
+Predicting on calibration set...
+test set loss is: 24.313875198364258
+Calculating qyhat for calibration...
+> /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py(219)calibrate_qyhat()
+    218     ipdb.set_trace()
+--> 219     s = np.amax([np.array(lower_list) - np.array(y_true), np.array(y_true) - np.array(upper_list)], axis=0)
+    220     q_yhat = np.quantile(s, np.ceil((N + 1) * (1 - alpha)) / N)
+86422
+12715
+Traceback (most recent call last):
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py", line 136, in <module>
+    run_cqr(unet, device, aq_train_dataset, aq_test_dataset, save_dir, experiment, 0.2, args.channels,
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py", line 283, in run_cqr
+    import ipdb
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py", line 219, in calibrate_qyhat
+    s = np.amax([np.array(lower_list) - np.array(y_true), np.array(y_true) - np.array(upper_list)], axis=0)
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py", line 219, in calibrate_qyhat
+    s = np.amax([np.array(lower_list) - np.array(y_true), np.array(y_true) - np.array(upper_list)], axis=0)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+bdb.BdbQuit
+If you suspect this is an IPython 8.7.0 bug, please report it at:
+    https://github.com/ipython/ipython/issues
+or send an email to the mailing list at ipython-dev@python.org
+You can print a more detailed traceback right now with "%tb", or use "%debug"
+to interactively debug it.
+Extra-detailed tracebacks for bug-reporting purposes can be enabled via:
+    %config Application.verbose_crash=True

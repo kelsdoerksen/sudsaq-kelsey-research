@@ -1,0 +1,40 @@
+Grabbing training data...
+Grabbing testing data...
+Training EPOCH 0:
+/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/cuda/amp/grad_scaler.py:120: UserWarning: torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.
+  warnings.warn("torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.")
+quantiles_train Quantile loss is: 53.265244801839195
+test set loss is: 21.896242141723633
+Quantile Regression Coverage without conformal is: 0.5879706014699265
+Predicting on calibration set...
+test set loss is: 23.362903594970703
+Calculating qyhat for calibration...
+Calibrating Test set predictions...
+> /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py(290)run_cqr()
+    289     ipdb.set_trace()
+--> 290     for i in range(len(uncal_predictions_t)):
+    291         cal_lower_preds_t.append(uncal_predictions_t[i] - qyhat)
+(30, 31, 49)
+1
+(30, 3, 31, 49)
+*** SyntaxError: multiple statements found while compiling a single statement
+0.8355332233388331
+Traceback (most recent call last):
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py", line 136, in <module>
+    run_cqr(unet, device, aq_train_dataset, aq_test_dataset, save_dir, experiment, 0.2, args.channels,
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py", line 290, in run_cqr
+    for i in range(len(uncal_predictions_t)):
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py", line 290, in run_cqr
+    for i in range(len(uncal_predictions_t)):
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+bdb.BdbQuit
+If you suspect this is an IPython 8.7.0 bug, please report it at:
+    https://github.com/ipython/ipython/issues
+or send an email to the mailing list at ipython-dev@python.org
+You can print a more detailed traceback right now with "%tb", or use "%debug"
+to interactively debug it.
+Extra-detailed tracebacks for bug-reporting purposes can be enabled via:
+    %config Application.verbose_crash=True

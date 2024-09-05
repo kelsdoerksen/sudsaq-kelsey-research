@@ -19,7 +19,7 @@ def predict(in_model, target, test_dataset, wandb_experiment, channels, seed, ou
     Predict standard way (no dropout at test time)
     """
     # Make deterministic
-    make_deterministic(seed)
+    #make_deterministic(seed)
 
     # Setting model to eval mode
     unet = models.UNet(n_channels=channels, n_classes=1)
@@ -69,13 +69,10 @@ def predict(in_model, target, test_dataset, wandb_experiment, channels, seed, ou
 def predict_probabilistic(in_model, target, test_dataset, wandb_experiment, channels, seed, out_dir, device):
     """
     Predict probabilistic output with uncertainty
-    Currently hardcoding for 2016 as test set, will make this
-    dynamic
-    Need to update this as well because it is outputting garbage atm
     """
 
     # Make deterministic
-    make_deterministic(seed)
+    #make_deterministic(seed)
 
     model = models.MCDropoutProbabilisticUNet(n_channels=channels, n_classes=1)
     model.load_state_dict(torch.load(in_model)['state_dict'])

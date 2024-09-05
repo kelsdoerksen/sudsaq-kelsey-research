@@ -8,6 +8,7 @@ import xarray as xr
 import datetime as dt
 import argparse
 from scipy import stats
+import math
 
 
 def get_args():
@@ -110,7 +111,7 @@ def zscore_normalize_array(array):
     """
     Apply zscore normalization to array
     """
-    norm_array = stats.zscore(array, axis=None)
+    norm_array = stats.zscore(array, axis=None, nan_policy = 'omit')
     return norm_array
 
 def generate_samples(sample_ds, feature_list, save_dir):
@@ -127,11 +128,16 @@ def generate_samples(sample_ds, feature_list, save_dir):
 
     # iterate through each day in dataset per feature
     for doy in date_list:
+        print('Processing date: {}'.format(doy))
         multi_channel_list = []
         for feature in feature_list:
             print('Processing feature: {}'.format(feature))
             ds_filt = sample_ds.sel(indexers={'time': doy})
             ds_feature = ds_filt[feature]
+            if math.isnan(np.amax(ds_feature.to_numpy())):
+                ds_feature = ds_feature.interpolate_na(dim='lon')
+                ds_feature = ds_feature.interpolate_na(dim='lat')
+                print('Linear interpolating NaNs for feature: {}'.format(feature))
             arr = ds_feature.to_numpy()
             norm_arr = zscore_normalize_array(arr)
             multi_channel_list.append(norm_arr)
@@ -320,7 +326,7 @@ if __name__ == '__main__':
     # Format lon
     #ds = format_lon(ds)
 
-    # Subsample over extent, na or eu supported
+    # Subsample over extent
     filt_sample_ds = filter_bounds(sample_ds, geo_extent)
 
     filt_label_ds = filter_bounds(label_ds, geo_extent)
@@ -329,5 +335,5 @@ if __name__ == '__main__':
     run_generate_samples(filt_sample_ds, month, features, save_dir)
 
     # Generate labels
-    run_generate_labels(filt_label_ds, month, save_dir)
+    #run_generate_labels(filt_label_ds, month, save_dir)
 

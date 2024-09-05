@@ -84,6 +84,7 @@ def combine_momo_gee(momo_array, momo_channels, query_year, region, data_dir):
     for i in range(4):
         arr_list.append(pop_arr[i,:,:])
 
+
     final_array = np.array(arr_list)
     return final_array
 
@@ -100,8 +101,7 @@ if __name__ == '__main__':
     gee_channels = 23
     total_channels = momo_channels + gee_channels
 
-    years = ['2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014',
-             '2015', '2016', '2017', '2018', '2019', '2020']
+    years = ['2020']
     for y in years:
         print('Generating samples for year, month: {} {}'.format(y, month))
         if int(y) < 2020:

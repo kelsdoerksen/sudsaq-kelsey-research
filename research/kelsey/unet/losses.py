@@ -87,7 +87,7 @@ class NoNaNMSE(nn.Module):
         pred = pred[mask]
         target = target[mask]
 
-        return np.square(pred-target)
+        return np.mean(np.square(pred-target))
 
 
 class NoNaNPinballLoss(nn.Module):
@@ -104,4 +104,33 @@ class NoNaNPinballLoss(nn.Module):
         errors = y_true - y_pred
         loss = torch.max((self.quantile - 1) * errors, self.quantile * errors)
         return torch.mean(loss)
+
+
+class NoNaNQuantileLoss(nn.Module):
+    def __init__(self, quantiles):
+        super(NoNaNQuantileLoss, self).__init__()
+        self.quantile = quantiles
+
+    def forward(self, y_pred, y_true):
+        # Mask nans first
+        mask = ~torch.isnan(y_true)
+        # Add mask before calculating loss to remove nans
+        low = y_pred[:, 0, :, :]    # Lower quantile
+        med = y_pred[:, 1, :, :]    # Median
+        upper = y_pred[:, 2, :, :]  # Upper quantile
+        y_true = y_true[mask]
+        mask = mask[:, 0, :, :]
+        low = low[mask]
+        med = med[mask]
+        upper = upper[mask]
+
+        errors_low = y_true - low
+        errors_med = y_true - med
+        errors_upper = y_true - upper
+
+        loss_low = torch.max((0.1-1)*errors_low, 0.1*errors_low)
+        loss_med = torch.max((0.5 - 1) * errors_med, 0.5 * errors_med)
+        loss_upper = torch.max((0.9 - 1) * errors_upper, 0.9 * errors_upper)
+
+        return torch.mean(loss_low+loss_med+loss_upper)
 

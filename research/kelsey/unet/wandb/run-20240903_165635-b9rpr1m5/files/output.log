@@ -1,0 +1,17 @@
+Grabbing training data...
+Grabbing testing data...
+Training EPOCH 0:
+/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/cuda/amp/grad_scaler.py:120: UserWarning: torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.
+  warnings.warn("torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.")
+quantiles_train Quantile loss is: 36.58028141657511
+test set loss is: 38.4278564453125
+Quantile Regression Coverage without conformal is: 0.007049647517624158
+Predicting lower bounds on calibration set...
+test set loss is: 39.74480056762695
+Calculating qyhat for calibration...
+Traceback (most recent call last):
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py", line 136, in <module>
+    run_cqr(unet, device, aq_train_dataset, aq_test_dataset, save_dir, experiment, 0.2, args.channels,
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py", line 281, in run_cqr
+    qyhat = calibrate_qyhat(cal_loader, uncal_predictions_c[:,0,:,:], uncal_predictions_c[:,2,:,:], alpha)
+TypeError: list indices must be integers or slices, not tuple

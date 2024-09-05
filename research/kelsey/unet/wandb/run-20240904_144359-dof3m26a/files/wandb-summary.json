@@ -1,0 +1,1 @@
+{"quantiles_train Quantile loss": 9.19039011001587, "quantiles_step": 126, "quantiles_epoch": 20, "quantiles_optimizer": "adam", "_timestamp": 1725488368.881799, "_runtime": 2129.566255092621, "_step": 40, "quantiles_val Quantile loss": 9.672268867492676, "_wandb": {"runtime": 2129}}

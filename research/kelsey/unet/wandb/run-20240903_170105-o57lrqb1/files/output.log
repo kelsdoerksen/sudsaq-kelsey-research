@@ -1,0 +1,34 @@
+Grabbing training data...
+Grabbing testing data...
+Training EPOCH 0:
+/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/cuda/amp/grad_scaler.py:120: UserWarning: torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.
+  warnings.warn("torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.")
+quantiles_train Quantile loss is: 82.87878163655598
+test set loss is: 16.00606918334961
+Quantile Regression Coverage without conformal is: 0.6685165741712915
+Predicting on calibration set...
+test set loss is: 16.9615421295166
+Calculating qyhat for calibration...
+> /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py(289)run_cqr()
+    288     ipdb.set_trace()
+--> 289     qyhat = calibrate_qyhat(cal_loader, uncal_predictions_c, alpha)
+    290
+*** TypeError: object of type 'NoneType' has no len()
+Error in sys.excepthook:
+Traceback (most recent call last):
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/IPython/core/debugger.py", line 145, in BdbQuit_excepthook
+    raise ValueError(
+ValueError: `BdbQuit_excepthook` is deprecated since version 5.1
+Original exception was:
+Traceback (most recent call last):
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py", line 136, in <module>
+    run_cqr(unet, device, aq_train_dataset, aq_test_dataset, save_dir, experiment, 0.2, args.channels,
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py", line 289, in run_cqr
+    # --- Calibrate prediction intervals on the test set predictions
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py", line 289, in run_cqr
+    # --- Calibrate prediction intervals on the test set predictions
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+bdb.BdbQuit

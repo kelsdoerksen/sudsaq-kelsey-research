@@ -1,0 +1,74 @@
+Grabbing training data...
+Grabbing testing data...
+Training EPOCH 0:
+/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/cuda/amp/grad_scaler.py:120: UserWarning: torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.
+  warnings.warn("torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.")
+quantiles_train Quantile loss is: 42.65404224395752
+Training EPOCH 1:
+quantiles_train Quantile loss is: 33.109511057535805
+Training EPOCH 2:
+quantiles_train Quantile loss is: 33.325879414876304
+Training EPOCH 3:
+quantiles_train Quantile loss is: 32.65710004170736
+Training EPOCH 4:
+quantiles_train Quantile loss is: 22.573304812113445
+Training EPOCH 5:
+quantiles_train Quantile loss is: 12.995913664499918
+Training EPOCH 6:
+quantiles_train Quantile loss is: 11.845569133758545
+Training EPOCH 7:
+quantiles_train Quantile loss is: 10.710882663726807
+Training EPOCH 8:
+quantiles_train Quantile loss is: 10.29919958114624
+Training EPOCH 9:
+quantiles_train Quantile loss is: 10.096415360768637
+Training EPOCH 10:
+quantiles_train Quantile loss is: 9.90671189626058
+Training EPOCH 11:
+quantiles_train Quantile loss is: 9.851349353790283
+Training EPOCH 12:
+quantiles_train Quantile loss is: 9.739869912465414
+Training EPOCH 13:
+quantiles_train Quantile loss is: 9.634061018625895
+Training EPOCH 14:
+quantiles_train Quantile loss is: 9.574467341105143
+Training EPOCH 15:
+quantiles_train Quantile loss is: 9.504620552062988
+Training EPOCH 16:
+quantiles_train Quantile loss is: 9.446209589640299
+Training EPOCH 17:
+quantiles_train Quantile loss is: 9.361237525939941
+Training EPOCH 18:
+quantiles_train Quantile loss is: 9.321307500203451
+Training EPOCH 19:
+quantiles_train Quantile loss is: 9.255727450052897
+Training EPOCH 20:
+Traceback (most recent call last):
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py", line 136, in <module>
+    run_cqr(unet, device, aq_train_dataset, aq_test_dataset, save_dir, experiment, 0.2, args.channels,
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py", line 286, in run_cqr
+    trained_model = cqr_training_loop(model, train_loader, val_loader, criterion, optimizer, grad_scaler, epochs, experiment,
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py", line 70, in cqr_training_loop
+    for k, vdata in enumerate(val_data_loader):
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 633, in __next__
+    data = self._next_data()
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 677, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/utils/data/_utils/fetch.py", line 51, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/utils/data/_utils/fetch.py", line 51, in <listcomp>
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/utils/data/dataset.py", line 298, in __getitem__
+    return self.dataset[self.indices[idx]]
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/utils/data/dataset.py", line 298, in __getitem__
+    return self.dataset[self.indices[idx]]
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/utils/data/dataset.py", line 243, in __getitem__
+    return self.datasets[dataset_idx][sample_idx]
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/dataset.py", line 30, in __getitem__
+    multichannel_image = load('{}'.format(image_fp), allow_pickle=True).astype('float32')
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/numpy/lib/npyio.py", line 432, in load
+    return format.read_array(fid, allow_pickle=allow_pickle,
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/numpy/lib/format.py", line 801, in read_array
+    array = numpy.fromfile(fp, dtype=dtype, count=count)
+KeyboardInterrupt
+quantiles_train Quantile loss is: 9.19039011001587

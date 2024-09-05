@@ -1,0 +1,186 @@
+Grabbing training data...
+Grabbing testing data...
+Training lower bound model...
+Training EPOCH 0:
+/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/cuda/amp/grad_scaler.py:120: UserWarning: torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.
+  warnings.warn("torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.")
+lower_train Pinball loss is: 1.4659924847739083
+Training EPOCH 1:
+lower_train Pinball loss is: 1.4119539942060197
+Training EPOCH 2:
+lower_train Pinball loss is: 1.308203169277736
+Training EPOCH 3:
+lower_train Pinball loss is: 1.284671596118382
+Training EPOCH 4:
+lower_train Pinball loss is: 1.2672707523618425
+Training EPOCH 5:
+lower_train Pinball loss is: 1.220943774495806
+Training EPOCH 6:
+lower_train Pinball loss is: 1.1847087485449654
+Training EPOCH 7:
+lower_train Pinball loss is: 1.1563225473676408
+Training EPOCH 8:
+lower_train Pinball loss is: 1.137156639780317
+Training EPOCH 9:
+lower_train Pinball loss is: 1.1373925038746424
+Training EPOCH 10:
+lower_train Pinball loss is: 1.1138527223042078
+Training EPOCH 11:
+lower_train Pinball loss is: 1.1016193798610143
+Training EPOCH 12:
+lower_train Pinball loss is: 1.0967593874250139
+Training EPOCH 13:
+lower_train Pinball loss is: 1.088484866278512
+Training EPOCH 14:
+lower_train Pinball loss is: 1.0738962548119682
+Training EPOCH 15:
+lower_train Pinball loss is: 1.0704257488250732
+Training EPOCH 16:
+lower_train Pinball loss is: 1.0657982315335954
+Training EPOCH 17:
+lower_train Pinball loss is: 1.0727100202015467
+Training EPOCH 18:
+lower_train Pinball loss is: 1.0567210742405482
+Training EPOCH 19:
+lower_train Pinball loss is: 1.0553904601505824
+Training EPOCH 20:
+lower_train Pinball loss is: 1.0474653584616525
+Training EPOCH 21:
+lower_train Pinball loss is: 1.0383302484239851
+Training EPOCH 22:
+lower_train Pinball loss is: 1.0367047105516707
+Training EPOCH 23:
+lower_train Pinball loss is: 1.0278715235846383
+Training EPOCH 24:
+lower_train Pinball loss is: 1.0242025426455907
+Training EPOCH 25:
+lower_train Pinball loss is: 1.0165295856339591
+Training EPOCH 26:
+lower_train Pinball loss is: 1.0128580502101354
+Training EPOCH 27:
+lower_train Pinball loss is: 1.0087863462311881
+Training EPOCH 28:
+lower_train Pinball loss is: 1.0050687279020036
+Training EPOCH 29:
+lower_train Pinball loss is: 1.0127453804016113
+Training EPOCH 30:
+lower_train Pinball loss is: 1.0108908414840698
+Training EPOCH 31:
+lower_train Pinball loss is: 1.000038708959307
+Training EPOCH 32:
+lower_train Pinball loss is: 1.0006879227502006
+Training EPOCH 33:
+lower_train Pinball loss is: 0.9965829508645194
+Training EPOCH 34:
+lower_train Pinball loss is: 0.9887143203190395
+Training EPOCH 35:
+lower_train Pinball loss is: 0.9865196006638663
+Training EPOCH 36:
+lower_train Pinball loss is: 0.9847768800599235
+Training EPOCH 37:
+lower_train Pinball loss is: 0.990053824016026
+Training EPOCH 38:
+lower_train Pinball loss is: 0.9793390376227242
+Training EPOCH 39:
+lower_train Pinball loss is: 0.9772848572049823
+Training EPOCH 40:
+lower_train Pinball loss is: 0.984930191721235
+Training EPOCH 41:
+lower_train Pinball loss is: 0.9751916016851153
+Training EPOCH 42:
+lower_train Pinball loss is: 0.9786872608321053
+Training EPOCH 43:
+lower_train Pinball loss is: 0.97800041948046
+Training EPOCH 44:
+lower_train Pinball loss is: 0.9672135966164725
+Training EPOCH 45:
+lower_train Pinball loss is: 0.9631597825459072
+Training EPOCH 46:
+lower_train Pinball loss is: 0.960672812802451
+Training EPOCH 47:
+lower_train Pinball loss is: 0.9614913208144051
+Training EPOCH 48:
+lower_train Pinball loss is: 0.960062393120357
+Training EPOCH 49:
+lower_train Pinball loss is: 0.9660433105060032
+Training EPOCH 50:
+lower_train Pinball loss is: 0.9661024638584682
+Training EPOCH 51:
+lower_train Pinball loss is: 0.97709573166711
+Training EPOCH 52:
+lower_train Pinball loss is: 0.9775807091167995
+Training EPOCH 53:
+lower_train Pinball loss is: 0.9735828467777797
+Training EPOCH 54:
+lower_train Pinball loss is: 0.9698906370571682
+Training EPOCH 55:
+lower_train Pinball loss is: 0.9667814203671047
+Training EPOCH 56:
+lower_train Pinball loss is: 0.9603190762656075
+Training EPOCH 57:
+lower_train Pinball loss is: 0.9521821652139936
+Training EPOCH 58:
+lower_train Pinball loss is: 0.9543459670884269
+Training EPOCH 59:
+lower_train Pinball loss is: 0.9518221701894488
+Training EPOCH 60:
+lower_train Pinball loss is: 0.9500233445848737
+Training EPOCH 61:
+lower_train Pinball loss is: 0.9400977577481952
+Training EPOCH 62:
+lower_train Pinball loss is: 0.9417540856770107
+Training EPOCH 63:
+lower_train Pinball loss is: 0.9403977053506034
+Training EPOCH 64:
+lower_train Pinball loss is: 0.9421186361994062
+Training EPOCH 65:
+lower_train Pinball loss is: 0.9390277947698321
+Training EPOCH 66:
+lower_train Pinball loss is: 0.9548151663371495
+Training EPOCH 67:
+lower_train Pinball loss is: 0.9363162687846592
+Training EPOCH 68:
+lower_train Pinball loss is: 0.9336573737008231
+Training EPOCH 69:
+lower_train Pinball loss is: 0.9306512475013733
+Training EPOCH 70:
+lower_train Pinball loss is: 0.9293193902288165
+Training EPOCH 71:
+lower_train Pinball loss is: 0.9278739179883685
+Training EPOCH 72:
+lower_train Pinball loss is: 0.9242447699819293
+Training EPOCH 73:
+Traceback (most recent call last):
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py", line 121, in <module>
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py", line 266, in run_cqr
+    lower_bound = cqr_training_loop(model, train_loader, val_loader, lower_criterion, optimizer, grad_scaler, epochs, experiment,
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py", line 43, in cqr_training_loop
+    outputs = model(inputs)  # predict on input
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/model/models.py", line 35, in forward
+    x8 = self.up3(x7, x2)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/model/unet_modules.py", line 113, in forward
+    return self.conv(x)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/model/unet_modules.py", line 33, in forward
+    return self.double_conv(x)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/nn/modules/container.py", line 217, in forward
+    input = module(input)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/nn/modules/conv.py", line 463, in forward
+    return self._conv_forward(input, self.weight, self.bias)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/nn/modules/conv.py", line 459, in _conv_forward
+    return F.conv2d(input, weight, bias, self.stride,
+KeyboardInterrupt
+Exception ignored in: <module 'threading' from '/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/threading.py'>
+Traceback (most recent call last):
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/threading.py", line 1527, in _shutdown
+    if _main_thread._is_stopped:
+KeyboardInterrupt:

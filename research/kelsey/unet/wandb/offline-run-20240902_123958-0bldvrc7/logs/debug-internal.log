@@ -1,0 +1,138 @@
+2024-09-02 12:39:58,974 INFO    StreamThr :24530 [internal.py:wandb_internal():86] W&B internal server running at pid: 24530, started at: 2024-09-02 12:39:58.973452
+2024-09-02 12:39:58,976 DEBUG   HandlerThread:24530 [handler.py:handle_request():144] handle_request: status
+2024-09-02 12:39:58,980 INFO    WriterThread:24530 [datastore.py:open_for_write():85] open: /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/wandb/offline-run-20240902_123958-0bldvrc7/run-0bldvrc7.wandb
+2024-09-02 12:39:59,029 DEBUG   HandlerThread:24530 [handler.py:handle_request():144] handle_request: run_start
+2024-09-02 12:39:59,042 DEBUG   HandlerThread:24530 [system_info.py:__init__():32] System info init
+2024-09-02 12:39:59,043 DEBUG   HandlerThread:24530 [system_info.py:__init__():47] System info init done
+2024-09-02 12:39:59,043 INFO    HandlerThread:24530 [system_monitor.py:start():181] Starting system monitor
+2024-09-02 12:39:59,043 INFO    SystemMonitor:24530 [system_monitor.py:_start():145] Starting system asset monitoring threads
+2024-09-02 12:39:59,044 INFO    HandlerThread:24530 [system_monitor.py:probe():201] Collecting system info
+2024-09-02 12:39:59,044 DEBUG   HandlerThread:24530 [system_info.py:probe():196] Probing system
+2024-09-02 12:39:59,045 INFO    SystemMonitor:24530 [interfaces.py:start():190] Started cpu monitoring
+2024-09-02 12:39:59,045 INFO    SystemMonitor:24530 [interfaces.py:start():190] Started disk monitoring
+2024-09-02 12:39:59,048 INFO    SystemMonitor:24530 [interfaces.py:start():190] Started memory monitoring
+2024-09-02 12:39:59,049 INFO    SystemMonitor:24530 [interfaces.py:start():190] Started network monitoring
+2024-09-02 12:39:59,061 DEBUG   HandlerThread:24530 [system_info.py:_probe_git():181] Probing git
+2024-09-02 12:39:59,124 DEBUG   HandlerThread:24530 [system_info.py:_probe_git():189] Probing git done
+2024-09-02 12:39:59,124 DEBUG   HandlerThread:24530 [system_info.py:probe():244] Probing system done
+2024-09-02 12:39:59,125 DEBUG   HandlerThread:24530 [system_monitor.py:probe():210] {'os': 'macOS-14.6.1-x86_64-i386-64bit', 'python': '3.10.13', 'heartbeatAt': '2024-09-02T11:39:59.044873', 'startedAt': '2024-09-02T11:39:58.963455', 'docker': None, 'cuda': None, 'args': ('--epochs', '100', '--validation', '10', '--optimizer', 'adam', '--classes', '1', '--test-year', '2020', '--overfitting_test', 'False', '--channels', '51', '--target', 'bias', '--region', 'Europe', '--seed', '45', '--model_type', 'cqr', '--data_dir', '/Volumes/PRO-G40/sudsaq/unet/data', '--save_dir', '/Volumes/PRO-G40/sudsaq/unet/runs', '--val_percent', '0.1', '--analysis_date', 'aug', '--tag', 'neurips2024'), 'state': 'running', 'program': '/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py', 'codePathLocal': 'run_pipeline.py', 'codePath': 'research/kelsey/unet/run_pipeline.py', 'git': {'remote': 'git@github.com:kelsdoerksen/sudsaq-kelsey-research.git', 'commit': '6568639b9172f5c7e5d1d3848b0babc72f5bf668'}, 'email': 'kelseydoerksen@gmail.com', 'root': '/Users/kelseydoerksen/code/sudsaq-kelsey-research', 'host': 'Kelseys-MacBook-Pro.local', 'username': 'kelseydoerksen', 'executable': '/Users/kelseydoerksen/opt/anaconda3/envs/aq/bin/python', 'cpu_count': 4, 'cpu_count_logical': 8, 'cpu_freq': {'current': 2300, 'min': 2300, 'max': 2300}, 'cpu_freq_per_core': [{'current': 2300, 'min': 2300, 'max': 2300}], 'disk': {'/': {'total': 465.62699127197266, 'used': 9.557659149169922}}, 'memory': {'total': 16.0}}
+2024-09-02 12:39:59,125 INFO    HandlerThread:24530 [system_monitor.py:probe():211] Finished collecting system info
+2024-09-02 12:39:59,125 INFO    HandlerThread:24530 [system_monitor.py:probe():214] Publishing system info
+2024-09-02 12:39:59,125 DEBUG   HandlerThread:24530 [system_info.py:_save_pip():52] Saving list of pip packages installed into the current environment
+2024-09-02 12:39:59,126 DEBUG   HandlerThread:24530 [system_info.py:_save_pip():68] Saving pip packages done
+2024-09-02 12:39:59,126 DEBUG   HandlerThread:24530 [system_info.py:_save_conda():75] Saving list of conda packages installed into the current environment
+2024-09-02 12:40:13,932 DEBUG   HandlerThread:24530 [system_info.py:_save_conda():87] Saving conda packages done
+2024-09-02 12:40:13,934 INFO    HandlerThread:24530 [system_monitor.py:probe():216] Finished publishing system info
+2024-09-02 12:40:13,940 DEBUG   HandlerThread:24530 [handler.py:handle_request():144] handle_request: status_report
+2024-09-02 12:40:13,940 DEBUG   HandlerThread:24530 [handler.py:handle_request():144] handle_request: keepalive
+2024-09-02 12:40:13,940 DEBUG   HandlerThread:24530 [handler.py:handle_request():144] handle_request: status_report
+2024-09-02 12:40:13,941 DEBUG   HandlerThread:24530 [handler.py:handle_request():144] handle_request: keepalive
+2024-09-02 12:40:13,941 DEBUG   SenderThread:24530 [sender.py:send_request():407] send_request: status_report
+2024-09-02 12:40:13,941 DEBUG   SenderThread:24530 [sender.py:send_request():407] send_request: status_report
+2024-09-02 12:40:13,946 DEBUG   SenderThread:24530 [sender.py:send():380] send: exit
+2024-09-02 12:40:13,946 INFO    SenderThread:24530 [sender.py:send_exit():585] handling exit code: 1
+2024-09-02 12:40:13,946 INFO    SenderThread:24530 [sender.py:send_exit():587] handling runtime: 14
+2024-09-02 12:40:13,947 INFO    SenderThread:24530 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2024-09-02 12:40:13,947 INFO    SenderThread:24530 [sender.py:send_exit():593] send defer
+2024-09-02 12:40:13,947 DEBUG   HandlerThread:24530 [handler.py:handle_request():144] handle_request: defer
+2024-09-02 12:40:13,947 INFO    HandlerThread:24530 [handler.py:handle_request_defer():170] handle defer: 0
+2024-09-02 12:40:13,947 DEBUG   SenderThread:24530 [sender.py:send_request():407] send_request: defer
+2024-09-02 12:40:13,947 INFO    SenderThread:24530 [sender.py:send_request_defer():609] handle sender defer: 0
+2024-09-02 12:40:13,947 INFO    SenderThread:24530 [sender.py:transition_state():613] send defer: 1
+2024-09-02 12:40:13,948 DEBUG   HandlerThread:24530 [handler.py:handle_request():144] handle_request: defer
+2024-09-02 12:40:13,948 INFO    HandlerThread:24530 [handler.py:handle_request_defer():170] handle defer: 1
+2024-09-02 12:40:13,948 DEBUG   SenderThread:24530 [sender.py:send_request():407] send_request: defer
+2024-09-02 12:40:13,948 INFO    SenderThread:24530 [sender.py:send_request_defer():609] handle sender defer: 1
+2024-09-02 12:40:13,948 INFO    SenderThread:24530 [sender.py:transition_state():613] send defer: 2
+2024-09-02 12:40:13,948 DEBUG   HandlerThread:24530 [handler.py:handle_request():144] handle_request: defer
+2024-09-02 12:40:13,948 INFO    HandlerThread:24530 [handler.py:handle_request_defer():170] handle defer: 2
+2024-09-02 12:40:13,948 INFO    HandlerThread:24530 [system_monitor.py:finish():190] Stopping system monitor
+2024-09-02 12:40:13,949 DEBUG   SystemMonitor:24530 [system_monitor.py:_start():159] Starting system metrics aggregation loop
+2024-09-02 12:40:13,949 DEBUG   SystemMonitor:24530 [system_monitor.py:_start():166] Finished system metrics aggregation loop
+2024-09-02 12:40:13,949 DEBUG   SystemMonitor:24530 [system_monitor.py:_start():170] Publishing last batch of metrics
+2024-09-02 12:40:13,949 INFO    HandlerThread:24530 [interfaces.py:finish():202] Joined cpu monitor
+2024-09-02 12:40:13,950 INFO    HandlerThread:24530 [interfaces.py:finish():202] Joined disk monitor
+2024-09-02 12:40:13,950 INFO    HandlerThread:24530 [interfaces.py:finish():202] Joined memory monitor
+2024-09-02 12:40:13,950 INFO    HandlerThread:24530 [interfaces.py:finish():202] Joined network monitor
+2024-09-02 12:40:13,950 DEBUG   SenderThread:24530 [sender.py:send_request():407] send_request: defer
+2024-09-02 12:40:13,950 INFO    SenderThread:24530 [sender.py:send_request_defer():609] handle sender defer: 2
+2024-09-02 12:40:13,950 INFO    SenderThread:24530 [sender.py:transition_state():613] send defer: 3
+2024-09-02 12:40:13,951 DEBUG   HandlerThread:24530 [handler.py:handle_request():144] handle_request: defer
+2024-09-02 12:40:13,951 INFO    HandlerThread:24530 [handler.py:handle_request_defer():170] handle defer: 3
+2024-09-02 12:40:13,951 DEBUG   SenderThread:24530 [sender.py:send_request():407] send_request: defer
+2024-09-02 12:40:13,951 INFO    SenderThread:24530 [sender.py:send_request_defer():609] handle sender defer: 3
+2024-09-02 12:40:13,951 INFO    SenderThread:24530 [sender.py:transition_state():613] send defer: 4
+2024-09-02 12:40:13,951 DEBUG   HandlerThread:24530 [handler.py:handle_request():144] handle_request: defer
+2024-09-02 12:40:13,951 INFO    HandlerThread:24530 [handler.py:handle_request_defer():170] handle defer: 4
+2024-09-02 12:40:13,951 DEBUG   SenderThread:24530 [sender.py:send_request():407] send_request: defer
+2024-09-02 12:40:13,951 INFO    SenderThread:24530 [sender.py:send_request_defer():609] handle sender defer: 4
+2024-09-02 12:40:13,951 INFO    SenderThread:24530 [sender.py:transition_state():613] send defer: 5
+2024-09-02 12:40:13,952 DEBUG   HandlerThread:24530 [handler.py:handle_request():144] handle_request: defer
+2024-09-02 12:40:13,952 INFO    HandlerThread:24530 [handler.py:handle_request_defer():170] handle defer: 5
+2024-09-02 12:40:13,952 DEBUG   SenderThread:24530 [sender.py:send_request():407] send_request: defer
+2024-09-02 12:40:13,952 INFO    SenderThread:24530 [sender.py:send_request_defer():609] handle sender defer: 5
+2024-09-02 12:40:13,952 INFO    SenderThread:24530 [sender.py:transition_state():613] send defer: 6
+2024-09-02 12:40:13,952 DEBUG   HandlerThread:24530 [handler.py:handle_request():144] handle_request: defer
+2024-09-02 12:40:13,952 INFO    HandlerThread:24530 [handler.py:handle_request_defer():170] handle defer: 6
+2024-09-02 12:40:13,952 DEBUG   SenderThread:24530 [sender.py:send_request():407] send_request: defer
+2024-09-02 12:40:13,952 INFO    SenderThread:24530 [sender.py:send_request_defer():609] handle sender defer: 6
+2024-09-02 12:40:13,952 INFO    SenderThread:24530 [sender.py:transition_state():613] send defer: 7
+2024-09-02 12:40:13,952 DEBUG   HandlerThread:24530 [handler.py:handle_request():144] handle_request: status_report
+2024-09-02 12:40:13,953 DEBUG   HandlerThread:24530 [handler.py:handle_request():144] handle_request: defer
+2024-09-02 12:40:13,953 INFO    HandlerThread:24530 [handler.py:handle_request_defer():170] handle defer: 7
+2024-09-02 12:40:13,953 DEBUG   SenderThread:24530 [sender.py:send_request():407] send_request: status_report
+2024-09-02 12:40:13,953 DEBUG   SenderThread:24530 [sender.py:send_request():407] send_request: defer
+2024-09-02 12:40:13,953 INFO    SenderThread:24530 [sender.py:send_request_defer():609] handle sender defer: 7
+2024-09-02 12:40:13,953 INFO    SenderThread:24530 [sender.py:transition_state():613] send defer: 8
+2024-09-02 12:40:13,953 DEBUG   HandlerThread:24530 [handler.py:handle_request():144] handle_request: defer
+2024-09-02 12:40:13,953 INFO    HandlerThread:24530 [handler.py:handle_request_defer():170] handle defer: 8
+2024-09-02 12:40:13,954 DEBUG   SenderThread:24530 [sender.py:send_request():407] send_request: defer
+2024-09-02 12:40:13,954 INFO    SenderThread:24530 [sender.py:send_request_defer():609] handle sender defer: 8
+2024-09-02 12:40:13,954 INFO    SenderThread:24530 [sender.py:transition_state():613] send defer: 9
+2024-09-02 12:40:13,954 DEBUG   HandlerThread:24530 [handler.py:handle_request():144] handle_request: defer
+2024-09-02 12:40:13,954 INFO    HandlerThread:24530 [handler.py:handle_request_defer():170] handle defer: 9
+2024-09-02 12:40:13,954 DEBUG   SenderThread:24530 [sender.py:send_request():407] send_request: defer
+2024-09-02 12:40:13,954 INFO    SenderThread:24530 [sender.py:send_request_defer():609] handle sender defer: 9
+2024-09-02 12:40:13,954 INFO    SenderThread:24530 [sender.py:transition_state():613] send defer: 10
+2024-09-02 12:40:13,954 DEBUG   HandlerThread:24530 [handler.py:handle_request():144] handle_request: defer
+2024-09-02 12:40:13,954 INFO    HandlerThread:24530 [handler.py:handle_request_defer():170] handle defer: 10
+2024-09-02 12:40:13,955 DEBUG   SenderThread:24530 [sender.py:send_request():407] send_request: defer
+2024-09-02 12:40:13,955 INFO    SenderThread:24530 [sender.py:send_request_defer():609] handle sender defer: 10
+2024-09-02 12:40:13,955 INFO    SenderThread:24530 [sender.py:transition_state():613] send defer: 11
+2024-09-02 12:40:13,955 DEBUG   HandlerThread:24530 [handler.py:handle_request():144] handle_request: defer
+2024-09-02 12:40:13,955 INFO    HandlerThread:24530 [handler.py:handle_request_defer():170] handle defer: 11
+2024-09-02 12:40:13,955 DEBUG   SenderThread:24530 [sender.py:send_request():407] send_request: defer
+2024-09-02 12:40:13,955 INFO    SenderThread:24530 [sender.py:send_request_defer():609] handle sender defer: 11
+2024-09-02 12:40:13,955 INFO    SenderThread:24530 [sender.py:transition_state():613] send defer: 12
+2024-09-02 12:40:13,955 DEBUG   HandlerThread:24530 [handler.py:handle_request():144] handle_request: defer
+2024-09-02 12:40:13,955 INFO    HandlerThread:24530 [handler.py:handle_request_defer():170] handle defer: 12
+2024-09-02 12:40:13,956 DEBUG   SenderThread:24530 [sender.py:send_request():407] send_request: defer
+2024-09-02 12:40:13,956 INFO    SenderThread:24530 [sender.py:send_request_defer():609] handle sender defer: 12
+2024-09-02 12:40:13,956 INFO    SenderThread:24530 [sender.py:transition_state():613] send defer: 13
+2024-09-02 12:40:13,956 DEBUG   HandlerThread:24530 [handler.py:handle_request():144] handle_request: defer
+2024-09-02 12:40:13,956 INFO    HandlerThread:24530 [handler.py:handle_request_defer():170] handle defer: 13
+2024-09-02 12:40:13,956 DEBUG   SenderThread:24530 [sender.py:send_request():407] send_request: defer
+2024-09-02 12:40:13,956 INFO    SenderThread:24530 [sender.py:send_request_defer():609] handle sender defer: 13
+2024-09-02 12:40:13,956 INFO    SenderThread:24530 [sender.py:transition_state():613] send defer: 14
+2024-09-02 12:40:13,956 DEBUG   HandlerThread:24530 [handler.py:handle_request():144] handle_request: defer
+2024-09-02 12:40:13,957 INFO    HandlerThread:24530 [handler.py:handle_request_defer():170] handle defer: 14
+2024-09-02 12:40:13,957 DEBUG   SenderThread:24530 [sender.py:send():380] send: final
+2024-09-02 12:40:13,957 DEBUG   SenderThread:24530 [sender.py:send_request():407] send_request: defer
+2024-09-02 12:40:13,957 INFO    SenderThread:24530 [sender.py:send_request_defer():609] handle sender defer: 14
+2024-09-02 12:40:13,958 DEBUG   HandlerThread:24530 [handler.py:handle_request():144] handle_request: poll_exit
+2024-09-02 12:40:13,959 DEBUG   SenderThread:24530 [sender.py:send_request():407] send_request: poll_exit
+2024-09-02 12:40:13,959 DEBUG   HandlerThread:24530 [handler.py:handle_request():144] handle_request: poll_exit
+2024-09-02 12:40:13,959 DEBUG   SenderThread:24530 [sender.py:send_request():407] send_request: poll_exit
+2024-09-02 12:40:13,960 DEBUG   HandlerThread:24530 [handler.py:handle_request():144] handle_request: server_info
+2024-09-02 12:40:13,960 DEBUG   HandlerThread:24530 [handler.py:handle_request():144] handle_request: get_summary
+2024-09-02 12:40:13,960 DEBUG   SenderThread:24530 [sender.py:send_request():407] send_request: server_info
+2024-09-02 12:40:13,961 DEBUG   HandlerThread:24530 [handler.py:handle_request():144] handle_request: sampled_history
+2024-09-02 12:40:13,961 DEBUG   HandlerThread:24530 [handler.py:handle_request():144] handle_request: internal_messages
+2024-09-02 12:40:13,961 DEBUG   HandlerThread:24530 [handler.py:handle_request():144] handle_request: job_info
+2024-09-02 12:40:13,962 DEBUG   SenderThread:24530 [sender.py:send_request():407] send_request: job_info
+2024-09-02 12:40:13,962 INFO    MainThread:24530 [wandb_run.py:_footer_history_summary_info():3554] rendering history
+2024-09-02 12:40:13,962 INFO    MainThread:24530 [wandb_run.py:_footer_history_summary_info():3586] rendering summary
+2024-09-02 12:40:13,962 DEBUG   HandlerThread:24530 [handler.py:handle_request():144] handle_request: shutdown
+2024-09-02 12:40:13,962 INFO    HandlerThread:24530 [handler.py:finish():844] shutting down handler
+2024-09-02 12:40:14,967 INFO    WriterThread:24530 [datastore.py:close():294] close: /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/wandb/offline-run-20240902_123958-0bldvrc7/run-0bldvrc7.wandb
+2024-09-02 12:40:14,967 INFO    SenderThread:24530 [sender.py:finish():1534] shutting down sender

@@ -1,0 +1,24 @@
+Grabbing training data...
+> /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py(121)<module>()
+    120     # --- Grabbing Testing Data ----
+--> 121     print('Grabbing testing data...')
+    122     root_sample_test_dir = '{}/{}/zscore_normalization'.format(root_data_dir, region)
+[<dataset.AQDataset object at 0x119cb9c90>, <dataset.AQDataset object at 0x119cb9ae0>, <dataset.AQDataset object at 0x119cb9cc0>, <dataset.AQDataset object at 0x119cb99c0>, <dataset.AQDataset object at 0x119cba260>, <dataset.AQDataset object at 0x119cb9b10>, <dataset.AQDataset object at 0x119cba080>, <dataset.AQDataset object at 0x119cba2f0>, <dataset.AQDataset object at 0x119cba350>, <dataset.AQDataset object at 0x119cb9ed0>, <dataset.AQDataset object at 0x119cb9d20>, <dataset.AQDataset object at 0x119cb9c30>, <dataset.AQDataset object at 0x119cb9ba0>, <dataset.AQDataset object at 0x119cb9de0>, <dataset.AQDataset object at 0x119cba410>]
+<torch.utils.data.dataset.ConcatDataset object at 0x11afa07c0>
+Traceback (most recent call last):
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py", line 121, in <module>
+    aq_train_dataset = ConcatDataset(aq_train)
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py", line 121, in <module>
+    aq_train_dataset = ConcatDataset(aq_train)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+bdb.BdbQuit
+If you suspect this is an IPython 8.7.0 bug, please report it at:
+    https://github.com/ipython/ipython/issues
+or send an email to the mailing list at ipython-dev@python.org
+You can print a more detailed traceback right now with "%tb", or use "%debug"
+to interactively debug it.
+Extra-detailed tracebacks for bug-reporting purposes can be enabled via:
+    %config Application.verbose_crash=True

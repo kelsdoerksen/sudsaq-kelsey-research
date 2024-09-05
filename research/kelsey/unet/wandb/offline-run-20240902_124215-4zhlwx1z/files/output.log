@@ -1,0 +1,24 @@
+> /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py(85)<module>()
+     84     ipdb.set_trace()
+---> 85     if not os.path.exists(save_dir):
+     86         os.mkdir(save_dir)
+'/Volumes/PRO-G40/sudsaq/unet/runs/Europe/bias/51channels/_Europe_aug_cqr_100epochs'
+*** AttributeError: module 'wandb' has no attribute 'id'
+'4zhlwx1z'
+Traceback (most recent call last):
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py", line 85, in <module>
+    if not os.path.exists(save_dir):
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py", line 85, in <module>
+    if not os.path.exists(save_dir):
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+bdb.BdbQuit
+If you suspect this is an IPython 8.7.0 bug, please report it at:
+    https://github.com/ipython/ipython/issues
+or send an email to the mailing list at ipython-dev@python.org
+You can print a more detailed traceback right now with "%tb", or use "%debug"
+to interactively debug it.
+Extra-detailed tracebacks for bug-reporting purposes can be enabled via:
+    %config Application.verbose_crash=True

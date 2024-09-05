@@ -1,0 +1,247 @@
+2024-09-03 16:02:47,434 INFO    StreamThr :44649 [internal.py:wandb_internal():86] W&B internal server running at pid: 44649, started at: 2024-09-03 16:02:47.433097
+2024-09-03 16:02:47,437 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: status
+2024-09-03 16:02:47,440 INFO    WriterThread:44649 [datastore.py:open_for_write():85] open: /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/wandb/run-20240903_160247-z4bnlznq/run-z4bnlznq.wandb
+2024-09-03 16:02:47,440 DEBUG   SenderThread:44649 [sender.py:send():380] send: header
+2024-09-03 16:02:47,482 DEBUG   SenderThread:44649 [sender.py:send():380] send: run
+2024-09-03 16:02:47,484 INFO    SenderThread:44649 [sender.py:_maybe_setup_resume():759] checking resume status for None/U-Net Test/z4bnlznq
+2024-09-03 16:02:47,994 INFO    SenderThread:44649 [dir_watcher.py:__init__():211] watching files in: /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/wandb/run-20240903_160247-z4bnlznq/files
+2024-09-03 16:02:47,994 INFO    SenderThread:44649 [sender.py:_start_run_threads():1122] run started: z4bnlznq with start time 1725404567.434421
+2024-09-03 16:02:48,010 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: check_version
+2024-09-03 16:02:48,011 DEBUG   SenderThread:44649 [sender.py:send_request():407] send_request: check_version
+2024-09-03 16:02:48,182 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: run_start
+2024-09-03 16:02:48,195 DEBUG   HandlerThread:44649 [system_info.py:__init__():32] System info init
+2024-09-03 16:02:48,195 DEBUG   HandlerThread:44649 [system_info.py:__init__():47] System info init done
+2024-09-03 16:02:48,196 INFO    HandlerThread:44649 [system_monitor.py:start():181] Starting system monitor
+2024-09-03 16:02:48,196 INFO    SystemMonitor:44649 [system_monitor.py:_start():145] Starting system asset monitoring threads
+2024-09-03 16:02:48,197 INFO    HandlerThread:44649 [system_monitor.py:probe():201] Collecting system info
+2024-09-03 16:02:48,198 DEBUG   HandlerThread:44649 [system_info.py:probe():196] Probing system
+2024-09-03 16:02:48,198 INFO    SystemMonitor:44649 [interfaces.py:start():190] Started cpu monitoring
+2024-09-03 16:02:48,199 INFO    SystemMonitor:44649 [interfaces.py:start():190] Started disk monitoring
+2024-09-03 16:02:48,199 INFO    SystemMonitor:44649 [interfaces.py:start():190] Started memory monitoring
+2024-09-03 16:02:48,204 INFO    SystemMonitor:44649 [interfaces.py:start():190] Started network monitoring
+2024-09-03 16:02:48,217 DEBUG   HandlerThread:44649 [system_info.py:_probe_git():181] Probing git
+2024-09-03 16:02:48,276 DEBUG   HandlerThread:44649 [system_info.py:_probe_git():189] Probing git done
+2024-09-03 16:02:48,276 DEBUG   HandlerThread:44649 [system_info.py:probe():244] Probing system done
+2024-09-03 16:02:48,276 DEBUG   HandlerThread:44649 [system_monitor.py:probe():210] {'os': 'macOS-14.6.1-x86_64-i386-64bit', 'python': '3.10.13', 'heartbeatAt': '2024-09-03T23:02:48.198726', 'startedAt': '2024-09-03T23:02:47.422414', 'docker': None, 'cuda': None, 'args': ('--epochs', '1', '--validation', '10', '--optimizer', 'adam', '--classes', '1', '--test-year', '2019', '--overfitting_test', 'False', '--channels', '51', '--target', 'bias', '--region', 'NorthAmerica', '--seed', '45', '--model_type', 'cqr', '--data_dir', '/Volumes/PRO-G40/sudsaq/unet/data', '--save_dir', '/Volumes/PRO-G40/sudsaq/unet/runs', '--val_percent', '0.1', '--analysis_date', 'june', '--tag', 'neurips2024'), 'state': 'running', 'program': '/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py', 'codePathLocal': 'run_pipeline.py', 'codePath': 'research/kelsey/unet/run_pipeline.py', 'git': {'remote': 'git@github.com:kelsdoerksen/sudsaq-kelsey-research.git', 'commit': '6568639b9172f5c7e5d1d3848b0babc72f5bf668'}, 'email': 'kelseydoerksen@gmail.com', 'root': '/Users/kelseydoerksen/code/sudsaq-kelsey-research', 'host': 'Kelseys-MBP.hsd1.wa.comcast.net', 'username': 'kelseydoerksen', 'executable': '/Users/kelseydoerksen/opt/anaconda3/envs/aq/bin/python', 'cpu_count': 4, 'cpu_count_logical': 8, 'cpu_freq': {'current': 2300, 'min': 2300, 'max': 2300}, 'cpu_freq_per_core': [{'current': 2300, 'min': 2300, 'max': 2300}], 'disk': {'/': {'total': 465.62699127197266, 'used': 9.557659149169922}}, 'memory': {'total': 16.0}}
+2024-09-03 16:02:48,276 INFO    HandlerThread:44649 [system_monitor.py:probe():211] Finished collecting system info
+2024-09-03 16:02:48,276 INFO    HandlerThread:44649 [system_monitor.py:probe():214] Publishing system info
+2024-09-03 16:02:48,277 DEBUG   HandlerThread:44649 [system_info.py:_save_pip():52] Saving list of pip packages installed into the current environment
+2024-09-03 16:02:48,277 DEBUG   HandlerThread:44649 [system_info.py:_save_pip():68] Saving pip packages done
+2024-09-03 16:02:48,277 DEBUG   HandlerThread:44649 [system_info.py:_save_conda():75] Saving list of conda packages installed into the current environment
+2024-09-03 16:02:49,000 INFO    Thread-12 :44649 [dir_watcher.py:_on_file_created():271] file/dir created: /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/wandb/run-20240903_160247-z4bnlznq/files/requirements.txt
+2024-09-03 16:02:49,000 INFO    Thread-12 :44649 [dir_watcher.py:_on_file_created():271] file/dir created: /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/wandb/run-20240903_160247-z4bnlznq/files/conda-environment.yaml
+2024-09-03 16:03:00,043 INFO    Thread-12 :44649 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/wandb/run-20240903_160247-z4bnlznq/files/conda-environment.yaml
+2024-09-03 16:03:00,105 DEBUG   HandlerThread:44649 [system_info.py:_save_conda():87] Saving conda packages done
+2024-09-03 16:03:00,107 INFO    HandlerThread:44649 [system_monitor.py:probe():216] Finished publishing system info
+2024-09-03 16:03:00,111 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: status_report
+2024-09-03 16:03:00,112 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: keepalive
+2024-09-03 16:03:00,112 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: status_report
+2024-09-03 16:03:00,112 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: keepalive
+2024-09-03 16:03:00,113 DEBUG   SenderThread:44649 [sender.py:send():380] send: files
+2024-09-03 16:03:00,113 INFO    SenderThread:44649 [sender.py:_save_file():1378] saving file wandb-metadata.json with policy now
+2024-09-03 16:03:00,122 DEBUG   SenderThread:44649 [sender.py:send():380] send: telemetry
+2024-09-03 16:03:00,123 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: internal_messages
+2024-09-03 16:03:00,124 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: stop_status
+2024-09-03 16:03:00,124 DEBUG   SenderThread:44649 [sender.py:send_request():407] send_request: stop_status
+2024-09-03 16:03:00,269 DEBUG   SenderThread:44649 [sender.py:send():380] send: config
+2024-09-03 16:03:00,514 INFO    wandb-upload_0:44649 [upload_job.py:push():131] Uploaded file /var/folders/45/0gt2k_f526x1p6241p2jbczr0000gn/T/tmpded_31luwandb/07zpm001-wandb-metadata.json
+2024-09-03 16:03:01,049 INFO    Thread-12 :44649 [dir_watcher.py:_on_file_created():271] file/dir created: /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/wandb/run-20240903_160247-z4bnlznq/files/output.log
+2024-09-03 16:03:01,050 INFO    Thread-12 :44649 [dir_watcher.py:_on_file_created():271] file/dir created: /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/wandb/run-20240903_160247-z4bnlznq/files/wandb-metadata.json
+2024-09-03 16:03:03,058 INFO    Thread-12 :44649 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/wandb/run-20240903_160247-z4bnlznq/files/output.log
+2024-09-03 16:03:03,280 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: status_report
+2024-09-03 16:03:03,472 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: partial_history
+2024-09-03 16:03:03,475 DEBUG   SenderThread:44649 [sender.py:send():380] send: history
+2024-09-03 16:03:03,475 DEBUG   SenderThread:44649 [sender.py:send_request():407] send_request: summary_record
+2024-09-03 16:03:03,476 INFO    SenderThread:44649 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2024-09-03 16:03:04,058 INFO    Thread-12 :44649 [dir_watcher.py:_on_file_created():271] file/dir created: /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/wandb/run-20240903_160247-z4bnlznq/files/wandb-summary.json
+2024-09-03 16:03:04,407 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: partial_history
+2024-09-03 16:03:04,408 DEBUG   SenderThread:44649 [sender.py:send():380] send: history
+2024-09-03 16:03:04,408 DEBUG   SenderThread:44649 [sender.py:send_request():407] send_request: summary_record
+2024-09-03 16:03:04,408 INFO    SenderThread:44649 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2024-09-03 16:03:05,062 INFO    Thread-12 :44649 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/wandb/run-20240903_160247-z4bnlznq/files/output.log
+2024-09-03 16:03:05,062 INFO    Thread-12 :44649 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/wandb/run-20240903_160247-z4bnlznq/files/wandb-summary.json
+2024-09-03 16:03:07,072 INFO    Thread-12 :44649 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/wandb/run-20240903_160247-z4bnlznq/files/output.log
+2024-09-03 16:03:08,443 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: status_report
+2024-09-03 16:03:13,457 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: status_report
+2024-09-03 16:03:15,122 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: internal_messages
+2024-09-03 16:03:15,123 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: stop_status
+2024-09-03 16:03:15,124 DEBUG   SenderThread:44649 [sender.py:send_request():407] send_request: stop_status
+2024-09-03 16:03:19,232 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: status_report
+2024-09-03 16:03:20,115 INFO    Thread-12 :44649 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/wandb/run-20240903_160247-z4bnlznq/files/config.yaml
+2024-09-03 16:03:24,346 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: status_report
+2024-09-03 16:03:29,362 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: status_report
+2024-09-03 16:03:30,124 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: stop_status
+2024-09-03 16:03:30,124 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: internal_messages
+2024-09-03 16:03:30,125 DEBUG   SenderThread:44649 [sender.py:send_request():407] send_request: stop_status
+2024-09-03 16:03:35,329 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: status_report
+2024-09-03 16:03:40,347 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: status_report
+2024-09-03 16:03:45,128 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: internal_messages
+2024-09-03 16:03:45,129 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: stop_status
+2024-09-03 16:03:45,130 DEBUG   SenderThread:44649 [sender.py:send_request():407] send_request: stop_status
+2024-09-03 16:03:46,227 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: status_report
+2024-09-03 16:03:48,210 DEBUG   SystemMonitor:44649 [system_monitor.py:_start():159] Starting system metrics aggregation loop
+2024-09-03 16:03:48,215 DEBUG   SenderThread:44649 [sender.py:send():380] send: stats
+2024-09-03 16:03:51,227 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: status_report
+2024-09-03 16:03:56,240 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: status_report
+2024-09-03 16:04:00,132 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: stop_status
+2024-09-03 16:04:00,133 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: internal_messages
+2024-09-03 16:04:00,133 DEBUG   SenderThread:44649 [sender.py:send_request():407] send_request: stop_status
+2024-09-03 16:04:01,324 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: status_report
+2024-09-03 16:04:06,341 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: status_report
+2024-09-03 16:04:11,357 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: status_report
+2024-09-03 16:04:15,138 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: internal_messages
+2024-09-03 16:04:15,141 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: stop_status
+2024-09-03 16:04:15,143 DEBUG   SenderThread:44649 [sender.py:send_request():407] send_request: stop_status
+2024-09-03 16:04:17,249 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: status_report
+2024-09-03 16:04:18,218 DEBUG   SenderThread:44649 [sender.py:send():380] send: stats
+2024-09-03 16:04:23,234 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: status_report
+2024-09-03 16:04:28,251 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: status_report
+2024-09-03 16:04:30,143 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: stop_status
+2024-09-03 16:04:30,143 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: internal_messages
+2024-09-03 16:04:30,144 DEBUG   SenderThread:44649 [sender.py:send_request():407] send_request: stop_status
+2024-09-03 16:04:34,237 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: status_report
+2024-09-03 16:04:39,255 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: status_report
+2024-09-03 16:04:44,271 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: status_report
+2024-09-03 16:04:45,147 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: stop_status
+2024-09-03 16:04:45,147 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: internal_messages
+2024-09-03 16:04:45,148 DEBUG   SenderThread:44649 [sender.py:send_request():407] send_request: stop_status
+2024-09-03 16:04:48,223 DEBUG   SenderThread:44649 [sender.py:send():380] send: stats
+2024-09-03 16:04:48,434 DEBUG   SenderThread:44649 [sender.py:send():380] send: exit
+2024-09-03 16:04:48,434 INFO    SenderThread:44649 [sender.py:send_exit():585] handling exit code: 0
+2024-09-03 16:04:48,435 INFO    SenderThread:44649 [sender.py:send_exit():587] handling runtime: 120
+2024-09-03 16:04:48,435 INFO    SenderThread:44649 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2024-09-03 16:04:48,435 INFO    SenderThread:44649 [sender.py:send_exit():593] send defer
+2024-09-03 16:04:48,435 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: defer
+2024-09-03 16:04:48,435 INFO    HandlerThread:44649 [handler.py:handle_request_defer():170] handle defer: 0
+2024-09-03 16:04:48,436 DEBUG   SenderThread:44649 [sender.py:send_request():407] send_request: defer
+2024-09-03 16:04:48,436 INFO    SenderThread:44649 [sender.py:send_request_defer():609] handle sender defer: 0
+2024-09-03 16:04:48,436 INFO    SenderThread:44649 [sender.py:transition_state():613] send defer: 1
+2024-09-03 16:04:48,436 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: defer
+2024-09-03 16:04:48,436 INFO    HandlerThread:44649 [handler.py:handle_request_defer():170] handle defer: 1
+2024-09-03 16:04:48,436 DEBUG   SenderThread:44649 [sender.py:send_request():407] send_request: defer
+2024-09-03 16:04:48,436 INFO    SenderThread:44649 [sender.py:send_request_defer():609] handle sender defer: 1
+2024-09-03 16:04:48,436 INFO    SenderThread:44649 [sender.py:transition_state():613] send defer: 2
+2024-09-03 16:04:48,436 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: defer
+2024-09-03 16:04:48,437 INFO    HandlerThread:44649 [handler.py:handle_request_defer():170] handle defer: 2
+2024-09-03 16:04:48,437 INFO    HandlerThread:44649 [system_monitor.py:finish():190] Stopping system monitor
+2024-09-03 16:04:48,437 DEBUG   SystemMonitor:44649 [system_monitor.py:_start():166] Finished system metrics aggregation loop
+2024-09-03 16:04:48,437 DEBUG   SystemMonitor:44649 [system_monitor.py:_start():170] Publishing last batch of metrics
+2024-09-03 16:04:48,438 INFO    HandlerThread:44649 [interfaces.py:finish():202] Joined cpu monitor
+2024-09-03 16:04:48,438 INFO    HandlerThread:44649 [interfaces.py:finish():202] Joined disk monitor
+2024-09-03 16:04:48,438 INFO    HandlerThread:44649 [interfaces.py:finish():202] Joined memory monitor
+2024-09-03 16:04:48,438 INFO    HandlerThread:44649 [interfaces.py:finish():202] Joined network monitor
+2024-09-03 16:04:48,438 DEBUG   SenderThread:44649 [sender.py:send_request():407] send_request: defer
+2024-09-03 16:04:48,438 INFO    SenderThread:44649 [sender.py:send_request_defer():609] handle sender defer: 2
+2024-09-03 16:04:48,438 INFO    SenderThread:44649 [sender.py:transition_state():613] send defer: 3
+2024-09-03 16:04:48,438 DEBUG   SenderThread:44649 [sender.py:send():380] send: stats
+2024-09-03 16:04:48,439 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: defer
+2024-09-03 16:04:48,439 INFO    HandlerThread:44649 [handler.py:handle_request_defer():170] handle defer: 3
+2024-09-03 16:04:48,439 DEBUG   SenderThread:44649 [sender.py:send_request():407] send_request: defer
+2024-09-03 16:04:48,439 INFO    SenderThread:44649 [sender.py:send_request_defer():609] handle sender defer: 3
+2024-09-03 16:04:48,439 INFO    SenderThread:44649 [sender.py:transition_state():613] send defer: 4
+2024-09-03 16:04:48,439 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: defer
+2024-09-03 16:04:48,440 INFO    HandlerThread:44649 [handler.py:handle_request_defer():170] handle defer: 4
+2024-09-03 16:04:48,440 DEBUG   SenderThread:44649 [sender.py:send_request():407] send_request: defer
+2024-09-03 16:04:48,440 INFO    SenderThread:44649 [sender.py:send_request_defer():609] handle sender defer: 4
+2024-09-03 16:04:48,440 INFO    SenderThread:44649 [sender.py:transition_state():613] send defer: 5
+2024-09-03 16:04:48,440 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: defer
+2024-09-03 16:04:48,440 INFO    HandlerThread:44649 [handler.py:handle_request_defer():170] handle defer: 5
+2024-09-03 16:04:48,440 DEBUG   SenderThread:44649 [sender.py:send():380] send: summary
+2024-09-03 16:04:48,441 INFO    SenderThread:44649 [sender.py:_save_file():1378] saving file wandb-summary.json with policy end
+2024-09-03 16:04:48,441 DEBUG   SenderThread:44649 [sender.py:send_request():407] send_request: defer
+2024-09-03 16:04:48,441 INFO    SenderThread:44649 [sender.py:send_request_defer():609] handle sender defer: 5
+2024-09-03 16:04:48,441 INFO    SenderThread:44649 [sender.py:transition_state():613] send defer: 6
+2024-09-03 16:04:48,441 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: defer
+2024-09-03 16:04:48,441 INFO    HandlerThread:44649 [handler.py:handle_request_defer():170] handle defer: 6
+2024-09-03 16:04:48,442 DEBUG   SenderThread:44649 [sender.py:send_request():407] send_request: defer
+2024-09-03 16:04:48,442 INFO    SenderThread:44649 [sender.py:send_request_defer():609] handle sender defer: 6
+2024-09-03 16:04:48,442 INFO    SenderThread:44649 [sender.py:transition_state():613] send defer: 7
+2024-09-03 16:04:48,442 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: status_report
+2024-09-03 16:04:48,442 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: defer
+2024-09-03 16:04:48,442 INFO    HandlerThread:44649 [handler.py:handle_request_defer():170] handle defer: 7
+2024-09-03 16:04:48,442 DEBUG   SenderThread:44649 [sender.py:send_request():407] send_request: defer
+2024-09-03 16:04:48,442 INFO    SenderThread:44649 [sender.py:send_request_defer():609] handle sender defer: 7
+2024-09-03 16:04:48,450 INFO    Thread-12 :44649 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/wandb/run-20240903_160247-z4bnlznq/files/wandb-summary.json
+2024-09-03 16:04:49,438 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: poll_exit
+2024-09-03 16:04:50,483 INFO    SenderThread:44649 [sender.py:transition_state():613] send defer: 8
+2024-09-03 16:04:50,483 DEBUG   SenderThread:44649 [sender.py:send_request():407] send_request: poll_exit
+2024-09-03 16:04:50,484 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: defer
+2024-09-03 16:04:50,484 INFO    HandlerThread:44649 [handler.py:handle_request_defer():170] handle defer: 8
+2024-09-03 16:04:50,484 DEBUG   SenderThread:44649 [sender.py:send_request():407] send_request: defer
+2024-09-03 16:04:50,485 INFO    SenderThread:44649 [sender.py:send_request_defer():609] handle sender defer: 8
+2024-09-03 16:04:50,485 INFO    SenderThread:44649 [job_builder.py:build():281] Attempting to build job artifact
+2024-09-03 16:04:50,486 INFO    SenderThread:44649 [job_builder.py:_get_source_type():393] is repo sourced job
+2024-09-03 16:04:50,489 INFO    SenderThread:44649 [job_builder.py:build():369] adding wandb-job metadata file
+2024-09-03 16:04:50,496 INFO    SenderThread:44649 [sender.py:transition_state():613] send defer: 9
+2024-09-03 16:04:50,496 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: defer
+2024-09-03 16:04:50,496 INFO    HandlerThread:44649 [handler.py:handle_request_defer():170] handle defer: 9
+2024-09-03 16:04:50,497 DEBUG   SenderThread:44649 [sender.py:send():380] send: artifact
+2024-09-03 16:04:51,154 INFO    wandb-upload_1:44649 [upload_job.py:push():86] Skipped uploading /Users/kelseydoerksen/Library/Application Support/wandb/artifacts/staging/tmp298uohqp
+2024-09-03 16:04:51,458 INFO    Thread-12 :44649 [dir_watcher.py:_on_file_modified():288] file/dir modified: /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/wandb/run-20240903_160247-z4bnlznq/files/output.log
+2024-09-03 16:04:52,376 INFO    wandb-upload_0:44649 [upload_job.py:push():89] Uploaded file /Users/kelseydoerksen/Library/Application Support/wandb/artifacts/staging/tmpjan1ogda
+2024-09-03 16:04:53,374 INFO    SenderThread:44649 [sender.py:send_artifact():1456] sent artifact job-git_github.com_kelsdoerksen_sudsaq-kelsey-research.git_research_kelsey_unet_run_pipeline.py - {'id': 'QXJ0aWZhY3Q6MTE3ODk2MjYyNw==', 'state': 'PENDING', 'artifactSequence': {'id': 'QXJ0aWZhY3RDb2xsZWN0aW9uOjEwMzU2MjEyMA==', 'latestArtifact': {'id': 'QXJ0aWZhY3Q6MTE3ODk0MDI0NA==', 'versionIndex': 52}}}
+2024-09-03 16:04:53,374 DEBUG   SenderThread:44649 [sender.py:send_request():407] send_request: defer
+2024-09-03 16:04:53,374 INFO    SenderThread:44649 [sender.py:send_request_defer():609] handle sender defer: 9
+2024-09-03 16:04:53,374 INFO    SenderThread:44649 [dir_watcher.py:finish():358] shutting down directory watcher
+2024-09-03 16:04:53,467 INFO    SenderThread:44649 [dir_watcher.py:finish():388] scan: /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/wandb/run-20240903_160247-z4bnlznq/files
+2024-09-03 16:04:53,467 INFO    SenderThread:44649 [dir_watcher.py:finish():402] scan save: /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/wandb/run-20240903_160247-z4bnlznq/files/requirements.txt requirements.txt
+2024-09-03 16:04:53,468 INFO    SenderThread:44649 [dir_watcher.py:finish():402] scan save: /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/wandb/run-20240903_160247-z4bnlznq/files/output.log output.log
+2024-09-03 16:04:53,468 INFO    SenderThread:44649 [dir_watcher.py:finish():402] scan save: /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/wandb/run-20240903_160247-z4bnlznq/files/config.yaml config.yaml
+2024-09-03 16:04:53,473 INFO    SenderThread:44649 [dir_watcher.py:finish():402] scan save: /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/wandb/run-20240903_160247-z4bnlznq/files/wandb-summary.json wandb-summary.json
+2024-09-03 16:04:53,476 INFO    SenderThread:44649 [dir_watcher.py:finish():402] scan save: /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/wandb/run-20240903_160247-z4bnlznq/files/conda-environment.yaml conda-environment.yaml
+2024-09-03 16:04:53,479 INFO    SenderThread:44649 [dir_watcher.py:finish():402] scan save: /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/wandb/run-20240903_160247-z4bnlznq/files/wandb-metadata.json wandb-metadata.json
+2024-09-03 16:04:53,479 INFO    SenderThread:44649 [sender.py:transition_state():613] send defer: 10
+2024-09-03 16:04:53,484 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: defer
+2024-09-03 16:04:53,484 INFO    HandlerThread:44649 [handler.py:handle_request_defer():170] handle defer: 10
+2024-09-03 16:04:53,485 DEBUG   SenderThread:44649 [sender.py:send_request():407] send_request: defer
+2024-09-03 16:04:53,485 INFO    SenderThread:44649 [sender.py:send_request_defer():609] handle sender defer: 10
+2024-09-03 16:04:53,485 INFO    SenderThread:44649 [file_pusher.py:finish():175] shutting down file pusher
+2024-09-03 16:04:53,730 INFO    wandb-upload_0:44649 [upload_job.py:push():131] Uploaded file /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/wandb/run-20240903_160247-z4bnlznq/files/output.log
+2024-09-03 16:04:53,834 INFO    wandb-upload_2:44649 [upload_job.py:push():131] Uploaded file /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/wandb/run-20240903_160247-z4bnlznq/files/config.yaml
+2024-09-03 16:04:53,916 INFO    wandb-upload_3:44649 [upload_job.py:push():131] Uploaded file /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/wandb/run-20240903_160247-z4bnlznq/files/wandb-summary.json
+2024-09-03 16:04:53,927 INFO    wandb-upload_4:44649 [upload_job.py:push():131] Uploaded file /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/wandb/run-20240903_160247-z4bnlznq/files/conda-environment.yaml
+2024-09-03 16:04:53,943 INFO    wandb-upload_1:44649 [upload_job.py:push():131] Uploaded file /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/wandb/run-20240903_160247-z4bnlznq/files/requirements.txt
+2024-09-03 16:04:54,145 INFO    Thread-11 (_thread_body):44649 [sender.py:transition_state():613] send defer: 11
+2024-09-03 16:04:54,146 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: defer
+2024-09-03 16:04:54,147 INFO    HandlerThread:44649 [handler.py:handle_request_defer():170] handle defer: 11
+2024-09-03 16:04:54,147 DEBUG   SenderThread:44649 [sender.py:send_request():407] send_request: defer
+2024-09-03 16:04:54,148 INFO    SenderThread:44649 [sender.py:send_request_defer():609] handle sender defer: 11
+2024-09-03 16:04:54,148 INFO    SenderThread:44649 [file_pusher.py:join():181] waiting for file pusher
+2024-09-03 16:04:54,148 INFO    SenderThread:44649 [sender.py:transition_state():613] send defer: 12
+2024-09-03 16:04:54,148 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: defer
+2024-09-03 16:04:54,149 INFO    HandlerThread:44649 [handler.py:handle_request_defer():170] handle defer: 12
+2024-09-03 16:04:54,150 DEBUG   SenderThread:44649 [sender.py:send_request():407] send_request: defer
+2024-09-03 16:04:54,150 INFO    SenderThread:44649 [sender.py:send_request_defer():609] handle sender defer: 12
+2024-09-03 16:04:54,150 INFO    SenderThread:44649 [file_stream.py:finish():595] file stream finish called
+2024-09-03 16:04:54,436 INFO    SenderThread:44649 [file_stream.py:finish():599] file stream finish is done
+2024-09-03 16:04:54,436 INFO    SenderThread:44649 [sender.py:transition_state():613] send defer: 13
+2024-09-03 16:04:54,437 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: defer
+2024-09-03 16:04:54,437 INFO    HandlerThread:44649 [handler.py:handle_request_defer():170] handle defer: 13
+2024-09-03 16:04:54,437 DEBUG   SenderThread:44649 [sender.py:send_request():407] send_request: defer
+2024-09-03 16:04:54,437 INFO    SenderThread:44649 [sender.py:send_request_defer():609] handle sender defer: 13
+2024-09-03 16:04:54,437 INFO    SenderThread:44649 [sender.py:transition_state():613] send defer: 14
+2024-09-03 16:04:54,438 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: defer
+2024-09-03 16:04:54,438 INFO    HandlerThread:44649 [handler.py:handle_request_defer():170] handle defer: 14
+2024-09-03 16:04:54,438 DEBUG   SenderThread:44649 [sender.py:send():380] send: final
+2024-09-03 16:04:54,438 DEBUG   SenderThread:44649 [sender.py:send():380] send: footer
+2024-09-03 16:04:54,438 DEBUG   SenderThread:44649 [sender.py:send_request():407] send_request: defer
+2024-09-03 16:04:54,438 INFO    SenderThread:44649 [sender.py:send_request_defer():609] handle sender defer: 14
+2024-09-03 16:04:54,439 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: keepalive
+2024-09-03 16:04:54,439 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: poll_exit
+2024-09-03 16:04:54,440 DEBUG   SenderThread:44649 [sender.py:send_request():407] send_request: poll_exit
+2024-09-03 16:04:54,441 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: server_info
+2024-09-03 16:04:54,441 DEBUG   SenderThread:44649 [sender.py:send_request():407] send_request: server_info
+2024-09-03 16:04:54,444 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: get_summary
+2024-09-03 16:04:54,445 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: sampled_history
+2024-09-03 16:04:54,446 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: internal_messages
+2024-09-03 16:04:54,447 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: job_info
+2024-09-03 16:04:54,511 DEBUG   SenderThread:44649 [sender.py:send_request():407] send_request: job_info
+2024-09-03 16:04:54,512 INFO    MainThread:44649 [wandb_run.py:_footer_history_summary_info():3554] rendering history
+2024-09-03 16:04:54,513 INFO    MainThread:44649 [wandb_run.py:_footer_history_summary_info():3586] rendering summary
+2024-09-03 16:04:54,513 INFO    MainThread:44649 [wandb_run.py:_footer_sync_info():3513] logging synced files
+2024-09-03 16:04:54,514 DEBUG   HandlerThread:44649 [handler.py:handle_request():144] handle_request: shutdown
+2024-09-03 16:04:54,515 INFO    HandlerThread:44649 [handler.py:finish():844] shutting down handler
+2024-09-03 16:04:55,451 INFO    WriterThread:44649 [datastore.py:close():294] close: /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/wandb/run-20240903_160247-z4bnlznq/run-z4bnlznq.wandb
+2024-09-03 16:04:55,513 INFO    SenderThread:44649 [sender.py:finish():1534] shutting down sender
+2024-09-03 16:04:55,514 INFO    SenderThread:44649 [file_pusher.py:finish():175] shutting down file pusher
+2024-09-03 16:04:55,514 INFO    SenderThread:44649 [file_pusher.py:join():181] waiting for file pusher
