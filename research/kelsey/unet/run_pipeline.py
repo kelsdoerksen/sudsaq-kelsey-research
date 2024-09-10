@@ -21,14 +21,10 @@ def get_args():
     parser.add_argument('--epochs', '-e',  type=int, default=200, help='Number of epochs')
     parser.add_argument('--batch_size', '-b', type=int, default=32, help='Batch size')
     parser.add_argument('--learning-rate', '-l', type=float, default=0.001, help='Learning rate', dest='lr')
-    parser.add_argument('--validation', '-v', dest='val', type=float, default=10.0,
-                        help='Percent of the data that is used as validation (0-100)')
     parser.add_argument('--optimizer', '-o', type=str, default='adam', help='Model optimizer')
     parser.add_argument('--classes', '-c', type=int, default=1, help='Number of classes')
     parser.add_argument('--test-year', '-t', type=str, help='Test year for analysis (sets out of training)')
     parser.add_argument('--overfitting_test', type=str, help='Dir for overfitting model to check')
-    parser.add_argument('--analysis_date', required=True,
-                        help='Analysis date for model, must be one of june, july, august or summer')
     parser.add_argument('--channels', required=True,
                         help='Number of channels, must be one of 9, 32, 39 for now')
     parser.add_argument('--target', help='target for unet, must be one of mda8 or bias',
@@ -55,7 +51,6 @@ if __name__ == '__main__':
 
     args = get_args()
     channels = int(args.channels)
-    analysis_time = args.analysis_date
     region = args.region
     target = args.target
     model_type = args.model_type

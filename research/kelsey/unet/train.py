@@ -64,8 +64,8 @@ def train_model(model,
         optimizer = optim.Adam(model.parameters(),
                                lr=learning_rate, weight_decay=weight_decay)
 
-    # Setting up loss
-    criterion = nn.MSELoss()
+    # Setting up loss to filter out nans
+    criterion = NoNaNMSE()
 
     # --- Setting up schedulers
     #scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, 'min', patience=5)  # goal: minimize MSE score.
@@ -85,15 +85,7 @@ def train_model(model,
             # Zero gradients for every batch
             optimizer.zero_grad()  # if set_to_none=True, sets gradients of all optimized torch.Tensors to None, will have a lower memory footprint, can modestly improve performance
 
-            # Filter out nans
-            mask = ~torch.isnan(labels)
-
             outputs = model(inputs)                 # predict on input
-
-            # Add mask before calculating loss to remove nans
-            outputs = outputs[mask]
-            labels = labels[mask]
-            labels = labels[mask]
 
             loss = criterion(outputs, labels)       # Calculate loss
 

@@ -382,36 +382,27 @@ def generate_plots(target, channel_list, region, target_dir):
             truth_vs_predicted(groundtruth, pred, query_directory, region)
 
 
-def calc_rmse(truth, predict, region):
+def calc_rmse(truth_list, predict_list, region, analysis_period):
     """
     Calculate and return rmse per point in sample
+    :param: analysis period: june, july, august, summer
     """
     if region == 'NorthAmerica':
         list_step = 49
     if region == 'Europe':
         list_step = 31
 
-    truth = np.hstack(truth)
-    predict = np.hstack(predict)
+    if analysis_period == 'june':
+        num_samples = 30
 
-    rmse_list = []
+    err_total = 0
+    for i in range(len(truth_list)):
+        err = truth_list[i] - predict_list[i]
+        err_sq = err ** 2
+        err_total = err_total + err_sq
 
-    for i in range(len(truth)):
-        if np.isnan(truth[i]):
-            rmse_list.append(np.nan)
-        else:
-            mse = np.square(np.subtract(truth[i], predict[i])).mean()
-            rmse = math.sqrt(mse)
-            rmse_list.append(rmse)
-
-    total_list = []
-    for i in range(0, len(rmse_list), list_step):
-        dummy_list = [rmse_list[i:i + list_step]]
-        total_list.append(dummy_list)
-
-    arr = np.array(total_list)
-    arr = np.moveaxis(arr, 0,1)
-    rmse_arr = arr[0,:,:]
+    err_avg = err_total/num_samples
+    rmse_arr = np.sqrt(err_avg)
 
     return rmse_arr
 
@@ -466,26 +457,36 @@ def spatial_map(avg_data, target, metric, region, savedir):
             vmin = 0
             vmax = 100
         elif metric == 'aleatoric_uncertainty':
-            vmin = np.nanmin(avg_data)
-            vmax = np.nanmax(avg_data)
+            vmin = 10
+            vmax = 1000
         elif metric == 'epistemic_uncertainty':
-            vmin = np.nanmin(avg_data)
-            vmax = np.nanmax(avg_data)
+            if region == 'Europe':
+                vmax = 80
+            if region == 'NorthAmerica':
+                vmax = 200
+            vmin = 10
+        elif metric == 'upper_bound_predictions':
+            vmin = 20
+            vmax = 60
+        elif metric == 'lower_bound_predictions':
+            vmin = -10
+            vmax = 20
         elif metric == 'avg_length':
-            vmin = 0
+            vmin = 30
             vmax = 50
         else:
-            vmin = -20
+            vmin = 0
             vmax = 50
 
     x, y = np.meshgrid(lon_vals, lat_vals, indexing='xy')
-    fig, ax = plt.subplots(figsize=(10, 8), subplot_kw={'projection': ccrs.PlateCarree()})
+    fig, ax = plt.subplots(figsize=(12, 10), subplot_kw={'projection': ccrs.PlateCarree()})
     plt.pcolor(x, y, avg_data, cmap='coolwarm', vmin=vmin, vmax=vmax)
-    ax.coastlines()
+    ax.coastlines(linewidth=2)
+    ax.set_facecolor('gray')
     #ax.stock_img()
     ax.set_extent(bbox_dict['{}'.format(bbox_extent)], crs=ccrs.PlateCarree())
     gl = ax.gridlines(crs=ccrs.PlateCarree(), draw_labels=True,
-                      linewidth=1, color='gray', alpha=0.5, linestyle='--')
+                      linewidth=1, color='gray', alpha=0.8, linestyle='--')
     gl.xformatter = LONGITUDE_FORMATTER
     gl.yformatter = LATITUDE_FORMATTER
     im_ratio = len(lat_vals) / len(lon_vals)
@@ -544,12 +545,9 @@ def generate_timeseries_plot(data_dict, datelist, location, data_type, savedir):
     plt.close()
 
 
-def timeseries_plots(arrays, region, analysis_period, data_type, savedir):
+def timeseries_plots(final_dict, analysis_period, data_type, savedir):
     """
-    Generate timeseries plots per location for 2020 test set
-    :param: arrays: list of predictions from model
-    :param: region: region (NA, EU, globe)
-    :param: analysis period: time period of test set, june, july, aug, summer
+    Generate timeseries plots per location for test set
     """
     start, end = None, None
     if analysis_period == 'june':
@@ -567,52 +565,8 @@ def timeseries_plots(arrays, region, analysis_period, data_type, savedir):
 
     datelist = daterange(start, end)
 
-    if region == 'NorthAmerica':
-        lon_vals = na_lon_vals
-        lat_vals = na_lat_vals
-
-    if region == 'Europe':
-        lat_vals = eu_lat_vals
-        lon_vals = eu_lon_vals
-
-    if region == 'Globe':
-        lat_vals = globe_lat_vals
-        lon_vals = globe_lon_vals
-
-    timeseries_dict = {}
-    for i in range(len(arrays)):
-        doy = datelist[i]
-        arr = arrays[i]
-        timeseries_dict['{}'.format(doy)] = arr.flatten().tolist()
-
-    # iterate through the lat and lon vals and plot
-    toar_dict = {}
-    for lat in lat_vals:
-        for lon in lon_vals:
-            toar_dict['lat:{},lon:{}'.format(lat, lon)] = []
-
-    timeseries_dict_keys_list = list(timeseries_dict.keys())
-    i=0
-    for k, v in toar_dict.items():
-        for day in timeseries_dict_keys_list:
-            toar_dict[k].append(timeseries_dict[day][i])
-        i+=1
-
-    keys_to_drop = []
-    for k, v in toar_dict.items():
-        if np.isnan(toar_dict[k]).all():
-            print('Dropping: {}'.format(k))
-            keys_to_drop.append(k)
-
-    final_dict = {key: value for key, value in toar_dict.items() if key not in keys_to_drop}
-
-    # Save data as pickle for further plotting
-    # Store data (serialize)
-    with open('{}/{}_timeseries_data.pickle'.format(savedir,data_type), 'wb') as handle:
-        pickle.dump(final_dict, handle, protocol=pickle.HIGHEST_PROTOCOL)
-
-    # Getting avg length values to print out the TOAR station that had the largest and smallest avg length
-    if data_type == 'interval_length':
+    # Getting avg length or total unc values to print out the TOAR station that had the largest and smallest
+    if data_type in ['interval_length', 'total_unc']:
         avg_list = []
         for k in final_dict.keys():
             avg_list.append(np.mean(final_dict[k]))
@@ -621,11 +575,14 @@ def timeseries_plots(arrays, region, analysis_period, data_type, savedir):
         max_loc = avg_list.index(np.nanmax(avg_list))
         min_loc = avg_list.index(np.nanmin(avg_list))
         with open("{}/max_min_locs.txt".format(save_dir), "a") as f:
-            print("TOAR location with max avg length is: {}".format(key_list[max_loc]), file=f)
-            print("TOAR location with min avg length is: {}".format(key_list[min_loc]), file=f)
+            print("TOAR location with max avg {} is: {}".format(data_type, key_list[max_loc]), file=f)
+            print("TOAR location with min avg {} is: {}".format(data_type, key_list[min_loc]), file=f)
 
+    '''
     for k in final_dict.keys():
         generate_timeseries_plot(final_dict[k], datelist, k, data_type, savedir)
+    '''
+
 
 def plot_max_min_timeseries(length_dict, point_pred, gt, upper, lower, savedir):
     """
@@ -666,6 +623,7 @@ def plot_max_min_timeseries(length_dict, point_pred, gt, upper, lower, savedir):
     plt.title('Groundtruth and Predictions for Maximum Avg Interval Length at: {}'.format(max_key))
     plt.xlabel('DOY')
     plt.ylabel('Bias')
+    ax.set_ylim(-10, 80)
     ax.legend()
     plt.savefig('{}/Max_Interval_Timeseries_{}.png'.format(savedir, max_key))
     plt.close()
@@ -675,12 +633,79 @@ def plot_max_min_timeseries(length_dict, point_pred, gt, upper, lower, savedir):
     ax.fill_between(datelist, min_lower, min_upper, alpha=0.2)
     ax.set_xticks(np.arange(0, len(datelist) + 1, 9))
     ax.plot(datelist, min_point, 'o', label='Prediction')
-    plt.title('Groundtruth and Predictions for Minmum Avg Interval Length at: {}'.format(min_key))
+    plt.title('Groundtruth and Predictions for Min Avg Interval Length at: {}'.format(min_key))
     plt.xlabel('DOY')
     plt.ylabel('Bias')
+    ax.set_ylim(-10, 80)
     ax.legend()
     plt.savefig('{}/Min_Interval_Timeseries_{}.png'.format(savedir, min_key))
     plt.close()
+
+
+def generate_loc_dict(arrays, region, analysis_period, data_type, savedir):
+    """
+    Generate dictionary of data per location
+
+    """
+    start, end = None, None
+    if analysis_period == 'june':
+        start = date(2019, 6, 1)
+        end = date(2019, 6, 30)
+    elif analysis_period == 'july':
+        start = date(2019, 7, 1)
+        end = date(2019, 7, 31)
+    elif analysis_period == 'aug':
+        start = date(2019, 8, 1)
+        end = date(2019, 8, 31)
+    elif analysis_period == 'summer':
+        start = date(2019, 6, 1)
+        end = date(2019, 8, 31)
+
+    datelist = daterange(start, end)
+
+    if region == 'NorthAmerica':
+        lon_vals = na_lon_vals
+        lat_vals = na_lat_vals
+
+    if region == 'Europe':
+        lat_vals = eu_lat_vals
+        lon_vals = eu_lon_vals
+
+    if region == 'Globe':
+        lat_vals = globe_lat_vals
+        lon_vals = globe_lon_vals
+
+    timeseries_dict = {}
+    for i in range(len(arrays)):
+        doy = datelist[i]
+        arr = arrays[i]
+        timeseries_dict['{}'.format(doy)] = arr.flatten().tolist()
+
+    # iterate through the lat and lon vals and plot
+    toar_dict = {}
+    for lat in lat_vals:
+        for lon in lon_vals:
+            toar_dict['lat:{},lon:{}'.format(lat, lon)] = []
+
+    timeseries_dict_keys_list = list(timeseries_dict.keys())
+    i = 0
+    for k, v in toar_dict.items():
+        for day in timeseries_dict_keys_list:
+            toar_dict[k].append(timeseries_dict[day][i])
+        i += 1
+
+    keys_to_drop = []
+    for k, v in toar_dict.items():
+        if np.isnan(toar_dict[k]).all():
+            print('Dropping: {}'.format(k))
+            keys_to_drop.append(k)
+
+    final_dict = {key: value for key, value in toar_dict.items() if key not in keys_to_drop}
+    # Save data for further plotting
+    with open('{}/{}_timeseries_data.pickle'.format(savedir,data_type), 'wb') as handle:
+        pickle.dump(final_dict, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+    return final_dict
 
 
 def generate_standard_plots(channels, target, num_lats, num_lons, region, save_dir, analysis_period):
@@ -710,9 +735,22 @@ def generate_standard_plots(channels, target, num_lats, num_lons, region, save_d
     spatial_map(avg_residual, target, 'residual', region, save_dir)
 
     # Get avg rmse and plot
-    rmse_calc = calc_rmse(gt_avg_arr_2d, pred_avg_arr_2d, region)
-    np.save('{}/rmse.npy'.format(save_dir), rmse_calc)
+    rmse_calc = calc_rmse(groundtruth_list, pred_list, region, analysis_period)
+    np.save('{}/avg_rmse.npy'.format(save_dir), rmse_calc)
     spatial_map(rmse_calc, target, 'rmse', region, save_dir)
+
+
+    pred_list_nans = []
+    for i in range(len(nan_mask_list)):
+        pred_list_nans.append(pred_list[i])
+
+    groundtruth_dict = generate_loc_dict(groundtruth_list, region, analysis_period, 'groundtruth', save_dir)
+    pred_dict = generate_loc_dict(pred_list_nans, region, analysis_period, 'point_predictions', save_dir)
+
+    # Generate timeseries plots per location
+    timeseries_plots(pred_dict, analysis_period, 'point_predictions', save_dir)
+    timeseries_plots(groundtruth_dict, analysis_period, 'groundtruth', save_dir)
+
 
 
 def generate_mcdropout_plots(channels, target, num_lats, num_lons, region, save_dir, analysis_period):
@@ -745,7 +783,7 @@ def generate_mcdropout_plots(channels, target, num_lats, num_lons, region, save_
     spatial_map(avg_residual, target, 'residual', region, save_dir)
 
     # Get avg rmse and plot
-    rmse_calc = calc_rmse(gt_avg_arr_2d, pred_avg_arr_2d, region)
+    rmse_calc = calc_rmse(groundtruth_list, pred_list, region, analysis_period)
     np.save('{}/avg_rmse.npy'.format(save_dir), rmse_calc)
     spatial_map(rmse_calc, target, 'rmse', region, save_dir)
 
@@ -763,6 +801,30 @@ def generate_mcdropout_plots(channels, target, num_lats, num_lons, region, save_
     unc_avg_epi_arr_2d = calculate_avg_2d_array(epi_uncertainty_list, nan_mask_list, num_lats, num_lons)
     np.save('{}/avg_epistemic_uncertainty.npy'.format(save_dir), unc_avg_epi_arr_2d)
     spatial_map(unc_avg_epi_arr_2d, target, 'epistemic_uncertainty', region, save_dir)
+
+    # Apply nan mask and get timeseries
+    ale_list_nans = []
+    epi_list_nans = []
+    total_unc_list_nans = []
+    pred_list_nans = []
+    for i in range(len(nan_mask_list)):
+        ale_list_nans.append(ale_uncertainty_list [i] * nan_mask_list[i])
+        epi_list_nans.append(epi_uncertainty_list[i] * nan_mask_list[i])
+        total_unc_list_nans.append(total_uncertainty_list[i] * nan_mask_list[i])
+        pred_list_nans.append(pred_list[i])
+
+    ale_dict = generate_loc_dict(ale_list_nans, region, analysis_period, 'aleatoric', save_dir)
+    epi_dict = generate_loc_dict(epi_list_nans, region, analysis_period, 'epistemic', save_dir)
+    total_unc_dict = generate_loc_dict(total_unc_list_nans, region, analysis_period, 'total_unc', save_dir)
+    groundtruth_dict = generate_loc_dict(groundtruth_list, region, analysis_period, 'groundtruth', save_dir)
+    pred_dict = generate_loc_dict(pred_list_nans, region, analysis_period, 'point_predictions', save_dir)
+
+    # Generate timeseries plots per location
+    #timeseries_plots(ale_dict, analysis_period, 'aleatoric', save_dir)
+    timeseries_plots(epi_dict, analysis_period, 'epistemic', save_dir)
+    #timeseries_plots(total_unc_dict, analysis_period, 'total_unc', save_dir)
+    #timeseries_plots(pred_dict, analysis_period, 'point_predictions', save_dir)
+    #timeseries_plots(groundtruth_dict, analysis_period, 'groundtruth', save_dir)
 
 
 def generate_cqr_plots(channels, target, num_lats, num_lons, region, save_dir, analysis_period):
@@ -788,6 +850,12 @@ def generate_cqr_plots(channels, target, num_lats, num_lons, region, save_dir, a
     pred_avg_arr_2d_med = calculate_avg_2d_array(med_pred_list, nan_mask_list, num_lats, num_lons)
     np.save('{}/avg_prediction_med.npy'.format(save_dir), pred_avg_arr_2d_med)
 
+    # Get avg rmse and plot
+    rmse_calc = calc_rmse(groundtruth_list, med_pred_list, region, analysis_period)
+    np.save('{}/avg_rmse.npy'.format(save_dir), rmse_calc)
+
+    spatial_map(rmse_calc, target, 'rmse', region, save_dir)
+
     spatial_map(pred_avg_arr_2d_lower, target, 'lower_bound_predictions', region, save_dir)
     spatial_map(pred_avg_arr_2d_upper, target, 'upper_bound_predictions', region, save_dir)
     spatial_map(pred_avg_arr_2d_med, target, 'point_predictions', region, save_dir)
@@ -808,29 +876,23 @@ def generate_cqr_plots(channels, target, num_lats, num_lons, region, save_dir, a
         med_pred_list_nans.append(med_pred_list[i] * nan_mask_list[i])
         interval_length.append(upper_bound_pred_list_nans[i]-lower_bound_pred_list_nans[i])
 
+    lower_bound_dict = generate_loc_dict(lower_bound_pred_list_nans, region, analysis_period, 'lower_bound', save_dir)
+    upper_bound_dict = generate_loc_dict(upper_bound_pred_list_nans, region, analysis_period, 'upper_bound', save_dir)
+    med_dict = generate_loc_dict(med_pred_list_nans, region, analysis_period, 'point_predictions', save_dir)
+    groundtruth_dict = generate_loc_dict(groundtruth_list, region, analysis_period, 'groundtruth', save_dir)
+    interval_length_dict = generate_loc_dict(interval_length, region, analysis_period, 'interval_length', save_dir)
+
     # Generate timeseries plots per location
-    timeseries_plots(lower_bound_pred_list_nans, region, analysis_period, 'lower_bound', save_dir)
-    timeseries_plots(upper_bound_pred_list_nans, region, analysis_period, 'upper_bound', save_dir)
-    timeseries_plots(med_pred_list_nans, region, analysis_period, 'point_predictions', save_dir)
-    timeseries_plots(groundtruth_list, region, analysis_period, 'groundtruth', save_dir)
-    timeseries_plots(interval_length, region, analysis_period, 'interval_length', save_dir)
+    timeseries_plots(lower_bound_dict, analysis_period, 'lower_bound', save_dir)
+    timeseries_plots(upper_bound_dict, analysis_period, 'upper_bound', save_dir)
+    timeseries_plots(med_dict, analysis_period, 'point_predictions', save_dir)
+    timeseries_plots(groundtruth_dict, analysis_period, 'groundtruth', save_dir)
+    timeseries_plots(interval_length_dict, analysis_period, 'interval_length', save_dir)
 
-    # Plot GT, predictions, bounds for max avg_length location
-    with open('{}/groundtruth_timeseries_data.pickle'.format(save_dir), 'rb') as handle:
-        gt = pickle.load(handle)
-    with open('{}/lower_bound_timeseries_data.pickle'.format(save_dir), 'rb') as handle:
-        lower = pickle.load(handle)
-    with open('{}/upper_bound_timeseries_data.pickle'.format(save_dir), 'rb') as handle:
-        upper = pickle.load(handle)
-    with open('{}/point_predictions_timeseries_data.pickle'.format(save_dir), 'rb') as handle:
-        preds = pickle.load(handle)
-    with open('{}/interval_length_timeseries_data.pickle'.format(save_dir), 'rb') as handle:
-        intervals = pickle.load(handle)
+    # Plot max and min timeseries
+    plot_max_min_timeseries(interval_length_dict,med_dict,groundtruth_dict,upper_bound_dict,lower_bound_dict, save_dir)
 
-    plot_max_min_timeseries(intervals,preds,gt,upper,lower, save_dir)
-
-
-def calc_avg_from_file(metric, directory, model):
+def calc_avg_from_file(metric, num_lats, num_lons, directory, model):
     """
     Calculate avg of array from saved files of
     individual runs
@@ -840,12 +902,17 @@ def calc_avg_from_file(metric, directory, model):
     if model == 'cqr_avg':
         if metric != 'groundtruth':
             pred_str = 'avg_prediction_{}'.format(metric)
-        else:
+        if metric == 'groundtruth':
             pred_str = 'avg_groundtruth'
+        if metric == 'length':
+            pred_str = 'length'
+        if metric == 'rmse':
+            pred_str = 'rmse'
         arr_list = []
         for f in files:
             if pred_str in f:
-                arr_list.append(np.load('{}/{}'.format(directory, f)))
+                arr = np.load('{}/{}'.format(directory, f))
+                arr_list.append(arr)
 
     if model == 'mcdropout_avg':
         pred_str = 'avg_{}'.format(metric)
@@ -854,21 +921,33 @@ def calc_avg_from_file(metric, directory, model):
             if pred_str in f:
                 arr_list.append(np.load('{}/{}'.format(directory, f)))
 
-    return np.mean(arr_list)
+    # --- Getting nan_mask_list
+    groundtruth_list = []
+    for f in files:
+        if 'groundtruth' in f:
+            arr = np.load('{}/{}'.format(directory, f))
+            groundtruth_list.append(arr)
+
+    nan_mask_list = get_nanmask_list(groundtruth_list)
+
+    # Get avg and plot groundtruth
+    avg_arr_2d = calculate_avg_2d_array(arr_list, nan_mask_list, num_lats, num_lons)
+
+    return avg_arr_2d
 
 
-def generate_avg_run_plots(target, region, save_dir, model):
+def generate_avg_run_plots(target, region, num_lats, num_lons, save_dir, model):
     """
     Generate plots from multiple runs to obtain average to report
     """
     if model == 'cqr_avg':
         # --- Load and get mean of data
-        gt = calc_avg_from_file('groundtruth', save_dir, model)
-        lower = calc_avg_from_file('lower', save_dir, model)
-        upper = calc_avg_from_file('upper', save_dir, model)
-        med = calc_avg_from_file('upper', save_dir, model)
-        length = calc_avg_from_file('length', save_dir, model)
-        rmse = calc_avg_from_file('rmse', save_dir, model)
+        gt = calc_avg_from_file('groundtruth', num_lats, num_lons, save_dir, model)
+        lower = calc_avg_from_file('lower', num_lats, num_lons, save_dir, model)
+        upper = calc_avg_from_file('upper', num_lats, num_lons, save_dir, model)
+        med = calc_avg_from_file('med', num_lats, num_lons, save_dir, model)
+        length = calc_avg_from_file('length', num_lats, num_lons, save_dir, model)
+        rmse = calc_avg_from_file('rmse', num_lats, num_lons, save_dir, model)
 
         # --- Generate spatial maps
         spatial_map(gt, target, 'groundtruth', region, save_dir)
@@ -878,14 +957,20 @@ def generate_avg_run_plots(target, region, save_dir, model):
         spatial_map(length, target, 'avg_length', region, save_dir)
         spatial_map(rmse, target, 'rmse', region, save_dir)
 
+        # --- Get overall min/max metrics
+        with open("{}/avg_scores.txt".format(save_dir), "a") as f:
+            print("Max average interval length is: {}".format(np.nanmax(length)), file=f)
+            print("Min average interval length is: {}".format(np.nanmin(length)), file=f)
+            print("Average interval length is: {}".format(np.nanmean(length)), file=f)
+
     if model == 'mcdropout_avg':
         # --- Load and get mean of data
-        gt = calc_avg_from_file('groundtruth', save_dir, model)
-        pred = calc_avg_from_file('prediction', save_dir, model)
-        total_unc = calc_avg_from_file('total_uncertainty', save_dir, model)
-        ale_unc = calc_avg_from_file('aleatoric_uncertainty', save_dir, model)
-        epi_unc = calc_avg_from_file('epistemic_uncertainty', save_dir, model)
-        rmse = calc_avg_from_file('rmse', save_dir, model)
+        gt = calc_avg_from_file('groundtruth', num_lats, num_lons, save_dir, model)
+        pred = calc_avg_from_file('prediction', num_lats, num_lons, save_dir, model)
+        total_unc = calc_avg_from_file('total_uncertainty', num_lats, num_lons, save_dir, model)
+        ale_unc = calc_avg_from_file('aleatoric_uncertainty', num_lats, num_lons, save_dir, model)
+        epi_unc = calc_avg_from_file('epistemic_uncertainty', num_lats, num_lons, save_dir, model)
+        rmse = calc_avg_from_file('rmse', num_lats, num_lons, save_dir, model)
 
         # --- Generate spatial maps
         spatial_map(gt, target, 'groundtruth', region, save_dir)
@@ -895,6 +980,11 @@ def generate_avg_run_plots(target, region, save_dir, model):
         spatial_map(epi_unc, target, 'epistemic_uncertainty', region, save_dir)
         spatial_map(rmse, target, 'rmse', region, save_dir)
 
+        # --- Get overall min/max metrics
+        with open("{}/avg_scores.txt".format(save_dir), "a") as f:
+            print("Max average epi is: {}".format(np.nanmax(epi_unc)), file=f)
+            print("Min average epi is: {}".format(np.nanmin(epi_unc)), file=f)
+            print("Average epi is: {}".format(np.nanmean(epi_unc)), file=f)
 
 if __name__ == '__main__':
     args = get_args()
@@ -925,4 +1015,4 @@ if __name__ == '__main__':
         generate_cqr_plots(channels, target, num_lats, num_lons, region, save_dir, analysis_period)
 
     if model in ['cqr_avg', 'mcdropout_avg']:
-        generate_avg_run_plots(channels, target, num_lats, num_lons, region, save_dir, analysis_period, model)
+        generate_avg_run_plots(target, region, num_lats, num_lons, save_dir, model)

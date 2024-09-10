@@ -1,0 +1,23 @@
+Grabbing training data...
+Grabbing testing data...
+Training model...
+Training EPOCH 0:
+/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/cuda/amp/grad_scaler.py:120: UserWarning: torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.
+  warnings.warn("torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.")
+Train NLL for 5 reps: 2267013.0833333335
+Val NLL: 1585870.84375
+Training EPOCH 1:
+Traceback (most recent call last):
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py", line 160, in <module>
+    trained_model = train_probabilistic_model(model=unet,
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/train.py", line 294, in train_probabilistic_model
+    pred_map_means, pred_map_log_vars = model(inputs)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/model/models.py", line 81, in forward
+    x7 = self.drop(self.up2(x6, x3))
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/model/unet_modules.py", line 111, in forward
+    x = torch.cat([x1, x2], dim=1)
+KeyboardInterrupt

@@ -87,7 +87,7 @@ class NoNaNMSE(nn.Module):
         pred = pred[mask]
         target = target[mask]
 
-        return np.mean(np.square(pred-target))
+        return torch.mean(torch.square(pred-target))
 
 
 class NoNaNPinballLoss(nn.Module):

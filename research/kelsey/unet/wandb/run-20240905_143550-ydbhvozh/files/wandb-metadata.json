@@ -1,0 +1,78 @@
+{
+    "os": "macOS-14.6.1-x86_64-i386-64bit",
+    "python": "3.10.13",
+    "heartbeatAt": "2024-09-05T21:35:52.692706",
+    "startedAt": "2024-09-05T21:35:50.941336",
+    "docker": null,
+    "cuda": null,
+    "args": [
+        "--epochs",
+        "200",
+        "--validation",
+        "10",
+        "--optimizer",
+        "adam",
+        "--classes",
+        "1",
+        "--test-year",
+        "2019",
+        "--overfitting_test",
+        "False",
+        "--channels",
+        "51",
+        "--target",
+        "bias",
+        "--region",
+        "NorthAmerica",
+        "--seed",
+        "45",
+        "--model_type",
+        "standard",
+        "--data_dir",
+        "/Volumes/PRO-G40/sudsaq/unet/data",
+        "--save_dir",
+        "/Volumes/PRO-G40/sudsaq/unet/runs",
+        "--val_percent",
+        "0.1",
+        "--analysis_date",
+        "june",
+        "--tag",
+        "neurips2024"
+    ],
+    "state": "running",
+    "program": "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py",
+    "codePathLocal": "run_pipeline.py",
+    "codePath": "research/kelsey/unet/run_pipeline.py",
+    "git": {
+        "remote": "git@github.com:kelsdoerksen/sudsaq-kelsey-research.git",
+        "commit": "709bfc6e1a083bf4868458ca355aee1cd800412c"
+    },
+    "email": "kelseydoerksen@gmail.com",
+    "root": "/Users/kelseydoerksen/code/sudsaq-kelsey-research",
+    "host": "Kelseys-MacBook-Pro.local",
+    "username": "kelseydoerksen",
+    "executable": "/Users/kelseydoerksen/opt/anaconda3/envs/aq/bin/python",
+    "cpu_count": 4,
+    "cpu_count_logical": 8,
+    "cpu_freq": {
+        "current": 2300,
+        "min": 2300,
+        "max": 2300
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 2300,
+            "min": 2300,
+            "max": 2300
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 465.62699127197266,
+            "used": 9.557659149169922
+        }
+    },
+    "memory": {
+        "total": 16.0
+    }
+}

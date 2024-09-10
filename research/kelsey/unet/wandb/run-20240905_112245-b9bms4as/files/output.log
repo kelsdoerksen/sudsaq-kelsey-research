@@ -1,0 +1,35 @@
+Grabbing training data...
+Grabbing testing data...
+Training model...
+Training EPOCH 0:
+/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/cuda/amp/grad_scaler.py:120: UserWarning: torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.
+  warnings.warn("torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.")
+Training EPOCH 1:
+Traceback (most recent call last):
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py", line 142, in <module>
+    trained_model = train_model(
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/train.py", line 82, in train_model
+    for i, data in enumerate(train_loader):
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 633, in __next__
+    data = self._next_data()
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 677, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/utils/data/_utils/fetch.py", line 51, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/utils/data/_utils/fetch.py", line 51, in <listcomp>
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/utils/data/dataset.py", line 298, in __getitem__
+    return self.dataset[self.indices[idx]]
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/utils/data/dataset.py", line 243, in __getitem__
+    return self.datasets[dataset_idx][sample_idx]
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/dataset.py", line 30, in __getitem__
+    multichannel_image = load('{}'.format(image_fp), allow_pickle=True).astype('float32')
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/numpy/lib/npyio.py", line 432, in load
+    return format.read_array(fid, allow_pickle=allow_pickle,
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/numpy/lib/format.py", line 774, in read_array
+    version = read_magic(fp)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/numpy/lib/format.py", line 235, in read_magic
+    magic_str = _read_bytes(fp, MAGIC_LEN, "magic string")
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/numpy/lib/format.py", line 958, in _read_bytes
+    r = fp.read(size - len(data))
+KeyboardInterrupt
