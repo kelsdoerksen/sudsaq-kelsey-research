@@ -44,7 +44,7 @@ The available configurable parameters are:
 * `--data_dir`: Directory of stored data
 * `--save_dir`: Results directory
 * `--val_percent`: Desired percentage of training set to be set aside for validation
-* `--analysis_date`: Test year
+* `--analysis_date`: Test month
 * `--tag`: Wandb experiment tag
 
 The below folders host the following code:
