@@ -147,9 +147,13 @@ def cqr_testing_loop(in_model,
     return preds
 
 
-def calculate_coverage(lower, upper, y_data):
+def calculate_coverage(predictions, y_data, calibration_status):
     """
     Calculate coverage of prediction bound with true labels
+    :param: predictions: model predictions
+    :param: y_data: groundtruth data
+    :param: calibration_status: uncalibrated or calibrated
+    predictions to calculate coverage for
     """
     y_true = []
     y_mask = []
@@ -165,16 +169,33 @@ def calculate_coverage(lower, upper, y_data):
 
     lower_list = []
     upper_list = []
-    for i in range(len(lower)):
-        low = lower[i]
-        low = low[y_mask[0][i][0]]
-        low_list = list(low.flatten())
-        lower_list.extend(low_list)
+    if calibration_status == 'uncalibrated':
+        for i in range(len(predictions)):
+            for j in range(len(predictions[i])):
+                low = predictions[i][j,0,:,:]
 
-        up = upper[i]
-        up = up[y_mask[0][i][0]]
-        up_list = list(up.flatten())
-        upper_list.extend(up_list)
+                low = low[y_mask[i][j][0]]
+                low_list = list(low.flatten())
+                lower_list.extend(low_list)
+
+                up = predictions[i][j,2,:,:]
+                up = up[y_mask[i][j][0]]
+                up_list = list(up.flatten())
+                upper_list.extend(up_list)
+    else:
+        low_preds = predictions[0]
+        upper_preds = predictions[1]
+        for i in range(len(low_preds)):
+            for j in range(len(low_preds[i])):
+                low = low_preds[i][j,0,:,:]
+                low = low[y_mask[i][j][0]]
+                low_list = list(low.flatten())
+                lower_list.extend(low_list)
+
+                up = upper_preds[i][j, 2, :, :]
+                up = up[y_mask[i][j][0]]
+                up_list = list(up.flatten())
+                upper_list.extend(up_list)
 
     out_of_bound = 0
     N = len(y_true)
@@ -275,7 +296,7 @@ def run_cqr(model,
     train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True)
     val_loader = DataLoader(val_set, batch_size=batch_size, shuffle=True)
     cal_loader = DataLoader(cal_set, batch_size=batch_size, shuffle=True)
-    test_loader = DataLoader(test_datatset, batch_size=batch_size, shuffle=True)
+    test_loader = DataLoader(test_datatset, batch_size=batch_size, shuffle=False)   # Set shuffle to false to preserve order of data for timeseries generation
 
     # --- Setting up optimizer
     optimizer = optim.Adam(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
@@ -295,7 +316,7 @@ def run_cqr(model,
                                    channels, save_dir, device)
 
     # --- Calculate the coverage from the un-calibrated predictions
-    uncal_coverage = calculate_coverage(uncal_predictions_t[0][:,0,:,:], uncal_predictions_t[0][:,2,:,:], test_loader)
+    uncal_coverage = calculate_coverage(uncal_predictions_t, test_loader, 'uncalibrated')
     print('Quantile Regression Coverage without conformal is: {}'.format(uncal_coverage))
 
     # --- Predict lower and upper on calibration set
@@ -329,7 +350,7 @@ def run_cqr(model,
         np.save('{}/{}channels_bias_groundtruth_{}.npy'.format(save_dir, channels, i), gt[i])
 
     # --- Calculate coverage with calibrated predictions
-    cal_coverage = calculate_coverage(cal_lower_preds_t[0][:,0,:,:], cal_upper_preds_t[0][:,2,:,:], test_loader)
+    cal_coverage = calculate_coverage([cal_lower_preds_t, cal_upper_preds_t], test_loader, 'calibrated')
     print('Conformalized Quantile Regression Coverage is: {}'.format(cal_coverage))
 
     # --- Calculcate RMSE with calibrated predictions

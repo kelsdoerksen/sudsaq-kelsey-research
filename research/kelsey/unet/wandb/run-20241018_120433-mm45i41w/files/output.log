@@ -1,0 +1,20 @@
+Grabbing training data...
+Grabbing testing data...
+Training EPOCH 0:
+/Users/kelseydoerksen/opt/anaconda3/envs/sudsaq-uq/lib/python3.10/site-packages/torch/cuda/amp/grad_scaler.py:126: UserWarning: torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.
+  warnings.warn(
+quantiles_train Quantile loss is: 49.195362994545384
+Training EPOCH 1:
+quantiles_train Quantile loss is: 44.004254592092416
+test set loss is: 28.273656845092773
+Quantile Regression Coverage without conformal is: 0.2896122663923384
+Predicting on calibration set...
+test set loss is: 28.760120391845703
+Calculating qyhat for calibration...
+Calibrating Test set predictions...
+Traceback (most recent call last):
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py", line 133, in <module>
+    run_cqr(unet, device, aq_train_dataset, aq_test_dataset, save_dir, experiment, 0.1, args.channels,
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py", line 335, in run_cqr
+    cal_coverage = calculate_coverage(cal_lower_preds_t[0][:,0,:,:], cal_upper_preds_t[0][:,2,:,:], test_loader)
+TypeError: calculate_coverage() takes 2 positional arguments but 3 were given

@@ -1,0 +1,25 @@
+Grabbing training data...
+Grabbing testing data...
+Training EPOCH 0:
+/Users/kelseydoerksen/opt/anaconda3/envs/sudsaq-uq/lib/python3.10/site-packages/torch/cuda/amp/grad_scaler.py:126: UserWarning: torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.
+  warnings.warn(
+quantiles_train Quantile loss is: 38.10075823465983
+Training EPOCH 1:
+quantiles_train Quantile loss is: 38.07853571573893
+Training EPOCH 2:
+quantiles_train Quantile loss is: 21.249532222747803
+Training EPOCH 3:
+quantiles_train Quantile loss is: 17.70844316482544
+Training EPOCH 4:
+Traceback (most recent call last):
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py", line 133, in <module>
+    run_cqr(unet, device, aq_train_dataset, aq_test_dataset, save_dir, experiment, 0.1, args.channels,
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py", line 290, in run_cqr
+    trained_model = cqr_training_loop(model, train_loader, val_loader, criterion, optimizer, grad_scaler, epochs, experiment,
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py", line 49, in cqr_training_loop
+    loss).backward()
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/sudsaq-uq/lib/python3.10/site-packages/torch/_tensor.py", line 522, in backward
+    torch.autograd.backward(
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/sudsaq-uq/lib/python3.10/site-packages/torch/autograd/__init__.py", line 266, in backward
+    Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+KeyboardInterrupt

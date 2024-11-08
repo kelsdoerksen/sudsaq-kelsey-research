@@ -14,6 +14,7 @@ import cartopy.crs as ccrs
 from cartopy.mpl.gridliner import LONGITUDE_FORMATTER, LATITUDE_FORMATTER
 from datetime import datetime, timedelta, date
 import pickle
+from sklearn.metrics import r2_score
 
 
 # --- Defining lon, lat values of regions for plotting
@@ -387,11 +388,6 @@ def calc_rmse(truth_list, predict_list, region, analysis_period):
     Calculate and return rmse per point in sample
     :param: analysis period: june, july, august, summer
     """
-    if region == 'NorthAmerica':
-        list_step = 49
-    if region == 'Europe':
-        list_step = 31
-
     if analysis_period == 'june':
         num_samples = 30
 
@@ -405,6 +401,27 @@ def calc_rmse(truth_list, predict_list, region, analysis_period):
     rmse_arr = np.sqrt(err_avg)
 
     return rmse_arr
+
+def calc_r2(truth_list, predict_list, nan_list, analysis_period):
+    """
+    Calculate r2 score
+    """
+
+    def remove_nans(arr, nan_arr):
+        arr = arr.flatten()
+        nan = nan_arr.flatten()
+        arr = arr * nan
+        arr = arr[~np.isnan(arr)]
+        return arr
+
+    r2_list = []
+    for i in range(len(truth_list)):
+        pred = remove_nans(predict_list[i], nan_list[i])
+        truth = remove_nans(truth_list[i], nan_list[i])
+        r2 = r2_score(truth, pred)
+        r2_list.append(r2)
+
+    return r2_list
 
 def spatial_map(avg_data, target, metric, region, savedir):
     """
@@ -475,7 +492,7 @@ def spatial_map(avg_data, target, metric, region, savedir):
             vmin = 30
             vmax = 50
         else:
-            vmin = 0
+            vmin = -5
             vmax = 50
 
     x, y = np.meshgrid(lon_vals, lat_vals, indexing='xy')
@@ -578,10 +595,8 @@ def timeseries_plots(final_dict, analysis_period, data_type, savedir):
             print("TOAR location with max avg {} is: {}".format(data_type, key_list[max_loc]), file=f)
             print("TOAR location with min avg {} is: {}".format(data_type, key_list[min_loc]), file=f)
 
-    '''
     for k in final_dict.keys():
         generate_timeseries_plot(final_dict[k], datelist, k, data_type, savedir)
-    '''
 
 
 def plot_max_min_timeseries(length_dict, point_pred, gt, upper, lower, savedir):
@@ -706,6 +721,35 @@ def generate_loc_dict(arrays, region, analysis_period, data_type, savedir):
         pickle.dump(final_dict, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
     return final_dict
+
+def plot_r2_timeseries(r2_list, analysis_period, region, save_dir):
+    """
+    Generates plots for r2 timeseries
+    """
+    start, end = None, None
+    if analysis_period == 'june':
+        start = date(2019, 6, 1)
+        end = date(2019, 6, 30)
+    elif analysis_period == 'july':
+        start = date(2019, 7, 1)
+        end = date(2019, 7, 31)
+    elif analysis_period == 'aug':
+        start = date(2019, 8, 1)
+        end = date(2019, 8, 31)
+    elif analysis_period == 'summer':
+        start = date(2019, 6, 1)
+        end = date(2019, 8, 31)
+
+    datelist = daterange(start, end)
+
+    ig, ax = plt.subplots()
+    ax.plot(datelist, r2_list, '-', label='R2 Score')
+    ax.set_xticks(np.arange(0, len(datelist) + 1, 9))
+    plt.title('R^2 Score per Day for {}'.format(region))
+    plt.xlabel('DOY')
+    plt.ylabel('R^2')
+    plt.savefig('{}/R2_score_timeseries.png'.format(save_dir))
+    plt.close()
 
 
 def generate_standard_plots(channels, target, num_lats, num_lons, region, save_dir, analysis_period):
@@ -856,6 +900,11 @@ def generate_cqr_plots(channels, target, num_lats, num_lons, region, save_dir, a
 
     spatial_map(rmse_calc, target, 'rmse', region, save_dir)
 
+    # Get r2 score and plot
+    r2_timeseries = calc_r2(groundtruth_list, med_pred_list, nan_mask_list, region)
+    np.save('{}/r2_timeseries.npy'.format(save_dir), r2_timeseries)
+    plot_r2_timeseries(r2_timeseries, analysis_period, region, save_dir)
+
     spatial_map(pred_avg_arr_2d_lower, target, 'lower_bound_predictions', region, save_dir)
     spatial_map(pred_avg_arr_2d_upper, target, 'upper_bound_predictions', region, save_dir)
     spatial_map(pred_avg_arr_2d_med, target, 'point_predictions', region, save_dir)
@@ -908,6 +957,8 @@ def calc_avg_from_file(metric, num_lats, num_lons, directory, model):
             pred_str = 'length'
         if metric == 'rmse':
             pred_str = 'rmse'
+        if metric == 'r2':
+            pred_str = 'r2_timeseries'
         arr_list = []
         for f in files:
             if pred_str in f:
@@ -916,10 +967,16 @@ def calc_avg_from_file(metric, num_lats, num_lons, directory, model):
 
     if model == 'mcdropout_avg':
         pred_str = 'avg_{}'.format(metric)
+        if metric == 'r2':
+            pred_str = 'r2_timeseries'
         arr_list = []
         for f in files:
             if pred_str in f:
                 arr_list.append(np.load('{}/{}'.format(directory, f)))
+
+    if metric == 'r2':
+        r2_avg = np.mean(arr_list, axis=0)
+        return r2_avg
 
     # --- Getting nan_mask_list
     groundtruth_list = []
@@ -948,6 +1005,7 @@ def generate_avg_run_plots(target, region, num_lats, num_lons, save_dir, model):
         med = calc_avg_from_file('med', num_lats, num_lons, save_dir, model)
         length = calc_avg_from_file('length', num_lats, num_lons, save_dir, model)
         rmse = calc_avg_from_file('rmse', num_lats, num_lons, save_dir, model)
+        r2 = calc_avg_from_file('r2', num_lats, num_lons, save_dir, model)
 
         # --- Generate spatial maps
         spatial_map(gt, target, 'groundtruth', region, save_dir)
@@ -957,11 +1015,15 @@ def generate_avg_run_plots(target, region, num_lats, num_lons, save_dir, model):
         spatial_map(length, target, 'avg_length', region, save_dir)
         spatial_map(rmse, target, 'rmse', region, save_dir)
 
+        # --- Generate time series map
+        plot_r2_timeseries(r2, analysis_period, region, save_dir)
+
         # --- Get overall min/max metrics
         with open("{}/avg_scores.txt".format(save_dir), "a") as f:
             print("Max average interval length is: {}".format(np.nanmax(length)), file=f)
             print("Min average interval length is: {}".format(np.nanmin(length)), file=f)
             print("Average interval length is: {}".format(np.nanmean(length)), file=f)
+            print("Variance of interval length is: {}".format(np.nanvar(length)), file=f)
 
     if model == 'mcdropout_avg':
         # --- Load and get mean of data
@@ -971,6 +1033,7 @@ def generate_avg_run_plots(target, region, num_lats, num_lons, save_dir, model):
         ale_unc = calc_avg_from_file('aleatoric_uncertainty', num_lats, num_lons, save_dir, model)
         epi_unc = calc_avg_from_file('epistemic_uncertainty', num_lats, num_lons, save_dir, model)
         rmse = calc_avg_from_file('rmse', num_lats, num_lons, save_dir, model)
+        r2 = calc_avg_from_file('r2', num_lats, num_lons, save_dir, model)
 
         # --- Generate spatial maps
         spatial_map(gt, target, 'groundtruth', region, save_dir)
@@ -980,11 +1043,15 @@ def generate_avg_run_plots(target, region, num_lats, num_lons, save_dir, model):
         spatial_map(epi_unc, target, 'epistemic_uncertainty', region, save_dir)
         spatial_map(rmse, target, 'rmse', region, save_dir)
 
+        # --- Generate time series map
+        plot_r2_timeseries(r2, analysis_period, region, save_dir)
+
         # --- Get overall min/max metrics
         with open("{}/avg_scores.txt".format(save_dir), "a") as f:
             print("Max average epi is: {}".format(np.nanmax(epi_unc)), file=f)
             print("Min average epi is: {}".format(np.nanmin(epi_unc)), file=f)
             print("Average epi is: {}".format(np.nanmean(epi_unc)), file=f)
+            print("Variance of epi is: {}".format(np.nanvar(epi_unc)), file=f)
 
 if __name__ == '__main__':
     args = get_args()

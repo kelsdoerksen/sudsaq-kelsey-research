@@ -43,6 +43,9 @@ def get_args():
                         required=True)
     parser.add_argument('--tag', help='Wandb tag')
     parser.add_argument('--wandb_status', default='offline', help='Specify if offline or online experiment')
+    parser.add_argument('--analysis_date', help='Month of analysis')
+    parser.add_argument('--sensitivity_feature', help='Specify for feature to run sensitivity analysis on',
+                        default=None)
 
     return parser.parse_args()
 
@@ -61,14 +64,25 @@ if __name__ == '__main__':
     tag = args.tag
     wandb_status = args.wandb_status
     seed = args.seed
-
+    analysis_time = args.analysis_date
+    sensitivity_feature = args.sensitivity_feature
 
     # Initializing logging in wandb for experiment
     experiment = wandb.init(project='U-Net Test', resume='allow', anonymous='must', tags=[tag])
+
+    # Check if running sensitivity analysis, if yes, remove one channel from count
+    if sensitivity_feature:
+        channel_count = channels-1
+        experiment.config.update(
+            dict(experiment='sensitivity_analysis'))
+    else:
+        channel_count = channels
+
+    # Updating wandb experiment accordingly
     experiment.config.update(
         dict(epochs=args.epochs, batch_size=args.batch_size, learning_rate=args.lr,
              val_percent=0.1, save_checkpoint=True,
-             n_channels=channels, analysis_period=analysis_time,
+             n_channels=channel_count, analysis_period=analysis_time,
              target=target, region=region, model=model_type, test_year=test_year)
     )
 

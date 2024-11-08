@@ -1,0 +1,43 @@
+Grabbing training data...
+Grabbing testing data...
+Training EPOCH 0:
+/Users/kelseydoerksen/opt/anaconda3/envs/sudsaq-uq/lib/python3.10/site-packages/torch/cuda/amp/grad_scaler.py:126: UserWarning: torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.
+  warnings.warn(
+quantiles_train Quantile loss is: 35.289483522114004
+Training EPOCH 1:
+quantiles_train Quantile loss is: 12.27294941952354
+test set loss is: 10.08985424041748
+> /Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py(171)calculate_coverage()
+    170     ipdb.set_trace()
+--> 171     lower_list = []
+    172     upper_list = []
+*** AttributeError: 'list' object has no attribute 'shape'
+3
+(32, 3, 31, 49)
+32
+*** AttributeError: 'list' object has no attribute 'shape'
+3
+torch.Size([32, 1, 31, 49])
+*** NameError: name 'j' is not defined
+torch.Size([32, 1, 31, 49])
+torch.Size([1, 31, 49])
+torch.Size([31, 49])
+Traceback (most recent call last):
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py", line 133, in <module>
+    run_cqr(unet, device, aq_train_dataset, aq_test_dataset, save_dir, experiment, 0.1, args.channels,
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py", line 309, in run_cqr
+    uncal_predictions_c = cqr_testing_loop(trained_model, 'calibration_samples', 'bias', cal_loader, criterion,
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py", line 171, in calculate_coverage
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py", line 171, in calculate_coverage
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/sudsaq-uq/lib/python3.10/bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/sudsaq-uq/lib/python3.10/bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+bdb.BdbQuit
+If you suspect this is an IPython 8.25.0 bug, please report it at:
+    https://github.com/ipython/ipython/issues
+or send an email to the mailing list at ipython-dev@python.org
+You can print a more detailed traceback right now with "%tb", or use "%debug"
+to interactively debug it.
+Extra-detailed tracebacks for bug-reporting purposes can be enabled via:
+    %config Application.verbose_crash=True

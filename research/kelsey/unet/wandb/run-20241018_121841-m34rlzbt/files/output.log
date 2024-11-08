@@ -1,0 +1,16 @@
+Grabbing training data...
+Grabbing testing data...
+Training EPOCH 0:
+/Users/kelseydoerksen/opt/anaconda3/envs/sudsaq-uq/lib/python3.10/site-packages/torch/cuda/amp/grad_scaler.py:126: UserWarning: torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.
+  warnings.warn(
+quantiles_train Quantile loss is: 29.048541119224147
+Training EPOCH 1:
+quantiles_train Quantile loss is: 11.977492533232036
+test set loss is: 10.240296363830566
+Quantile Regression Coverage without conformal is: 0.7186910622872119
+Predicting on calibration set...
+test set loss is: 9.834820747375488
+Calculating qyhat for calibration...
+Calibrating Test set predictions...
+Conformalized Quantile Regression Coverage is: 0.8841452960050946
+RMSE is: 23.936199188232422

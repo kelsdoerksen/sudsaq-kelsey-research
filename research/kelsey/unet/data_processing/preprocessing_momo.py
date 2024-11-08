@@ -19,6 +19,7 @@ def get_args():
     parser.add_argument('--sample_dir', help='Directory that sample data is stored to query')
     parser.add_argument('--label_dir', help='Directory that label data is stored to query')
     parser.add_argument('--save_dir', help='Save directory of data')
+    parser.add_argument('--remove_feature', help='Feature to remove for sensitivity analysis')
     return parser.parse_args()
 
 month_dict = {
@@ -318,7 +319,7 @@ if __name__ == '__main__':
 
     print('--- Loading Data for year {}---'.format(year))
     sample_ds = xr.open_dataset('{}/{}/{}/test.data.nc'.format(sample_dir, month, year))
-    label_ds = xr.open_dataset('{}/{}/{}/test.target.nc'.format(label_dir, month, year))
+    #label_ds = xr.open_dataset('{}/{}/{}/test.target.nc'.format(label_dir, month, year))
 
     # Get list of features from xarray
     features = [i for i in sample_ds.data_vars]
@@ -329,7 +330,7 @@ if __name__ == '__main__':
     # Subsample over extent
     filt_sample_ds = filter_bounds(sample_ds, geo_extent)
 
-    filt_label_ds = filter_bounds(label_ds, geo_extent)
+    #filt_label_ds = filter_bounds(label_ds, geo_extent)
 
     # Generate samples
     run_generate_samples(filt_sample_ds, month, features, save_dir)
