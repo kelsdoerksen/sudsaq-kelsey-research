@@ -10,7 +10,8 @@ import argparse
 
 def get_args():
     parser = argparse.ArgumentParser(description='Preprocessing GEE data')
-    parser.add_argument('--region', help='Location, north_america, europe or globe')
+    parser.add_argument('--region', help='Location, na, eu or globe')
+    parser.add_argument('--gee_dir', help='Directory of gee data to process')
     return parser.parse_args()
 
 
@@ -94,14 +95,14 @@ def filter_bounds(xr_ds, extent):
 if __name__ == '__main__':
     args = get_args()
     region = args.region
+    gee_dir = args.gee_dir
 
-    gee_dir = '/Volumes/PRO-G40/sudsaq/GEE'
 
     # --- Processing Population ---
     years = ['2005','2010','2015', '2020']
     for y in years:
         print('--- Processing Population GEE to array for year {} ---'.format(y))
-        ds = xr.open_dataset('{}/pop_population_density_{}_globe_buffersize_55500'.format(gee_dir, y))
+        ds = xr.open_dataset('{}/pop_population_density_{}_globe_buffersize_55500_with_time.nc'.format(gee_dir, y), engine='netcdf4')
 
         # Format lon
         ds = format_lon(ds)
@@ -113,20 +114,25 @@ if __name__ == '__main__':
         generate_array(filt_ds, 'population', '/Volumes/PRO-G40/sudsaq/GEE', y, 'NorthAmerica')
 
 
+    if region == 'na':
+        full_name = 'NorthAmerica'
+    if region == 'eu':
+        full_name = 'Europe'
+
     # --- Processing modis ---
     years = ['2005', '2006', '2007', '2008', '2009','2010',
              '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020']
     for y in years:
         print('--- Processing MODIS GEE to array for year {} ---'.format(y))
-        ds = xr.open_dataset('{}/modis_LC_Type1_{}_globe_buffersize_55500.nc'.format(gee_dir, y))
+        ds = xr.open_dataset('{}/modis_LC_Type1_{}_globe_buffersize_55500_with_time.nc'.format(gee_dir, y))
         # Format lon
         ds = format_lon(ds)
 
         # Subsample over north america
-        filtered_ds = filter_bounds(ds, 'eu')
+        filtered_ds = filter_bounds(ds, region)
 
         # Make array
-        generate_array(filtered_ds, 'modis', '/Volumes/PRO-G40/sudsaq/GEE', y, 'Europe')
+        generate_array(filtered_ds, 'modis', '/Volumes/PRO-G40/sudsaq/GEE', y, full_name)
 
 
 
