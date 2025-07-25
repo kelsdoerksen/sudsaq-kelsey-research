@@ -1,0 +1,6 @@
+
+Grabbing training data...
+Traceback (most recent call last):
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py", line 129, in <module>
+    aq_dataset = AQDataset(train_sample_dir, train_label_dir, channels, region)
+TypeError: AQDataset.__init__() missing 1 required positional argument: 'sensitivity'

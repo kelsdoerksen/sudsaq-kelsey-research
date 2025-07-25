@@ -1,0 +1,8 @@
+
+Grabbing training data...
+Traceback (most recent call last):
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py", line 129, in <module>
+    aq_dataset = AQDataset(train_sample_dir, train_label_dir, channels, region, sensitivity_feature)
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/dataset.py", line 19, in __init__
+    self.image_fns = os.listdir(image_dir)
+FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/PRO-G40/sudsaq/unet/data/NorthAmerica/zscore_normalization/28_channels/summer/2005'

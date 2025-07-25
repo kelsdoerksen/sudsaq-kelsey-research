@@ -1,0 +1,244 @@
+Grabbing training data...
+Grabbing testing data...
+Training EPOCH 0:
+/Users/kelseydoerksen/opt/anaconda3/envs/sudsaq-uq/lib/python3.10/site-packages/torch/cuda/amp/grad_scaler.py:126: UserWarning: torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.
+  warnings.warn(
+quantiles_train Quantile loss is: 18.90741189320882
+Training EPOCH 1:
+quantiles_train Quantile loss is: 9.601642926534018
+Training EPOCH 2:
+quantiles_train Quantile loss is: 8.51216427485148
+Training EPOCH 3:
+quantiles_train Quantile loss is: 7.6503110726674395
+Training EPOCH 4:
+quantiles_train Quantile loss is: 7.034612576166789
+Training EPOCH 5:
+quantiles_train Quantile loss is: 6.878116130828857
+Training EPOCH 6:
+quantiles_train Quantile loss is: 6.784509102503459
+Training EPOCH 7:
+quantiles_train Quantile loss is: 6.633663574854533
+Training EPOCH 8:
+quantiles_train Quantile loss is: 6.405854304631551
+Training EPOCH 9:
+quantiles_train Quantile loss is: 6.313649415969849
+Training EPOCH 10:
+quantiles_train Quantile loss is: 6.233400185902913
+Training EPOCH 11:
+quantiles_train Quantile loss is: 6.1687939167022705
+Training EPOCH 12:
+quantiles_train Quantile loss is: 6.112007935841878
+Training EPOCH 13:
+quantiles_train Quantile loss is: 6.051381667455037
+Training EPOCH 14:
+quantiles_train Quantile loss is: 6.030303001403809
+Training EPOCH 15:
+quantiles_train Quantile loss is: 6.016148726145427
+Training EPOCH 16:
+quantiles_train Quantile loss is: 5.98614517847697
+Training EPOCH 17:
+quantiles_train Quantile loss is: 5.961175839106242
+Training EPOCH 18:
+quantiles_train Quantile loss is: 5.910759528477986
+Training EPOCH 19:
+quantiles_train Quantile loss is: 5.905386288960774
+Training EPOCH 20:
+quantiles_train Quantile loss is: 5.846314509709676
+Training EPOCH 21:
+quantiles_train Quantile loss is: 5.786569754282634
+Training EPOCH 22:
+quantiles_train Quantile loss is: 5.7552681763966875
+Training EPOCH 23:
+quantiles_train Quantile loss is: 5.7283525466918945
+Training EPOCH 24:
+quantiles_train Quantile loss is: 5.71961236000061
+Training EPOCH 25:
+quantiles_train Quantile loss is: 5.672705888748169
+Training EPOCH 26:
+quantiles_train Quantile loss is: 5.671714146931966
+Training EPOCH 27:
+quantiles_train Quantile loss is: 5.652590274810791
+Training EPOCH 28:
+quantiles_train Quantile loss is: 5.613786617914836
+Training EPOCH 29:
+quantiles_train Quantile loss is: 5.602008024851481
+Training EPOCH 30:
+quantiles_train Quantile loss is: 5.580886999766032
+Training EPOCH 31:
+quantiles_train Quantile loss is: 5.590772072474162
+Training EPOCH 32:
+quantiles_train Quantile loss is: 5.598185777664185
+Training EPOCH 33:
+quantiles_train Quantile loss is: 5.527571042378743
+Training EPOCH 34:
+quantiles_train Quantile loss is: 5.508191108703613
+Training EPOCH 35:
+quantiles_train Quantile loss is: 5.499526500701904
+Training EPOCH 36:
+quantiles_train Quantile loss is: 5.5064930121103925
+Training EPOCH 37:
+quantiles_train Quantile loss is: 5.531376123428345
+Training EPOCH 38:
+quantiles_train Quantile loss is: 5.4301075140635175
+Training EPOCH 39:
+quantiles_train Quantile loss is: 5.433655818303426
+Training EPOCH 40:
+quantiles_train Quantile loss is: 5.420399745305379
+Training EPOCH 41:
+quantiles_train Quantile loss is: 5.398379405339559
+Training EPOCH 42:
+quantiles_train Quantile loss is: 5.3527750968933105
+Training EPOCH 43:
+quantiles_train Quantile loss is: 5.373278617858887
+Training EPOCH 44:
+quantiles_train Quantile loss is: 5.382034222284953
+Training EPOCH 45:
+quantiles_train Quantile loss is: 5.389084418614705
+Training EPOCH 46:
+quantiles_train Quantile loss is: 5.349795738855998
+Training EPOCH 47:
+quantiles_train Quantile loss is: 5.329287052154541
+Training EPOCH 48:
+quantiles_train Quantile loss is: 5.33745018641154
+Training EPOCH 49:
+quantiles_train Quantile loss is: 5.293140172958374
+Training EPOCH 50:
+quantiles_train Quantile loss is: 5.275405963261922
+Training EPOCH 51:
+quantiles_train Quantile loss is: 5.302858114242554
+Training EPOCH 52:
+quantiles_train Quantile loss is: 5.281565586725871
+Training EPOCH 53:
+quantiles_train Quantile loss is: 5.276950677235921
+Training EPOCH 54:
+quantiles_train Quantile loss is: 5.24790374437968
+Training EPOCH 55:
+quantiles_train Quantile loss is: 5.262456178665161
+Training EPOCH 56:
+quantiles_train Quantile loss is: 5.284759998321533
+Training EPOCH 57:
+quantiles_train Quantile loss is: 5.265012979507446
+Training EPOCH 58:
+quantiles_train Quantile loss is: 5.274781068166097
+Training EPOCH 59:
+quantiles_train Quantile loss is: 5.344988425572713
+Training EPOCH 60:
+quantiles_train Quantile loss is: 5.256176710128784
+Training EPOCH 61:
+quantiles_train Quantile loss is: 5.226044654846191
+Training EPOCH 62:
+quantiles_train Quantile loss is: 5.23621400197347
+Training EPOCH 63:
+quantiles_train Quantile loss is: 5.2154161135355634
+Training EPOCH 64:
+quantiles_train Quantile loss is: 5.160022735595703
+Training EPOCH 65:
+quantiles_train Quantile loss is: 5.1568911870320635
+Training EPOCH 66:
+quantiles_train Quantile loss is: 5.156045039494832
+Training EPOCH 67:
+quantiles_train Quantile loss is: 5.111055294672648
+Training EPOCH 68:
+quantiles_train Quantile loss is: 5.1094309488932295
+Training EPOCH 69:
+quantiles_train Quantile loss is: 5.093891938527425
+Training EPOCH 70:
+quantiles_train Quantile loss is: 5.064101060231526
+Training EPOCH 71:
+quantiles_train Quantile loss is: 5.049738883972168
+Training EPOCH 72:
+quantiles_train Quantile loss is: 5.055464426676433
+Training EPOCH 73:
+quantiles_train Quantile loss is: 5.0843433539072675
+Training EPOCH 74:
+quantiles_train Quantile loss is: 5.0236181418101
+Training EPOCH 75:
+quantiles_train Quantile loss is: 5.006821870803833
+Training EPOCH 76:
+quantiles_train Quantile loss is: 5.019883950551351
+Training EPOCH 77:
+quantiles_train Quantile loss is: 5.015332778294881
+Training EPOCH 78:
+quantiles_train Quantile loss is: 5.002202033996582
+Training EPOCH 79:
+quantiles_train Quantile loss is: 4.97642715771993
+Training EPOCH 80:
+quantiles_train Quantile loss is: 4.96121867497762
+Training EPOCH 81:
+quantiles_train Quantile loss is: 4.935393889745076
+Training EPOCH 82:
+quantiles_train Quantile loss is: 4.944510380427043
+Training EPOCH 83:
+quantiles_train Quantile loss is: 4.915444533030192
+Training EPOCH 84:
+quantiles_train Quantile loss is: 4.885507504145305
+Training EPOCH 85:
+quantiles_train Quantile loss is: 4.962288856506348
+Training EPOCH 86:
+quantiles_train Quantile loss is: 4.982065439224243
+Training EPOCH 87:
+quantiles_train Quantile loss is: 4.9388747215271
+Training EPOCH 88:
+quantiles_train Quantile loss is: 4.945054213205974
+Training EPOCH 89:
+quantiles_train Quantile loss is: 4.919375658035278
+Training EPOCH 90:
+quantiles_train Quantile loss is: 4.90393344561259
+Training EPOCH 91:
+quantiles_train Quantile loss is: 4.878222703933716
+Training EPOCH 92:
+quantiles_train Quantile loss is: 4.830338875452678
+Training EPOCH 93:
+quantiles_train Quantile loss is: 4.804861307144165
+Training EPOCH 94:
+quantiles_train Quantile loss is: 4.801616350809733
+Training EPOCH 95:
+quantiles_train Quantile loss is: 4.828379551569621
+Training EPOCH 96:
+quantiles_train Quantile loss is: 4.78114120165507
+Training EPOCH 97:
+quantiles_train Quantile loss is: 4.768888632456462
+Training EPOCH 98:
+quantiles_train Quantile loss is: 4.74449102083842
+Training EPOCH 99:
+quantiles_train Quantile loss is: 4.74784517288208
+Training EPOCH 100:
+quantiles_train Quantile loss is: 4.758131583531697
+Training EPOCH 101:
+quantiles_train Quantile loss is: 4.719913880030314
+Training EPOCH 102:
+quantiles_train Quantile loss is: 4.74312424659729
+Training EPOCH 103:
+quantiles_train Quantile loss is: 4.820328950881958
+Training EPOCH 104:
+quantiles_train Quantile loss is: 4.7194076379140215
+Training EPOCH 105:
+quantiles_train Quantile loss is: 4.695228656133016
+Training EPOCH 106:
+Traceback (most recent call last):
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py", line 151, in <module>
+    run_cqr(unet, device, aq_train_dataset, aq_test_dataset, save_dir, experiment, 0.1, channel_count,
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py", line 312, in run_cqr
+    trained_model = cqr_training_loop(model, train_loader, val_loader, criterion, optimizer, grad_scaler, epochs, experiment,
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_cqr.py", line 70, in cqr_training_loop
+    for k, vdata in enumerate(val_data_loader):
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/sudsaq-uq/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 631, in __next__
+    data = self._next_data()
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/sudsaq-uq/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 675, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/sudsaq-uq/lib/python3.10/site-packages/torch/utils/data/_utils/fetch.py", line 49, in fetch
+    data = self.dataset.__getitems__(possibly_batched_index)
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/sudsaq-uq/lib/python3.10/site-packages/torch/utils/data/dataset.py", line 397, in __getitems__
+    return self.dataset.__getitems__([self.indices[idx] for idx in indices])  # type: ignore[attr-defined]
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/sudsaq-uq/lib/python3.10/site-packages/torch/utils/data/dataset.py", line 399, in __getitems__
+    return [self.dataset[self.indices[idx]] for idx in indices]
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/sudsaq-uq/lib/python3.10/site-packages/torch/utils/data/dataset.py", line 399, in <listcomp>
+    return [self.dataset[self.indices[idx]] for idx in indices]
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/sudsaq-uq/lib/python3.10/site-packages/torch/utils/data/dataset.py", line 335, in __getitem__
+    return self.datasets[dataset_idx][sample_idx]
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/dataset.py", line 33, in __getitem__
+    multichannel_image = load('{}'.format(image_fp), allow_pickle=True).astype('float32')
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/sudsaq-uq/lib/python3.10/site-packages/numpy/lib/npyio.py", line 405, in load
+    fid = stack.enter_context(open(os_fspath(file), "rb"))
+FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/PRO-G40/sudsaq/unet/data/Europe/zscore_normalization/51_channels/june/2008/2008-06-16_sample.npy'
+quantiles_train Quantile loss is: 4.6957424481709795

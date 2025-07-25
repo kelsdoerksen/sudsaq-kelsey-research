@@ -140,8 +140,8 @@ def generate_samples(sample_ds, feature_list, save_dir):
                 ds_feature = ds_feature.interpolate_na(dim='lat')
                 print('Linear interpolating NaNs for feature: {}'.format(feature))
             arr = ds_feature.to_numpy()
-            norm_arr = zscore_normalize_array(arr)
-            multi_channel_list.append(norm_arr)
+            #norm_arr = zscore_normalize_array(arr)
+            multi_channel_list.append(arr)
         save_name_date = str(doy)[0:10]
         # stack all arrays in multi_channel_list to make multi-channel image
         img = np.array(multi_channel_list)

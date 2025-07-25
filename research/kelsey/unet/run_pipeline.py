@@ -74,7 +74,8 @@ if __name__ == '__main__':
     if sensitivity_feature:
         channel_count = channels-1
         experiment.config.update(
-            dict(experiment='sensitivity_analysis'))
+            dict(experiment='sensitivity_analysis',
+                 sensitivity_feature=sensitivity_feature))
     else:
         channel_count = channels
 
@@ -104,11 +105,11 @@ if __name__ == '__main__':
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     logging.info(f'Using device {device}')
     if model_type in ['standard']:
-        unet = models.UNet(n_channels=channels, n_classes=1)
+        unet = models.UNet(n_channels=channel_count, n_classes=1)
     if model_type in ['cqr']:
-        unet = models.CQRUNet(n_channels=channels, quantiles=[0.1, 0.5, 0.9])
+        unet = models.CQRUNet(n_channels=channel_count, quantiles=[0.1, 0.5, 0.9])
     if model_type in ['mcdropout']:
-        unet = models.MCDropoutProbabilisticUNet(n_channels=channels, n_classes=1)
+        unet = models.MCDropoutProbabilisticUNet(n_channels=channel_count, n_classes=1)
 
     if torch.cuda.is_available():
         unet.cuda()
@@ -121,12 +122,17 @@ if __name__ == '__main__':
     train_years.remove(int(test_year))
     if test_year == '2019':
         train_years.remove(int(test_year)+1)
+    if test_year == '2016':
+        train_years.remove(2020)
+        train_years.remove(2019)
+        train_years.remove(2018)
+        train_years.remove(2017)
     print('Grabbing training data...')
     aq_train = []
     for y in train_years:
         train_sample_dir = '{}/{}_channels/{}/{}'.format(sample_dir_root, channels, analysis_time, y)
         train_label_dir = '{}/{}/{}'.format(label_dir_root, analysis_time, y)
-        aq_dataset = AQDataset(train_sample_dir, train_label_dir, channels, region)
+        aq_dataset = AQDataset(train_sample_dir, train_label_dir, channels, region, sensitivity_feature)
         aq_train.append(aq_dataset)
 
     aq_train_dataset = ConcatDataset(aq_train)
@@ -139,10 +145,10 @@ if __name__ == '__main__':
     img_dir_test = '{}/{}_channels/{}/{}'.format(root_sample_test_dir, channels, analysis_time, test_year)
     label_dir_test = '{}/{}/{}'.format(root_label_dir, analysis_time, test_year)
 
-    aq_test_dataset = AQDataset(img_dir_test, label_dir_test, channels, region)
+    aq_test_dataset = AQDataset(img_dir_test, label_dir_test, channels, region, sensitivity_feature)
 
     if model_type == 'cqr':
-        run_cqr(unet, device, aq_train_dataset, aq_test_dataset, save_dir, experiment, 0.1, args.channels,
+        run_cqr(unet, device, aq_train_dataset, aq_test_dataset, save_dir, experiment, 0.1, channel_count,
                 args.epochs, args.batch_size, args.lr, 0, save_checkpoint=True)
 
 
@@ -162,7 +168,7 @@ if __name__ == '__main__':
             save_checkpoint=True)
 
         print('Running Test set...')
-        predict(trained_model, target, aq_test_dataset, experiment, channels, seed, save_dir, device=device)
+        predict(trained_model, target, aq_test_dataset, experiment, channel_count, seed, save_dir, device=device)
 
     if model_type == 'mcdropout':
         print('Training model...')
@@ -180,5 +186,5 @@ if __name__ == '__main__':
 
         print('Running Test set...')
         # Running probabilistic method to quanitfy UQ
-        predict_probabilistic(trained_model, target, aq_test_dataset, experiment, channels, seed, save_dir,
+        predict_probabilistic(trained_model, target, aq_test_dataset, experiment, channel_count, seed, save_dir,
                               device=device)

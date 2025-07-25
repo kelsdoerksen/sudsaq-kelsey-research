@@ -1,0 +1,76 @@
+{
+    "os": "Darwin-24.1.0-x86_64-i386-64bit",
+    "python": "3.7.16",
+    "heartbeatAt": "2024-11-28T13:00:04.064739",
+    "startedAt": "2024-11-28T13:00:03.330059",
+    "docker": null,
+    "cuda": null,
+    "args": [
+        "--epochs",
+        "200",
+        "--optimizer",
+        "adam",
+        "--classes",
+        "1",
+        "--test-year",
+        "2019",
+        "--overfitting_test",
+        "False",
+        "--channels",
+        "28",
+        "--target",
+        "bias",
+        "--region",
+        "Europe",
+        "--seed",
+        "45",
+        "--model_type",
+        "cqr",
+        "--data_dir",
+        "/Volumes/PRO-G40/sudsaq/unet/data",
+        "--save_dir",
+        "/Volumes/PRO-G40/sudsaq/unet/runs",
+        "--val_percent",
+        "0.1",
+        "--analysis_date",
+        "june",
+        "--tag",
+        "neurips2024"
+    ],
+    "state": "running",
+    "program": "run_pipeline.py",
+    "codePathLocal": "run_pipeline.py",
+    "codePath": "research/kelsey/unet/run_pipeline.py",
+    "git": {
+        "remote": "git@github.com:kelsdoerksen/sudsaq-kelsey-research.git",
+        "commit": "4f5a1bfd4d13519992c128c095f3ee4f79f690cb"
+    },
+    "email": "kelseydoerksen@gmail.com",
+    "root": "/Users/kelseydoerksen/code/sudsaq-kelsey-research",
+    "host": "Kelseys-MacBook-Pro.local",
+    "username": "kelseydoerksen",
+    "executable": "/Users/kelseydoerksen/opt/anaconda3/envs/sudsaq/bin/python",
+    "cpu_count": 4,
+    "cpu_count_logical": 8,
+    "cpu_freq": {
+        "current": 2300,
+        "min": 2300,
+        "max": 2300
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 2300,
+            "min": 2300,
+            "max": 2300
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 465.62699127197266,
+            "used": 377.22669982910156
+        }
+    },
+    "memory": {
+        "total": 16.0
+    }
+}

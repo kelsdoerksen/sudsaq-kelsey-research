@@ -98,6 +98,7 @@ def cqr_training_loop(model,
 def cqr_testing_loop(in_model,
                      model_type,
                      target,
+                     alpha,
                      test_dataset,
                      loss_criterion,
                      wandb_experiment,
@@ -108,7 +109,7 @@ def cqr_testing_loop(in_model,
     Predict standard way
     """
     # Setting model to eval mode
-    pred_model = models.CQRUNet(n_channels=int(channels), quantiles = [0.1, 0.5, 0.9])
+    pred_model = models.CQRUNet(n_channels=int(channels), quantiles = [float(alpha/2), 0.5, float(1-(alpha/2))])
     pred_model.load_state_dict(torch.load(in_model)['state_dict'])
     pred_model.eval()
 
@@ -312,7 +313,7 @@ def run_cqr(model,
                                     device, 'quantiles', save_dir)
 
     # Predict on test set
-    uncal_predictions_t = cqr_testing_loop(trained_model, 'uncalibrated', 'bias', test_loader, criterion, experiment,
+    uncal_predictions_t = cqr_testing_loop(trained_model, 'uncalibrated', 'bias', alpha, test_loader, criterion, experiment,
                                    channels, save_dir, device)
 
     # --- Calculate the coverage from the un-calibrated predictions
@@ -321,7 +322,7 @@ def run_cqr(model,
 
     # --- Predict lower and upper on calibration set
     print('Predicting on calibration set...')
-    uncal_predictions_c = cqr_testing_loop(trained_model, 'calibration_samples', 'bias', cal_loader, criterion,
+    uncal_predictions_c = cqr_testing_loop(trained_model, 'calibration_samples', 'bias', alpha, cal_loader, criterion,
                                            experiment, channels, save_dir, device)
 
     # --- Calculate qyhat

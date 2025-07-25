@@ -128,9 +128,9 @@ class NoNaNQuantileLoss(nn.Module):
         errors_med = y_true - med
         errors_upper = y_true - upper
 
-        loss_low = torch.max((0.1-1)*errors_low, 0.1*errors_low)
+        loss_low = torch.max((0.05-1)*errors_low, 0.05*errors_low)
         loss_med = torch.max((0.5 - 1) * errors_med, 0.5 * errors_med)
-        loss_upper = torch.max((0.9 - 1) * errors_upper, 0.9 * errors_upper)
+        loss_upper = torch.max((0.95 - 1) * errors_upper, 0.95 * errors_upper)
 
         return torch.mean(loss_low+loss_med+loss_upper)
 

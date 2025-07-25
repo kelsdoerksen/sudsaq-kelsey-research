@@ -1,0 +1,447 @@
+Grabbing training data...
+Grabbing testing data...
+Training model...
+Training EPOCH 0:
+/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/cuda/amp/grad_scaler.py:120: UserWarning: torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.
+  warnings.warn("torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.")
+Train NLL for 5 reps: 5997843.416666667
+Val NLL: 4099561.5
+Training EPOCH 1:
+Train NLL for 5 reps: 5877813.833333333
+Val NLL: 4023129.9375
+Training EPOCH 2:
+Train NLL for 5 reps: 1897495.125
+Val NLL: 1374289.1875
+Training EPOCH 3:
+Train NLL for 5 reps: 376377.28125
+Val NLL: 254724.515625
+Training EPOCH 4:
+Train NLL for 5 reps: 225385.46223958334
+Val NLL: 154507.18359375
+Training EPOCH 5:
+Train NLL for 5 reps: 122662.98697916667
+Val NLL: 83279.314453125
+Training EPOCH 6:
+Train NLL for 5 reps: 108704.48372395833
+Val NLL: 74937.482421875
+Training EPOCH 7:
+Train NLL for 5 reps: 100969.67317708333
+Val NLL: 68473.41015625
+Training EPOCH 8:
+Train NLL for 5 reps: 82045.22395833333
+Val NLL: 56142.03515625
+Training EPOCH 9:
+Train NLL for 5 reps: 74601.93229166667
+Val NLL: 50696.6943359375
+Training EPOCH 10:
+Train NLL for 5 reps: 71614.90983072917
+Val NLL: 48603.0849609375
+Training EPOCH 11:
+Train NLL for 5 reps: 66836.05501302083
+Val NLL: 44654.388671875
+Training EPOCH 12:
+Train NLL for 5 reps: 62754.043619791664
+Val NLL: 43224.509765625
+Training EPOCH 13:
+Train NLL for 5 reps: 65016.606770833336
+Val NLL: 43607.0703125
+Training EPOCH 14:
+Train NLL for 5 reps: 57283.466145833336
+Val NLL: 37602.76806640625
+Training EPOCH 15:
+Train NLL for 5 reps: 61082.552734375
+Val NLL: 37935.3125
+Training EPOCH 16:
+Train NLL for 5 reps: 53758.9111328125
+Val NLL: 35588.12890625
+Training EPOCH 17:
+Train NLL for 5 reps: 52647.783203125
+Val NLL: 34903.22265625
+Training EPOCH 18:
+Train NLL for 5 reps: 53108.011393229164
+Val NLL: 36345.35546875
+Training EPOCH 19:
+Train NLL for 5 reps: 55034.533854166664
+Val NLL: 43624.408203125
+Training EPOCH 20:
+Train NLL for 5 reps: 52525.41015625
+Val NLL: 33883.669921875
+Training EPOCH 21:
+Train NLL for 5 reps: 53129.944986979164
+Val NLL: 33397.048828125
+Training EPOCH 22:
+Train NLL for 5 reps: 51066.902669270836
+Val NLL: 34277.9306640625
+Training EPOCH 23:
+Train NLL for 5 reps: 61760.559244791664
+Val NLL: 39752.5185546875
+Training EPOCH 24:
+Train NLL for 5 reps: 49308.46484375
+Val NLL: 34333.92578125
+Training EPOCH 25:
+Train NLL for 5 reps: 48459.976236979164
+Val NLL: 33059.40234375
+Training EPOCH 26:
+Train NLL for 5 reps: 47326.7451171875
+Val NLL: 31094.36083984375
+Training EPOCH 27:
+Train NLL for 5 reps: 47018.823893229164
+Val NLL: 31050.1953125
+Training EPOCH 28:
+Train NLL for 5 reps: 47842.940104166664
+Val NLL: 32957.9609375
+Training EPOCH 29:
+Train NLL for 5 reps: 46856.283528645836
+Val NLL: 31216.7958984375
+Training EPOCH 30:
+Train NLL for 5 reps: 46724.612955729164
+Val NLL: 30903.52392578125
+Training EPOCH 31:
+Train NLL for 5 reps: 46354.034505208336
+Val NLL: 30302.6845703125
+Training EPOCH 32:
+Train NLL for 5 reps: 48084.864583333336
+Val NLL: 32651.94091796875
+Training EPOCH 33:
+Train NLL for 5 reps: 46998.227213541664
+Val NLL: 31094.60302734375
+Training EPOCH 34:
+Train NLL for 5 reps: 58438.572265625
+Val NLL: 39530.9951171875
+Training EPOCH 35:
+Train NLL for 5 reps: 46975.076822916664
+Val NLL: 31896.6025390625
+Training EPOCH 36:
+Train NLL for 5 reps: 47012.1220703125
+Val NLL: 30878.20458984375
+Training EPOCH 37:
+Train NLL for 5 reps: 54043.8125
+Val NLL: 42149.34033203125
+Training EPOCH 38:
+Train NLL for 5 reps: 51183.582682291664
+Val NLL: 35119.98046875
+Training EPOCH 39:
+Train NLL for 5 reps: 49119.949869791664
+Val NLL: 32854.08740234375
+Training EPOCH 40:
+Train NLL for 5 reps: 50399.358723958336
+Val NLL: 35067.3115234375
+Training EPOCH 41:
+Train NLL for 5 reps: 47782.383463541664
+Val NLL: 31271.677734375
+Training EPOCH 42:
+Train NLL for 5 reps: 52812.974609375
+Val NLL: 34746.0791015625
+Training EPOCH 43:
+Train NLL for 5 reps: 46359.978841145836
+Val NLL: 31603.46240234375
+Training EPOCH 44:
+Train NLL for 5 reps: 47714.248372395836
+Val NLL: 31781.0615234375
+Training EPOCH 45:
+Train NLL for 5 reps: 49134.425130208336
+Val NLL: 32747.8466796875
+Training EPOCH 46:
+Train NLL for 5 reps: 49291.399088541664
+Val NLL: 31605.1767578125
+Training EPOCH 47:
+Train NLL for 5 reps: 45260.772135416664
+Val NLL: 35035.13623046875
+Training EPOCH 48:
+Train NLL for 5 reps: 48904.018229166664
+Val NLL: 31950.7041015625
+Training EPOCH 49:
+Train NLL for 5 reps: 47638.628255208336
+Val NLL: 32514.85205078125
+Training EPOCH 50:
+Train NLL for 5 reps: 46493.6376953125
+Val NLL: 32217.51806640625
+Training EPOCH 51:
+Train NLL for 5 reps: 46699.957682291664
+Val NLL: 31372.63330078125
+Training EPOCH 52:
+Train NLL for 5 reps: 47124.3916015625
+Val NLL: 31722.43408203125
+Training EPOCH 53:
+Train NLL for 5 reps: 49133.046549479164
+Val NLL: 32821.61767578125
+Training EPOCH 54:
+Train NLL for 5 reps: 46465.283203125
+Val NLL: 30792.99658203125
+Training EPOCH 55:
+Train NLL for 5 reps: 45872.572265625
+Val NLL: 30177.13671875
+Training EPOCH 56:
+Train NLL for 5 reps: 46111.951497395836
+Val NLL: 31872.236328125
+Training EPOCH 57:
+Train NLL for 5 reps: 45712.8857421875
+Val NLL: 29638.3681640625
+Training EPOCH 58:
+Train NLL for 5 reps: 47393.05859375
+Val NLL: 30469.6708984375
+Training EPOCH 59:
+Train NLL for 5 reps: 47193.460286458336
+Val NLL: 30584.16796875
+Training EPOCH 60:
+Train NLL for 5 reps: 46961.398763020836
+Val NLL: 31385.099609375
+Training EPOCH 61:
+Train NLL for 5 reps: 49924.069986979164
+Val NLL: 34125.20751953125
+Training EPOCH 62:
+Train NLL for 5 reps: 46759.111002604164
+Val NLL: 32178.30712890625
+Training EPOCH 63:
+Train NLL for 5 reps: 47029.7646484375
+Val NLL: 31654.8671875
+Training EPOCH 64:
+Train NLL for 5 reps: 45014.785481770836
+Val NLL: 29498.22900390625
+Training EPOCH 65:
+Train NLL for 5 reps: 80004.50651041667
+Val NLL: 48699.3125
+Training EPOCH 66:
+Train NLL for 5 reps: 49202.240234375
+Val NLL: 33568.4091796875
+Training EPOCH 67:
+Train NLL for 5 reps: 49861.638997395836
+Val NLL: 31827.791015625
+Training EPOCH 68:
+Train NLL for 5 reps: 57445.871419270836
+Val NLL: 33934.7255859375
+Training EPOCH 69:
+Train NLL for 5 reps: 48141.4619140625
+Val NLL: 31243.49462890625
+Training EPOCH 70:
+Train NLL for 5 reps: 48371.937174479164
+Val NLL: 33160.67578125
+Training EPOCH 71:
+Train NLL for 5 reps: 46009.434244791664
+Val NLL: 31046.4541015625
+Training EPOCH 72:
+Train NLL for 5 reps: 44674.432942708336
+Val NLL: 30123.39208984375
+Training EPOCH 73:
+Train NLL for 5 reps: 55537.090494791664
+Val NLL: 40456.1796875
+Training EPOCH 74:
+Train NLL for 5 reps: 45737.2451171875
+Val NLL: 31127.736328125
+Training EPOCH 75:
+Train NLL for 5 reps: 45039.078776041664
+Val NLL: 33552.6474609375
+Training EPOCH 76:
+Train NLL for 5 reps: 44646.216145833336
+Val NLL: 29301.748046875
+Training EPOCH 77:
+Train NLL for 5 reps: 45017.490559895836
+Val NLL: 30401.5947265625
+Training EPOCH 78:
+Train NLL for 5 reps: 45469.0009765625
+Val NLL: 30033.64208984375
+Training EPOCH 79:
+Train NLL for 5 reps: 44638.19921875
+Val NLL: 29683.9150390625
+Training EPOCH 80:
+Train NLL for 5 reps: 44684.195963541664
+Val NLL: 29931.65771484375
+Training EPOCH 81:
+Train NLL for 5 reps: 45468.6796875
+Val NLL: 30592.80224609375
+Training EPOCH 82:
+Train NLL for 5 reps: 48501.186848958336
+Val NLL: 31256.388671875
+Training EPOCH 83:
+Train NLL for 5 reps: 45450.541341145836
+Val NLL: 30072.03173828125
+Training EPOCH 84:
+Train NLL for 5 reps: 44333.451497395836
+Val NLL: 29198.37744140625
+Training EPOCH 85:
+Train NLL for 5 reps: 46193.980143229164
+Val NLL: 31145.060546875
+Training EPOCH 86:
+Train NLL for 5 reps: 44759.170572916664
+Val NLL: 29445.3359375
+Training EPOCH 87:
+Train NLL for 5 reps: 45685.341145833336
+Val NLL: 29670.9052734375
+Training EPOCH 88:
+Train NLL for 5 reps: 45809.253580729164
+Val NLL: 30412.353515625
+Training EPOCH 89:
+Train NLL for 5 reps: 49658.757161458336
+Val NLL: 31813.3564453125
+Training EPOCH 90:
+Train NLL for 5 reps: 55853.391276041664
+Val NLL: 35057.6953125
+Training EPOCH 91:
+Train NLL for 5 reps: 46835.637044270836
+Val NLL: 31318.310546875
+Training EPOCH 92:
+Train NLL for 5 reps: 44670.423502604164
+Val NLL: 29513.376953125
+Training EPOCH 93:
+Train NLL for 5 reps: 43413.709635416664
+Val NLL: 29429.5341796875
+Training EPOCH 94:
+Train NLL for 5 reps: 48503.096354166664
+Val NLL: 30897.314453125
+Training EPOCH 95:
+Train NLL for 5 reps: 47456.367838541664
+Val NLL: 30526.8447265625
+Training EPOCH 96:
+Train NLL for 5 reps: 49341.3837890625
+Val NLL: 31986.1123046875
+Training EPOCH 97:
+Train NLL for 5 reps: 46032.9443359375
+Val NLL: 29553.34423828125
+Training EPOCH 98:
+Train NLL for 5 reps: 44434.5478515625
+Val NLL: 30780.123046875
+Training EPOCH 99:
+Train NLL for 5 reps: 44472.009440104164
+Val NLL: 29963.580078125
+Training EPOCH 100:
+Train NLL for 5 reps: 49029.405924479164
+Val NLL: 33951.9482421875
+Training EPOCH 101:
+Train NLL for 5 reps: 45024.8232421875
+Val NLL: 28743.1923828125
+Training EPOCH 102:
+Train NLL for 5 reps: 48838.896158854164
+Val NLL: 34061.892578125
+Training EPOCH 103:
+Train NLL for 5 reps: 48206.755208333336
+Val NLL: 31812.1279296875
+Training EPOCH 104:
+Train NLL for 5 reps: 44553.528971354164
+Val NLL: 32488.8271484375
+Training EPOCH 105:
+Train NLL for 5 reps: 43822.395833333336
+Val NLL: 29747.05078125
+Training EPOCH 106:
+Train NLL for 5 reps: 46850.227213541664
+Val NLL: 36934.12060546875
+Training EPOCH 107:
+Train NLL for 5 reps: 44761.950520833336
+Val NLL: 28876.958984375
+Training EPOCH 108:
+Train NLL for 5 reps: 43854.047526041664
+Val NLL: 30668.29736328125
+Training EPOCH 109:
+Train NLL for 5 reps: 44413.744791666664
+Val NLL: 29238.40185546875
+Training EPOCH 110:
+Train NLL for 5 reps: 43684.147786458336
+Val NLL: 29572.310546875
+Training EPOCH 111:
+Train NLL for 5 reps: 44986.216145833336
+Val NLL: 31083.181640625
+Training EPOCH 112:
+Train NLL for 5 reps: 44413.355794270836
+Val NLL: 30189.02392578125
+Training EPOCH 113:
+Train NLL for 5 reps: 44403.709635416664
+Val NLL: 29458.7529296875
+Training EPOCH 114:
+Train NLL for 5 reps: 46121.128255208336
+Val NLL: 35216.998046875
+Training EPOCH 115:
+Train NLL for 5 reps: 45825.934895833336
+Val NLL: 31692.6787109375
+Training EPOCH 116:
+Train NLL for 5 reps: 53887.716471354164
+Val NLL: 32585.154296875
+Training EPOCH 117:
+Train NLL for 5 reps: 50687.990559895836
+Val NLL: 32953.62451171875
+Training EPOCH 118:
+Train NLL for 5 reps: 46501.432291666664
+Val NLL: 29601.21337890625
+Training EPOCH 119:
+Train NLL for 5 reps: 45228.5908203125
+Val NLL: 33067.751953125
+Training EPOCH 120:
+Train NLL for 5 reps: 43483.983072916664
+Val NLL: 31185.072265625
+Training EPOCH 121:
+Train NLL for 5 reps: 45490.831380208336
+Val NLL: 29268.98828125
+Training EPOCH 122:
+Train NLL for 5 reps: 44642.8623046875
+Val NLL: 29536.6845703125
+Training EPOCH 123:
+Train NLL for 5 reps: 44197.6513671875
+Val NLL: 29138.51953125
+Training EPOCH 124:
+Train NLL for 5 reps: 44938.328450520836
+Val NLL: 32009.8701171875
+Training EPOCH 125:
+Train NLL for 5 reps: 44304.3583984375
+Val NLL: 29602.7587890625
+Training EPOCH 126:
+Train NLL for 5 reps: 45538.280924479164
+Val NLL: 31305.7890625
+Training EPOCH 127:
+Train NLL for 5 reps: 44055.8251953125
+Val NLL: 28956.873046875
+Training EPOCH 128:
+Train NLL for 5 reps: 44697.3486328125
+Val NLL: 33822.111328125
+Training EPOCH 129:
+Train NLL for 5 reps: 46606.870442708336
+Val NLL: 30651.330078125
+Training EPOCH 130:
+Train NLL for 5 reps: 44371.736002604164
+Val NLL: 29240.30078125
+Training EPOCH 131:
+Train NLL for 5 reps: 43132.7802734375
+Val NLL: 29600.46337890625
+Training EPOCH 132:
+Train NLL for 5 reps: 44747.442708333336
+Val NLL: 30928.724609375
+Training EPOCH 133:
+Train NLL for 5 reps: 47306.702799479164
+Val NLL: 32473.18359375
+Training EPOCH 134:
+Train NLL for 5 reps: 43638.832682291664
+Val NLL: 30342.0361328125
+Training EPOCH 135:
+Train NLL for 5 reps: 43459.7783203125
+Val NLL: 30919.99169921875
+Training EPOCH 136:
+Train NLL for 5 reps: 44631.25
+Val NLL: 28186.25634765625
+Training EPOCH 137:
+Train NLL for 5 reps: 43989.687825520836
+Val NLL: 29610.82080078125
+Training EPOCH 138:
+Train NLL for 5 reps: 44346.2900390625
+Val NLL: 29887.025390625
+Training EPOCH 139:
+Traceback (most recent call last):
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/run_pipeline.py", line 169, in <module>
+    trained_model = train_probabilistic_model(model=unet,
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/train.py", line 304, in train_probabilistic_model
+    train_loss, train_mse_loss = evaluate_probabilistic(model, train_loader, device=device, num_reps=5)
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/train.py", line 184, in evaluate_probabilistic
+    for k, data in enumerate(data_loader):
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 633, in __next__
+    data = self._next_data()
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 677, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/utils/data/_utils/fetch.py", line 51, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/utils/data/_utils/fetch.py", line 51, in <listcomp>
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/utils/data/dataset.py", line 298, in __getitem__
+    return self.dataset[self.indices[idx]]
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/utils/data/dataset.py", line 243, in __getitem__
+    return self.datasets[dataset_idx][sample_idx]
+  File "/Users/kelseydoerksen/code/sudsaq-kelsey-research/research/kelsey/unet/dataset.py", line 33, in __getitem__
+    multichannel_image = load('{}'.format(image_fp), allow_pickle=True).astype('float32')
+  File "/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/numpy/lib/npyio.py", line 405, in load
+    fid = stack.enter_context(open(os_fspath(file), "rb"))
+FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/PRO-G40/sudsaq/unet/data/NorthAmerica/zscore_normalization/28_channels/june/2010/2010-06-12_sample.npy'

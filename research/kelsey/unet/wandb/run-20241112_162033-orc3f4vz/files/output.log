@@ -1,0 +1,412 @@
+Grabbing training data...
+Grabbing testing data...
+Training EPOCH 0:
+quantiles_train Quantile loss is: 23.912883440653484
+/Users/kelseydoerksen/opt/anaconda3/envs/aq/lib/python3.10/site-packages/torch/cuda/amp/grad_scaler.py:120: UserWarning: torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.
+  warnings.warn("torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling.")
+Training EPOCH 1:
+quantiles_train Quantile loss is: 19.283694903055828
+Training EPOCH 2:
+quantiles_train Quantile loss is: 20.62989107767741
+Training EPOCH 3:
+quantiles_train Quantile loss is: 19.96917215983073
+Training EPOCH 4:
+quantiles_train Quantile loss is: 13.802793025970459
+Training EPOCH 5:
+quantiles_train Quantile loss is: 10.295058727264404
+Training EPOCH 6:
+quantiles_train Quantile loss is: 9.321894804636637
+Training EPOCH 7:
+quantiles_train Quantile loss is: 8.698561350504557
+Training EPOCH 8:
+quantiles_train Quantile loss is: 8.280931313832602
+Training EPOCH 9:
+quantiles_train Quantile loss is: 8.087904294331869
+Training EPOCH 10:
+quantiles_train Quantile loss is: 7.927602529525757
+Training EPOCH 11:
+quantiles_train Quantile loss is: 7.838027000427246
+Training EPOCH 12:
+quantiles_train Quantile loss is: 7.729745388031006
+Training EPOCH 13:
+quantiles_train Quantile loss is: 7.615658203760783
+Training EPOCH 14:
+quantiles_train Quantile loss is: 7.546120802561442
+Training EPOCH 15:
+quantiles_train Quantile loss is: 7.467609961827596
+Training EPOCH 16:
+quantiles_train Quantile loss is: 7.429185549418132
+Training EPOCH 17:
+quantiles_train Quantile loss is: 7.372771422068278
+Training EPOCH 18:
+quantiles_train Quantile loss is: 7.331855773925781
+Training EPOCH 19:
+quantiles_train Quantile loss is: 7.291543324788411
+Training EPOCH 20:
+quantiles_train Quantile loss is: 7.279081344604492
+Training EPOCH 21:
+quantiles_train Quantile loss is: 7.223899841308594
+Training EPOCH 22:
+quantiles_train Quantile loss is: 7.225581248601277
+Training EPOCH 23:
+quantiles_train Quantile loss is: 7.191960096359253
+Training EPOCH 24:
+quantiles_train Quantile loss is: 7.118247747421265
+Training EPOCH 25:
+quantiles_train Quantile loss is: 7.141871531804402
+Training EPOCH 26:
+quantiles_train Quantile loss is: 7.1069778601328535
+Training EPOCH 27:
+quantiles_train Quantile loss is: 7.052299976348877
+Training EPOCH 28:
+quantiles_train Quantile loss is: 7.042914231618245
+Training EPOCH 29:
+quantiles_train Quantile loss is: 7.02549147605896
+Training EPOCH 30:
+quantiles_train Quantile loss is: 7.006082693735759
+Training EPOCH 31:
+quantiles_train Quantile loss is: 7.043075799942017
+Training EPOCH 32:
+quantiles_train Quantile loss is: 6.940375645955403
+Training EPOCH 33:
+quantiles_train Quantile loss is: 6.946935653686523
+Training EPOCH 34:
+quantiles_train Quantile loss is: 6.911627133687337
+Training EPOCH 35:
+quantiles_train Quantile loss is: 6.893698215484619
+Training EPOCH 36:
+quantiles_train Quantile loss is: 6.872048457463582
+Training EPOCH 37:
+quantiles_train Quantile loss is: 6.851170063018799
+Training EPOCH 38:
+quantiles_train Quantile loss is: 6.829318841298421
+Training EPOCH 39:
+quantiles_train Quantile loss is: 6.801523367563884
+Training EPOCH 40:
+quantiles_train Quantile loss is: 6.808523019154866
+Training EPOCH 41:
+quantiles_train Quantile loss is: 6.801572163899739
+Training EPOCH 42:
+quantiles_train Quantile loss is: 6.765799601872762
+Training EPOCH 43:
+quantiles_train Quantile loss is: 6.721702893575032
+Training EPOCH 44:
+quantiles_train Quantile loss is: 6.7524369557698565
+Training EPOCH 45:
+quantiles_train Quantile loss is: 6.727136294047038
+Training EPOCH 46:
+quantiles_train Quantile loss is: 6.704640706380208
+Training EPOCH 47:
+quantiles_train Quantile loss is: 6.730620622634888
+Training EPOCH 48:
+quantiles_train Quantile loss is: 6.669346570968628
+Training EPOCH 49:
+quantiles_train Quantile loss is: 6.6475067138671875
+Training EPOCH 50:
+quantiles_train Quantile loss is: 6.62334402402242
+Training EPOCH 51:
+quantiles_train Quantile loss is: 6.593331972757976
+Training EPOCH 52:
+quantiles_train Quantile loss is: 6.575752814610799
+Training EPOCH 53:
+quantiles_train Quantile loss is: 6.616125027338664
+Training EPOCH 54:
+quantiles_train Quantile loss is: 6.583831230799357
+Training EPOCH 55:
+quantiles_train Quantile loss is: 6.53576676050822
+Training EPOCH 56:
+quantiles_train Quantile loss is: 6.494511683781941
+Training EPOCH 57:
+quantiles_train Quantile loss is: 6.507278919219971
+Training EPOCH 58:
+quantiles_train Quantile loss is: 6.509439627329509
+Training EPOCH 59:
+quantiles_train Quantile loss is: 6.4897481600443525
+Training EPOCH 60:
+quantiles_train Quantile loss is: 6.470015525817871
+Training EPOCH 61:
+quantiles_train Quantile loss is: 6.494286934534709
+Training EPOCH 62:
+quantiles_train Quantile loss is: 6.429518063863118
+Training EPOCH 63:
+quantiles_train Quantile loss is: 6.384613434473674
+Training EPOCH 64:
+quantiles_train Quantile loss is: 6.358900229136149
+Training EPOCH 65:
+quantiles_train Quantile loss is: 6.315157890319824
+Training EPOCH 66:
+quantiles_train Quantile loss is: 6.336905638376872
+Training EPOCH 67:
+quantiles_train Quantile loss is: 6.332915782928467
+Training EPOCH 68:
+quantiles_train Quantile loss is: 6.30196483929952
+Training EPOCH 69:
+quantiles_train Quantile loss is: 6.300758918126424
+Training EPOCH 70:
+quantiles_train Quantile loss is: 6.3093321323394775
+Training EPOCH 71:
+quantiles_train Quantile loss is: 6.293940623601277
+Training EPOCH 72:
+quantiles_train Quantile loss is: 6.235733350118001
+Training EPOCH 73:
+quantiles_train Quantile loss is: 6.221239646275838
+Training EPOCH 74:
+quantiles_train Quantile loss is: 6.195589621861775
+Training EPOCH 75:
+quantiles_train Quantile loss is: 6.23194162050883
+Training EPOCH 76:
+quantiles_train Quantile loss is: 6.185453573862712
+Training EPOCH 77:
+quantiles_train Quantile loss is: 6.207322597503662
+Training EPOCH 78:
+quantiles_train Quantile loss is: 6.137998501459758
+Training EPOCH 79:
+quantiles_train Quantile loss is: 6.143131097157796
+Training EPOCH 80:
+quantiles_train Quantile loss is: 6.113802433013916
+Training EPOCH 81:
+quantiles_train Quantile loss is: 6.155562957127889
+Training EPOCH 82:
+quantiles_train Quantile loss is: 6.127580722173055
+Training EPOCH 83:
+quantiles_train Quantile loss is: 6.1117808024088545
+Training EPOCH 84:
+quantiles_train Quantile loss is: 6.0789774258931475
+Training EPOCH 85:
+quantiles_train Quantile loss is: 6.058266957600911
+Training EPOCH 86:
+quantiles_train Quantile loss is: 6.009851614634196
+Training EPOCH 87:
+quantiles_train Quantile loss is: 6.005865971247355
+Training EPOCH 88:
+quantiles_train Quantile loss is: 6.000388940175374
+Training EPOCH 89:
+quantiles_train Quantile loss is: 5.970866918563843
+Training EPOCH 90:
+quantiles_train Quantile loss is: 5.9758280118306475
+Training EPOCH 91:
+quantiles_train Quantile loss is: 5.976569573084514
+Training EPOCH 92:
+quantiles_train Quantile loss is: 6.021708965301514
+Training EPOCH 93:
+quantiles_train Quantile loss is: 5.961710373560588
+Training EPOCH 94:
+quantiles_train Quantile loss is: 5.926145315170288
+Training EPOCH 95:
+quantiles_train Quantile loss is: 5.926078001658122
+Training EPOCH 96:
+quantiles_train Quantile loss is: 5.910962502161662
+Training EPOCH 97:
+quantiles_train Quantile loss is: 5.885591983795166
+Training EPOCH 98:
+quantiles_train Quantile loss is: 5.915407180786133
+Training EPOCH 99:
+quantiles_train Quantile loss is: 5.889106829961141
+Training EPOCH 100:
+quantiles_train Quantile loss is: 5.941512028376262
+Training EPOCH 101:
+quantiles_train Quantile loss is: 5.93879755338033
+Training EPOCH 102:
+quantiles_train Quantile loss is: 5.864469051361084
+Training EPOCH 103:
+quantiles_train Quantile loss is: 5.896823883056641
+Training EPOCH 104:
+quantiles_train Quantile loss is: 5.875432173411052
+Training EPOCH 105:
+quantiles_train Quantile loss is: 5.838176091512044
+Training EPOCH 106:
+quantiles_train Quantile loss is: 5.811958471934001
+Training EPOCH 107:
+quantiles_train Quantile loss is: 5.798399368921916
+Training EPOCH 108:
+quantiles_train Quantile loss is: 5.79107125600179
+Training EPOCH 109:
+quantiles_train Quantile loss is: 5.754835923512776
+Training EPOCH 110:
+quantiles_train Quantile loss is: 5.737588564554851
+Training EPOCH 111:
+quantiles_train Quantile loss is: 5.759287516276042
+Training EPOCH 112:
+quantiles_train Quantile loss is: 5.714732567469279
+Training EPOCH 113:
+quantiles_train Quantile loss is: 5.7419272263844805
+Training EPOCH 114:
+quantiles_train Quantile loss is: 5.682651837666829
+Training EPOCH 115:
+quantiles_train Quantile loss is: 5.682043393452962
+Training EPOCH 116:
+quantiles_train Quantile loss is: 5.674838304519653
+Training EPOCH 117:
+quantiles_train Quantile loss is: 5.688127358754476
+Training EPOCH 118:
+quantiles_train Quantile loss is: 5.66455062230428
+Training EPOCH 119:
+quantiles_train Quantile loss is: 5.697700262069702
+Training EPOCH 120:
+quantiles_train Quantile loss is: 5.704714059829712
+Training EPOCH 121:
+quantiles_train Quantile loss is: 5.687974850336711
+Training EPOCH 122:
+quantiles_train Quantile loss is: 5.661658604939778
+Training EPOCH 123:
+quantiles_train Quantile loss is: 5.675601323445638
+Training EPOCH 124:
+quantiles_train Quantile loss is: 5.622693618138631
+Training EPOCH 125:
+quantiles_train Quantile loss is: 5.615150610605876
+Training EPOCH 126:
+quantiles_train Quantile loss is: 5.6001912752787275
+Training EPOCH 127:
+quantiles_train Quantile loss is: 5.597132603327434
+Training EPOCH 128:
+quantiles_train Quantile loss is: 5.589869896570842
+Training EPOCH 129:
+quantiles_train Quantile loss is: 5.524530490239461
+Training EPOCH 130:
+quantiles_train Quantile loss is: 5.543878157933553
+Training EPOCH 131:
+quantiles_train Quantile loss is: 5.577226320902507
+Training EPOCH 132:
+quantiles_train Quantile loss is: 5.504793485005696
+Training EPOCH 133:
+quantiles_train Quantile loss is: 5.501606225967407
+Training EPOCH 134:
+quantiles_train Quantile loss is: 5.492313305536906
+Training EPOCH 135:
+quantiles_train Quantile loss is: 5.471629619598389
+Training EPOCH 136:
+quantiles_train Quantile loss is: 5.4607977867126465
+Training EPOCH 137:
+quantiles_train Quantile loss is: 5.416109800338745
+Training EPOCH 138:
+quantiles_train Quantile loss is: 5.439472834269206
+Training EPOCH 139:
+quantiles_train Quantile loss is: 5.417179425557454
+Training EPOCH 140:
+quantiles_train Quantile loss is: 5.419275283813477
+Training EPOCH 141:
+quantiles_train Quantile loss is: 5.3962929248809814
+Training EPOCH 142:
+quantiles_train Quantile loss is: 5.404141823450725
+Training EPOCH 143:
+quantiles_train Quantile loss is: 5.3998970190684
+Training EPOCH 144:
+quantiles_train Quantile loss is: 5.408054828643799
+Training EPOCH 145:
+quantiles_train Quantile loss is: 5.399913946787517
+Training EPOCH 146:
+quantiles_train Quantile loss is: 5.365434805552165
+Training EPOCH 147:
+quantiles_train Quantile loss is: 5.361544291178386
+Training EPOCH 148:
+quantiles_train Quantile loss is: 5.3649985790252686
+Training EPOCH 149:
+quantiles_train Quantile loss is: 5.316832701365153
+Training EPOCH 150:
+quantiles_train Quantile loss is: 5.3121116161346436
+Training EPOCH 151:
+quantiles_train Quantile loss is: 5.327794154485066
+Training EPOCH 152:
+quantiles_train Quantile loss is: 5.3339628378550215
+Training EPOCH 153:
+quantiles_train Quantile loss is: 5.308593988418579
+Training EPOCH 154:
+quantiles_train Quantile loss is: 5.339635690053304
+Training EPOCH 155:
+quantiles_train Quantile loss is: 5.2886106967926025
+Training EPOCH 156:
+quantiles_train Quantile loss is: 5.299649159113566
+Training EPOCH 157:
+quantiles_train Quantile loss is: 5.297596613566081
+Training EPOCH 158:
+quantiles_train Quantile loss is: 5.260607401529948
+Training EPOCH 159:
+quantiles_train Quantile loss is: 5.233588059743245
+Training EPOCH 160:
+quantiles_train Quantile loss is: 5.2128271261851
+Training EPOCH 161:
+quantiles_train Quantile loss is: 5.204535007476807
+Training EPOCH 162:
+quantiles_train Quantile loss is: 5.196504990259807
+Training EPOCH 163:
+quantiles_train Quantile loss is: 5.185137748718262
+Training EPOCH 164:
+quantiles_train Quantile loss is: 5.176006078720093
+Training EPOCH 165:
+quantiles_train Quantile loss is: 5.218762954076131
+Training EPOCH 166:
+quantiles_train Quantile loss is: 5.176562468210856
+Training EPOCH 167:
+quantiles_train Quantile loss is: 5.172551949818929
+Training EPOCH 168:
+quantiles_train Quantile loss is: 5.183765411376953
+Training EPOCH 169:
+quantiles_train Quantile loss is: 5.141580979029338
+Training EPOCH 170:
+quantiles_train Quantile loss is: 5.119871060053508
+Training EPOCH 171:
+quantiles_train Quantile loss is: 5.149136225382487
+Training EPOCH 172:
+quantiles_train Quantile loss is: 5.109765370686849
+Training EPOCH 173:
+quantiles_train Quantile loss is: 5.090501467386882
+Training EPOCH 174:
+quantiles_train Quantile loss is: 5.077150424321492
+Training EPOCH 175:
+quantiles_train Quantile loss is: 5.085092544555664
+Training EPOCH 176:
+quantiles_train Quantile loss is: 5.0407795906066895
+Training EPOCH 177:
+quantiles_train Quantile loss is: 5.036552906036377
+Training EPOCH 178:
+quantiles_train Quantile loss is: 5.035075108210246
+Training EPOCH 179:
+quantiles_train Quantile loss is: 5.001474618911743
+Training EPOCH 180:
+quantiles_train Quantile loss is: 5.012713432312012
+Training EPOCH 181:
+quantiles_train Quantile loss is: 4.969964424769084
+Training EPOCH 182:
+quantiles_train Quantile loss is: 5.024409691492717
+Training EPOCH 183:
+quantiles_train Quantile loss is: 4.978255828221639
+Training EPOCH 184:
+quantiles_train Quantile loss is: 4.960434754689534
+Training EPOCH 185:
+quantiles_train Quantile loss is: 4.958029270172119
+Training EPOCH 186:
+quantiles_train Quantile loss is: 4.965216716130574
+Training EPOCH 187:
+quantiles_train Quantile loss is: 4.963016589482625
+Training EPOCH 188:
+quantiles_train Quantile loss is: 4.940767367680867
+Training EPOCH 189:
+quantiles_train Quantile loss is: 4.926929950714111
+Training EPOCH 190:
+quantiles_train Quantile loss is: 4.924322923024495
+Training EPOCH 191:
+quantiles_train Quantile loss is: 4.921875238418579
+Training EPOCH 192:
+quantiles_train Quantile loss is: 4.988134781519572
+Training EPOCH 193:
+quantiles_train Quantile loss is: 4.940290133158366
+Training EPOCH 194:
+quantiles_train Quantile loss is: 4.932611306508382
+Training EPOCH 195:
+quantiles_train Quantile loss is: 4.923701922098796
+Training EPOCH 196:
+quantiles_train Quantile loss is: 4.921539068222046
+Training EPOCH 197:
+quantiles_train Quantile loss is: 4.940040826797485
+Training EPOCH 198:
+quantiles_train Quantile loss is: 4.894014120101929
+Training EPOCH 199:
+quantiles_train Quantile loss is: 4.939017454783122
+test set loss is: 8.7932767868042
+Quantile Regression Coverage without conformal is: 0.5528944051197517
+Predicting on calibration set...
+test set loss is: 6.811257362365723
+Calculating qyhat for calibration...
+Calibrating Test set predictions...
+Conformalized Quantile Regression Coverage is: 0.9124406089401726
+RMSE is: 15.989136695861816

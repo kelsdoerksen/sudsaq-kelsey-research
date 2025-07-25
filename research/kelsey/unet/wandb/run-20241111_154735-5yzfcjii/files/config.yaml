@@ -1,0 +1,64 @@
+wandb_version: 1
+
+_wandb:
+  desc: null
+  value:
+    python_version: 3.10.13
+    cli_version: 0.15.11
+    framework: torch
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    start_time: 1731368855.658066
+    t:
+      1:
+      - 1
+      - 41
+      - 55
+      2:
+      - 1
+      - 41
+      - 55
+      3:
+      - 15
+      - 23
+      4: 3.10.13
+      5: 0.15.11
+      8:
+      - 5
+      13: darwin-x86_64
+experiment:
+  desc: null
+  value: sensitivity_analysis
+epochs:
+  desc: null
+  value: 200
+batch_size:
+  desc: null
+  value: 32
+learning_rate:
+  desc: null
+  value: 0.001
+val_percent:
+  desc: null
+  value: 0.1
+save_checkpoint:
+  desc: null
+  value: true
+n_channels:
+  desc: null
+  value: 27
+analysis_period:
+  desc: null
+  value: june
+target:
+  desc: null
+  value: bias
+region:
+  desc: null
+  value: NorthAmerica
+model:
+  desc: null
+  value: mcdropout
+test_year:
+  desc: null
+  value: '2019'
