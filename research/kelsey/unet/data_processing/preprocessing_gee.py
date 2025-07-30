@@ -82,11 +82,13 @@ def filter_bounds(xr_ds, extent):
         max_lat = 54.392
         min_lon = -124.875
         max_lon = -70.875
-    if extent == 'eu':
+    elif extent == 'eu':
         min_lat = 35.327
         max_lat = 64.485
         min_lon = -9.0
         max_lon = 24.75
+    else:
+        return xr_ds
 
     cropped_ds = xr_ds.sel(lat=slice(min_lat, max_lat), lon=slice(min_lon, max_lon))
 
@@ -97,6 +99,12 @@ if __name__ == '__main__':
     region = args.region
     gee_dir = args.gee_dir
 
+    if region == 'na':
+        full_name = 'NorthAmerica'
+    if region == 'eu':
+        full_name = 'Europe'
+    if region == 'globe':
+        full_name = 'Globe'
 
     # --- Processing Population ---
     years = ['2005','2010','2015', '2020']
@@ -108,16 +116,11 @@ if __name__ == '__main__':
         ds = format_lon(ds)
 
         # Subsample over north america
-        filt_ds = filter_bounds(ds, 'na')
+        filt_ds = filter_bounds(ds, region)
 
         # Make array
-        generate_array(filt_ds, 'population', '/Volumes/PRO-G40/sudsaq/GEE', y, 'NorthAmerica')
+        generate_array(filt_ds, 'population', '/Volumes/PRO-G40/sudsaq/GEE', y, full_name)
 
-
-    if region == 'na':
-        full_name = 'NorthAmerica'
-    if region == 'eu':
-        full_name = 'Europe'
 
     # --- Processing modis ---
     years = ['2005', '2006', '2007', '2008', '2009','2010',

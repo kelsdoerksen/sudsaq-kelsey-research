@@ -101,16 +101,22 @@ if __name__ == '__main__':
     gee_channels = 23
     total_channels = momo_channels + gee_channels
 
-    years = ['2020']
-    for y in years:
-        print('Generating samples for year, month: {} {}'.format(y, month))
-        if int(y) < 2020:
-            momo_data_dir = '{}/{}/2005-2019'.format(momo_dir, month)
-        else:
-            momo_data_dir = '{}/{}/2020'.format(momo_dir, month)
+    if month == 'june':
+        m = '-06-'
+    if month == 'july':
+        m = '-07-'
+    if month == 'aug':
+        m = '-08-'
 
-        for f in os.listdir('{}'.format(momo_data_dir)):
-            if f[0:4] == y:
-                momo = np.load('{}/{}'.format(momo_data_dir, f))
+    save_dir = save_dir + '/{}/51_channels'.format(region)
+    momo_dir = momo_dir + '/{}'.format(region)
+
+    years = ['2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014',
+             '2015', '2016', '2017', '2018', '2019', '2020']
+    for y in years:
+        for f in os.listdir('{}'.format(momo_dir)):
+            if '{}{}'.format(y, m) in f:
+                momo = np.load('{}/{}'.format(momo_dir, f))
                 combined_array = combine_momo_gee(momo, momo_channels, y, region, gee_data_dir)
-                np.save('{}/{}/{}_sample.npy'.format(save_dir, month, f[0:10]), combined_array)
+                print('Saving combined array for date: {}'.format(f[0:10]))
+                np.save('{}/{}_sample.npy'.format(save_dir, f[0:10]), combined_array)
