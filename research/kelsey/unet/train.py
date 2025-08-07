@@ -313,6 +313,7 @@ def train_probabilistic_model(model,
 
         print('Train NLL for 5 reps: {}'.format(train_loss))
         # Validation
+        '''
         histograms = {}
         for tag, value in model.named_parameters():
             tag = tag.replace('/', '.')
@@ -320,6 +321,7 @@ def train_probabilistic_model(model,
                 histograms['Weights/' + tag] = wandb.Histogram(value.data.cpu())
             if not (torch.isinf(value.grad) | torch.isnan(value.grad)).any():
                 histograms['Gradients/' + tag] = wandb.Histogram(value.grad.data.cpu())
+        '''
 
         # Run validation
         for i, data in enumerate(val_loader):
@@ -352,8 +354,7 @@ def train_probabilistic_model(model,
                 'validation MSE loss': val_mse,
                 'validation RMSE': np.sqrt(val_mse),
                 'step': global_step,
-                'epoch': epoch,
-                **histograms
+                'epoch': epoch
             })
         except:
             pass
