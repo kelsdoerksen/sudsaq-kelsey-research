@@ -94,15 +94,9 @@ if __name__ == '__main__':
 
     # --- Making save directory
     if wandb_status == 'online':
-        save_dir = '{}/{}'.format(root_save_dir, experiment.name)
-        '''
-        save_dir = '{}/{}/{}/{}channels/{}_{}_{}_{}_{}epochs'.format(root_save_dir, region, target, channels, experiment.name,
-                                                         region, analysis_month, model_type, epochs)
-        '''
+        save_dir = '{}/{}/{}/{}_channels'.format(root_save_dir, region, target, channels)
     else:
-        save_dir = '{}/{}/{}/{}channels/{}_{}_{}_{}_{}epochs'.format(root_save_dir, region, target, channels,
-                                                                     experiment.id,
-                                                                     region, analysis_month, model_type, epochs)
+        save_dir = '{}/{}/{}/{}_channels'.format(root_save_dir, region, target, channels)
     if not os.path.exists(save_dir):
         os.mkdir(save_dir)
 
