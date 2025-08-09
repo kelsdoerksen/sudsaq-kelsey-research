@@ -33,7 +33,7 @@ def train_ensembles(device,
     """
     Train ensemble models
     """
-
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     n_val = int(len(train_dataset) * val_percent)
     n_train = len(train_dataset) - n_val
     criterion = NLL()
