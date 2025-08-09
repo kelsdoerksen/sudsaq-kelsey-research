@@ -10,7 +10,8 @@ from predict import *
 import logging
 import sys
 from run_cqr import *
-from torch.utils.data import ConcatDataset
+from run_deep_ensemble import *
+import random
 
 sys.path.append(os.path.abspath(os.path.join(os.getcwd() + '/submodules/cqr')))
 sys.path.append(os.path.abspath(os.path.join(os.getcwd() + '/submodules/nonconformist')))
@@ -31,9 +32,7 @@ def get_args():
                         required=True)
     parser.add_argument('--region', help='Region of study, NorthAmerica or Europe supported',
                         required=True)
-    parser.add_argument('--seed', help='Seed to set to make model deterministic',
-                        required=True)
-    parser.add_argument('--model_type', help='Model type, must be one of standard, mcdropout, concrete, cqr',
+    parser.add_argument('--model_type', help='Model type, must be one of standard, mcdropout, cqr, ensemble',
                         required=True)
     parser.add_argument('--data_dir', help='Specify root data directory',
                         required=True)
@@ -64,9 +63,12 @@ if __name__ == '__main__':
     epochs = args.epochs
     tag = args.tag
     wandb_status = args.wandb_status
-    seed = args.seed
     analysis_month= args.analysis_month
     sensitivity_feature = args.sensitivity_feature
+
+    # Want to be probabilistic in general
+    seed = random.randint(0, 1000)
+    torch.manual_seed(seed)
 
     # Initializing logging in wandb for experiment
     experiment = wandb.init(project='U-Net Test', resume='allow', anonymous='must', tags=[tag])
@@ -104,9 +106,9 @@ if __name__ == '__main__':
     logging.info(f'Using device {device}')
     if model_type in ['standard']:
         unet = models.UNet(n_channels=channel_count, n_classes=1)
-    if model_type in ['cqr']:
+    elif model_type in ['cqr']:
         unet = models.CQRUNet(n_channels=channel_count, quantiles=[0.1, 0.5, 0.9])
-    if model_type in ['mcdropout']:
+    elif model_type in ['mcdropout']:
         unet = models.MCDropoutProbabilisticUNet(n_channels=channel_count, n_classes=1)
 
     if torch.cuda.is_available():
@@ -174,6 +176,10 @@ if __name__ == '__main__':
         run_cqr(unet, device, aq_train_dataset, aq_test_dataset, save_dir, experiment, 0.1, channel_count,
                 args.epochs, args.batch_size, args.lr, 0, save_checkpoint=True)
 
+    if model_type == 'ensemble':
+        ensemble_size = 10
+        run_deep_ensemble(device, aq_train_dataset, aq_test_dataset, 0.1, save_dir, channel_count,
+                args.epochs, args.batch_size, args.lr, 0, ensemble_size=10)
 
     if model_type == 'standard':
         print('Training model...')
@@ -191,7 +197,7 @@ if __name__ == '__main__':
             save_checkpoint=True)
 
         print('Running Test set...')
-        predict(trained_model, target, aq_test_dataset, experiment, channel_count, seed, save_dir, device=device)
+        predict(trained_model, target, aq_test_dataset, experiment, channel_count, save_dir, device=device)
 
     if model_type == 'mcdropout':
         print('Training model...')
@@ -209,5 +215,5 @@ if __name__ == '__main__':
 
         print('Running Test set...')
         # Running probabilistic method to quanitfy UQ
-        predict_probabilistic(trained_model, target, aq_test_dataset, experiment, channel_count, seed, save_dir,
+        predict_probabilistic(trained_model, target, aq_test_dataset, experiment, channel_count, save_dir,
                               device=device)

@@ -14,13 +14,10 @@ from losses import *
 from utils import *
 
 
-def predict(in_model, target, test_dataset, wandb_experiment, channels, seed, out_dir, device):
+def predict(in_model, target, test_dataset, wandb_experiment, channels, out_dir, device):
     """
     Predict standard way (no dropout at test time)
     """
-    # Make deterministic
-    #make_deterministic(seed)
-
     # Setting model to eval mode
     unet = models.UNet(n_channels=channels, n_classes=1)
     unet.load_state_dict(torch.load(in_model)['state_dict'])
@@ -66,13 +63,10 @@ def predict(in_model, target, test_dataset, wandb_experiment, channels, seed, ou
 
 
 
-def predict_probabilistic(in_model, target, test_dataset, wandb_experiment, channels, seed, out_dir, device):
+def predict_probabilistic(in_model, target, test_dataset, wandb_experiment, channels, out_dir, device):
     """
     Predict probabilistic output with uncertainty
     """
-
-    # Make deterministic
-    #make_deterministic(seed)
 
     model = models.MCDropoutProbabilisticUNet(n_channels=channels, n_classes=1)
     model.load_state_dict(torch.load(in_model)['state_dict'])
@@ -100,6 +94,7 @@ def predict_probabilistic(in_model, target, test_dataset, wandb_experiment, chan
             inputs, labels = inputs.to(device), labels.to(device)
             gt.append(labels.detach().numpy())
 
+            # Running multiple forward passes to generate a set of predictions
             for rep in range(100):
                 pred_map_means, pred_map_log_vars = model(inputs)
                 sampled_pred_maps.append(pred_map_means.cpu().detach().numpy())

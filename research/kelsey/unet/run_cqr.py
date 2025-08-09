@@ -283,6 +283,7 @@ def run_cqr(model,
     Run CQR
     """
     seed = random.randint(0, 1000)
+    torch.manual_seed(seed)
     # --- Split training dataset into training, and calibration
     n_cal = int(len(train_dataset) * 0.5)
     n_train = len(train_dataset) - n_cal

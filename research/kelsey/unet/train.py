@@ -3,15 +3,6 @@ Training script for UNet
 Currently have this written to run the whole thing, to update
 """
 
-"""
-Note on Gradient Scaling:
-If the forward pass for a op have float16 inputs, the backward pass for that op will produce
-float16 gradients. Gradient values with small magnitudes may not be representable in float16;
-these values will flush to zero (underflow), so the update for the corresponding parameters will be lost.
-To combat this, 'gradient scaling' multiplies the networks loss(es) by a scale factor and invokes a backward
-pass on the scaled loss(es) -> gradients flowing through the network are scaled to them same factor
-"""
-
 from dataset import *
 from metrics import *
 import numpy as np
@@ -234,6 +225,7 @@ def train_probabilistic_model(model,
 
     # --- Split dataset into training and validation
     seed = random.randint(0, 1000)
+    torch.manual_seed(seed)
     n_val = int(len(dataset) * val_percent)
     n_train = len(dataset) - n_val
     train_set, val_set = random_split(dataset, [n_train, n_val], generator=torch.Generator().manual_seed(seed))
@@ -241,19 +233,6 @@ def train_probabilistic_model(model,
     # --- DataLoaders
     train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True)
     val_loader = DataLoader(val_set, batch_size=batch_size, shuffle=True)
-
-    # --- Load weights from saved deterministic model -> old, don't need I don't think
-    '''
-    saved_model_dir = '/Users/kelseyd/Desktop/unet/runs/Europe/mda8/39channels/scarlet-fire-322/checkpoint_epoch199.pth'
-    saved_model = torch.load(saved_model_dir)
-
-    model_dict = model.state_dict()
-    pretrained_dict = {k: v for k, v in saved_model['state_dict'].items() if k in model_dict}
-    # Update model with pretrained dict
-    model_dict.update(pretrained_dict)
-    # Load new state dict values
-    model.load_state_dict(model_dict)
-    '''
 
     # --- Initialize small random log_weights
     torch.nn.init.normal_(model.log_var.conv.weight, mean=0.0, std=1e-6)
