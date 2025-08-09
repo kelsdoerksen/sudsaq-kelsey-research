@@ -34,4 +34,4 @@ conda activate aq
 
 cd /auto/users/kelsen/code/sudsaq-kelsey-research/research/kelsey/unet
 
-python run_pipeline.py --epochs 1 --optimizer adam --classes 1 --test_year 2019 --overfitting False --channels 28 --target bias --region NorthAmerica --seed 45 --model_type mcdropout --data_dir /scratch-ssd/kelsen/sudsaq/data --save_dir /users/kelsen/sudsaq-results --val_percent 0.1 --analysis_month June --tag testing-changes-thesis --norm zscore --wandb_status online
+python run_pipeline.py --epochs 1 --optimizer adam --classes 1 --test_year 2019 --overfitting False --channels 51 --target bias --region NorthAmerica --model_type ensemble --data_dir /scratch-ssd/kelsen/sudsaq/data --save_dir /users/kelsen/sudsaq-results --val_percent 0.1 --analysis_month June --tag testing-changes-thesis --norm zscore --wandb_status online

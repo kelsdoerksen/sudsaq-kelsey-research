@@ -111,10 +111,6 @@ if __name__ == '__main__':
     elif model_type in ['mcdropout']:
         unet = models.MCDropoutProbabilisticUNet(n_channels=channel_count, n_classes=1)
 
-    if torch.cuda.is_available():
-        unet.cuda()
-    #unet.to(device=device)
-
     # ---- Grabbing Data ----
     print('Grabbing training data...')
     aq_train_dataset = AQDataset(sample_dir_root, label_dir_root, 'train', analysis_month, test_year, channels, region,
@@ -173,6 +169,9 @@ if __name__ == '__main__':
                                  norm=args.norm)
 
     if model_type == 'cqr':
+        if torch.cuda.is_available():
+            unet.cuda()
+        # unet.to(device=device)
         run_cqr(unet, device, aq_train_dataset, aq_test_dataset, save_dir, experiment, 0.1, channel_count,
                 args.epochs, args.batch_size, args.lr, 0, save_checkpoint=True)
 
@@ -182,6 +181,9 @@ if __name__ == '__main__':
                 args.epochs, args.batch_size, args.lr, 0, ensemble_size=10)
 
     if model_type == 'standard':
+        if torch.cuda.is_available():
+            unet.cuda()
+        # unet.to(device=device)
         print('Training model...')
         trained_model = train_model(
             model=unet,
@@ -200,6 +202,9 @@ if __name__ == '__main__':
         predict(trained_model, target, aq_test_dataset, experiment, channel_count, save_dir, device=device)
 
     if model_type == 'mcdropout':
+        if torch.cuda.is_available():
+            unet.cuda()
+        # unet.to(device=device)
         print('Training model...')
         trained_model = train_probabilistic_model(model=unet,
                                                   device=device,
