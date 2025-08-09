@@ -107,7 +107,7 @@ def predict_ensembles(ensemble,
     """
     Run prediction on ensemble models
     """
-
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     test_loader = DataLoader(test_dataset, batch_size=10, shuffle=True)
     loss_criterion = NLL()
 
@@ -165,6 +165,7 @@ def run_deep_ensemble(device,
     average
     """
 
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     # Train models to make up ensemble
     trained_ens = train_ensembles(device, train_dataset, val_percent, channels, epochs, batch_size, learning_rate,
                                   weight_decay, ensemble_size)

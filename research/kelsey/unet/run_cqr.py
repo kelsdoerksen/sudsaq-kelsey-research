@@ -282,6 +282,7 @@ def run_cqr(model,
     """
     Run CQR
     """
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     seed = random.randint(0, 1000)
     torch.manual_seed(seed)
     # --- Split training dataset into training, and calibration
