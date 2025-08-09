@@ -61,6 +61,7 @@ def train_ensembles(device,
     for epoch in range(epochs):
         for model_idx, model in enumerate(ensemble):
             optimizer = optimizers[model_idx]
+            model.to(device)
             model.train()
             for i, data in enumerate(train_data[model_idx]):
                 optimizer.zero_grad()
@@ -114,6 +115,7 @@ def predict_ensembles(ensemble,
     # iterate over the test set
     for i in range(len(ensemble)):
         model = ensemble[i]
+        model.to(device)
         gt = []
         pred_mean_list = []
         pred_var_list = []
