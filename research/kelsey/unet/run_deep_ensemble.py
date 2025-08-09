@@ -124,11 +124,11 @@ def predict_ensembles(ensemble,
             for i, data in enumerate(test_loader):
                 inputs, labels = data
                 inputs, labels = inputs.to(device), labels.to(device)
-                gt.append(labels.detach().numpy())
+                gt.append(labels.cpu().detach().numpy())
 
                 pred_map_means, pred_map_log_vars = model(inputs)
-                pred_mean_list.append(pred_map_means.detach().numpy())
-                pred_var_list.append(pred_map_log_vars.detach().numpy())
+                pred_mean_list.append(pred_map_means.cpu().detach().numpy())
+                pred_var_list.append(pred_map_log_vars.cpu().detach().numpy())
 
                 # For bias, need to remove nans
                 test_mask = ~torch.isnan(labels)
