@@ -281,132 +281,125 @@ def load_test_data(analysis_time, pred_target, n_features, region):
     '''
     return test_samples, test_labels
 
+if __name__ == '__main__':
+    args = get_args()
+    analysis_period = args.analysis_time
+    target = args.target
+    aoi = args.region
+    num_features = args.n_features
+    results_dir = args.results_dir
 
-args = get_args()
-analysis_period = args.analysis_time
-target = args.target
-aoi = args.region
-num_features = args.n_features
+    if aoi == 'na':
+        full_geo_name = 'NorthAmerica'
+    if aoi == 'eu':
+        full_geo_name = 'Europe'
+    if aoi == 'globe':
+        full_geo_name = 'Globe'
 
-if aoi == 'na':
-    full_geo_name = 'NorthAmerica'
-if aoi == 'eu':
-    full_geo_name = 'Europe'
+    # --- Loading Training Data ---
+    train_df_data, train_df_target = load_train_data(analysis_period, target, num_features, full_geo_name)
+    #X_train, y_train = get_X_and_y_train(train_df_data, train_df_target)
 
-'''
-results_dir = '/Users/kelseydoerksen/Desktop/sudsaq_rf/runs/{}/{}/{}channels/{}'.format(full_geo_name, target,
-                                                                                     num_features, analysis_period)
-'''
+    # --- Loading Testing Data ---
+    test_df_data, test_df_target = load_test_data(analysis_period, target, num_features, full_geo_name)
+    #X_test, y_test = get_X_and_y_test(test_df_data, test_df_target)
 
-results_dir = '/Volumes/PRO-G40/sudsaq/random_forest/tmp_results'
+    #lat_list = list(y_test['lat'])
+    #lon_list = list(y_test['lon'])
 
-# --- Loading Training Data ---
-train_df_data, train_df_target = load_train_data(analysis_period, target, num_features, full_geo_name)
-#X_train, y_train = get_X_and_y_train(train_df_data, train_df_target)
+    if num_features == '39':
+        train_cols_to_drop = ['index', 'index.1']
+        X_train = X_train.drop(columns=train_cols_to_drop)
+    if num_features == '32':
+        train_cols_to_drop = ['Unnamed: 0.1', 'index', 'index.1']
+        X_train = X_train.drop(columns=train_cols_to_drop)
+        X_test = X_test.drop(columns=['Unnamed: 0.1'])
+    if num_features == '9':
+        train_cols_to_drop = ['Unnamed: 0.1']
+        X_train = X_train.drop(columns=train_cols_to_drop)
+        X_test = X_test.drop(columns=['Unnamed: 0.1'])
 
-# --- Loading Testing Data ---
-test_df_data, test_df_target = load_test_data(analysis_period, target, num_features, full_geo_name)
-#X_test, y_test = get_X_and_y_test(test_df_data, test_df_target)
+    y_test = y_test.drop(columns=['lat', 'lon'])
 
-#lat_list = list(y_test['lat'])
-#lon_list = list(y_test['lon'])
+    var_names = X_train.columns.values.tolist()
 
-import ipdb
-ipdb.set_trace()
-
-if num_features == '39':
-    train_cols_to_drop = ['index', 'index.1']
-    X_train = X_train.drop(columns=train_cols_to_drop)
-if num_features == '32':
-    train_cols_to_drop = ['Unnamed: 0.1', 'index', 'index.1']
-    X_train = X_train.drop(columns=train_cols_to_drop)
-    X_test = X_test.drop(columns=['Unnamed: 0.1'])
-if num_features == '9':
-    train_cols_to_drop = ['Unnamed: 0.1']
-    X_train = X_train.drop(columns=train_cols_to_drop)
-    X_test = X_test.drop(columns=['Unnamed: 0.1'])
-
-y_test = y_test.drop(columns=['lat', 'lon'])
-
-var_names = X_train.columns.values.tolist()
-
-print('Number of train samples: {}'.format(len(X_train)))
-print('Number of test samples: {}'.format(len(X_test)))
+    print('Number of train samples: {}'.format(len(X_train)))
+    print('Number of test samples: {}'.format(len(X_test)))
 
 
-rf = RandomForestRegressor(n_estimators=100,
-                               max_features=int(0.3*(len(var_names))),
-                               random_state=300,
-                               verbose=1)
-
-rf.fit(X_train, y_train)
-out_model = os.path.join(results_dir, 'random_forest_predictor.joblib')
-dump(rf, out_model)
-
-yhat = rf.predict(X_test)
-
-calculate_rmse(yhat, y_test, lat_list, lon_list, analysis_period, results_dir)
-
-# Calculate rmse for entire run
-mse = mean_squared_error(y_test, yhat)
-rmse = math.sqrt(mse)
-print('rmse is {}'.format(rmse))
-
-# Calculate mape
-mape = mean_absolute_percentage_error(y_test, yhat)
-print('mean absolute percentage error is: {}'.format(mape))
-
-# Calculate r correlation value
-#r = pearsonr(y_test, yhat)[0]
-#print("r correlation is: {}".format(r))
-
-# Calculate r2 score
-#r2 = r2_score(y_test,yhat)
-#print('r2 score is: {}'.format(r2))
-
-with open('{}/results.txt'.format(results_dir), 'w') as f:
-    f.write(' rmse is {}'.format(rmse))
-    f.write(' mean absolute percentage error is: {}'.format(mape))
-    #f.write(" r correlation is: {}".format(r))
-    #f.write(' r2 score is: {}'.format(r2))
-
-# Calculate importances and save
-importances = calc_importances(rf, var_names)
-importances.to_csv('{}/feature_importances.csv'.format(results_dir))
-
-
-# Calculate permutation importances and save -> To update
-#perm_importances = calc_perm_importance(rf, X_test, y_test, var_names, results_dir)
-#perm_importances.to_csv('{}/feature_importances_perm.csv'.format(results_dir))
-
-'''
-# OLD
-if param_tuning:
-    Logger.info('Finding optimal hyperparameters')
-    params = [{
-                'n_estimators': [50, 100, 150, 200],
-                'max_depth': [3, 4, 5]
-            }]
-    kfold = KFold(n_splits=5, shuffle=True, random_state=1234)
-    clf = GridSearchCV(
-        RandomForestRegressor(), params, cv=kfold,
-        scoring='neg_root_mean_squared_error', n_jobs=10, error_score='raise'
-    )
-    clf.fit(X, y)
-    print('Parameter selection:')
-    print(f'n_estimators: {clf.best_params_["n_estimators"]}')
-    print(f'max_depth: {clf.best_params_["max_depth"]}')
-
-    # Create the Gradient Boosting predictor
-    Logger.info('Training Random Forest')
-    rf = RandomForestRegressor(n_estimators=clf.best_params_['n_estimators'],
-                               max_depth=clf.best_params_['max_depth'],
-                               random_state=300,
-                               verbose=1)
-else:
     rf = RandomForestRegressor(n_estimators=100,
-                               max_features=int(0.3*(len(var_names))),
-                               random_state=300,
-                               verbose=1)
+                                   max_features=int(0.3*(len(var_names))),
+                                   random_state=300,
+                                   verbose=1)
 
-'''
+    rf.fit(X_train, y_train)
+    out_model = os.path.join(results_dir, 'random_forest_predictor.joblib')
+    dump(rf, out_model)
+
+    yhat = rf.predict(X_test)
+
+    calculate_rmse(yhat, y_test, lat_list, lon_list, analysis_period, results_dir)
+
+    # Calculate rmse for entire run
+    mse = mean_squared_error(y_test, yhat)
+    rmse = math.sqrt(mse)
+    print('rmse is {}'.format(rmse))
+
+    # Calculate mape
+    mape = mean_absolute_percentage_error(y_test, yhat)
+    print('mean absolute percentage error is: {}'.format(mape))
+
+    # Calculate r correlation value
+    #r = pearsonr(y_test, yhat)[0]
+    #print("r correlation is: {}".format(r))
+
+    # Calculate r2 score
+    #r2 = r2_score(y_test,yhat)
+    #print('r2 score is: {}'.format(r2))
+
+    with open('{}/results.txt'.format(results_dir), 'w') as f:
+        f.write(' rmse is {}'.format(rmse))
+        f.write(' mean absolute percentage error is: {}'.format(mape))
+        #f.write(" r correlation is: {}".format(r))
+        #f.write(' r2 score is: {}'.format(r2))
+
+    # Calculate importances and save
+    importances = calc_importances(rf, var_names)
+    importances.to_csv('{}/feature_importances.csv'.format(results_dir))
+
+
+    # Calculate permutation importances and save -> To update
+    #perm_importances = calc_perm_importance(rf, X_test, y_test, var_names, results_dir)
+    #perm_importances.to_csv('{}/feature_importances_perm.csv'.format(results_dir))
+
+    '''
+    # OLD
+    if param_tuning:
+        Logger.info('Finding optimal hyperparameters')
+        params = [{
+                    'n_estimators': [50, 100, 150, 200],
+                    'max_depth': [3, 4, 5]
+                }]
+        kfold = KFold(n_splits=5, shuffle=True, random_state=1234)
+        clf = GridSearchCV(
+            RandomForestRegressor(), params, cv=kfold,
+            scoring='neg_root_mean_squared_error', n_jobs=10, error_score='raise'
+        )
+        clf.fit(X, y)
+        print('Parameter selection:')
+        print(f'n_estimators: {clf.best_params_["n_estimators"]}')
+        print(f'max_depth: {clf.best_params_["max_depth"]}')
+    
+        # Create the Gradient Boosting predictor
+        Logger.info('Training Random Forest')
+        rf = RandomForestRegressor(n_estimators=clf.best_params_['n_estimators'],
+                                   max_depth=clf.best_params_['max_depth'],
+                                   random_state=300,
+                                   verbose=1)
+    else:
+        rf = RandomForestRegressor(n_estimators=100,
+                                   max_features=int(0.3*(len(var_names))),
+                                   random_state=300,
+                                   verbose=1)
+    
+    '''

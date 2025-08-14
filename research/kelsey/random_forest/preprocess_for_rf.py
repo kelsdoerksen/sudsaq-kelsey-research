@@ -18,6 +18,10 @@ parser.add_argument("--test_year", help="Specify year to use for test, all other
 parser.add_argument("--region", help="Boundary region on Earth to take data. Must be one of: "
                                      "globe, europe, asia, australia, north_america, west_europe, "
                                      "east_europe, west_na, east_na.")
+parser.add_argument("--root_dir", help="Root directory for RF data")
+parser.add_argument("--momo_data_dir", help="Directory of momo data")
+parser.add_argument("--bias_data_dir", help="Directory of bias data")
+parser.add_argument("--gee_data_dir", help="Directory of gee data")
 
 args = parser.parse_args()
 
@@ -57,7 +61,7 @@ Timezones = [
     (0, (-7.5, 0.0))
 ]
 
-# Top 9 features from July RF experiments
+# Top features from July RF experiments
 feature_list = ['momo.2dsfc.NH3', 'momo.2dsfc.PROD.HOX', 'momo.2dsfc.DMS', 'momo.co',
                 'momo.2dsfc.HNO3', 'momo.2dsfc.BrONO2', 'momo.t',
                 'momo.no2', 'momo.2dsfc.PAN', 'momo.ps', 'momo.2dsfc.HO2',
