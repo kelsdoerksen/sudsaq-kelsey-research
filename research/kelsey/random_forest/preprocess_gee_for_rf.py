@@ -104,7 +104,7 @@ def grab_pop(query_year, geo_extent, data_dir):
     pop_ds = xr.open_mfdataset(["{}/pop_population_density_{}_globe_buffersize_55500_with_time.nc".
                                format(data_dir, census_year)])
     pop_filtered = filter_bounds(pop_ds, geo_extent)
-    return pop_ds
+    return pop_filtered
 
 def grab_nightlight(query_year, query_month, band, geo_extent, filepath):
     """
@@ -128,13 +128,11 @@ if __name__ == '__main__':
     months_dict = {'june': 30,
                    'july': 31,
                    'aug': 31}
-
     for y in years:
         print('Processing modis features for year: {}'.format(y))
         modis = grab_modis(y, geo, data_dir)
         modis_features = generate_features(modis, 'modis', None, None)
         modis_features.to_csv('{}/{}_{}_modis_features.csv'.format(save_dir, y, geo))
-
     for y in years:
         print('Processing population features for year: {}'.format(y))
         pop = grab_pop(y, geo, data_dir)

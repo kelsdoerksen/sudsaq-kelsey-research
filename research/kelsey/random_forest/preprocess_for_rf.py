@@ -12,25 +12,17 @@ import argparse
 import datetime as dt
 from datetime import datetime
 
+def get_args():
+    parser = argparse.ArgumentParser(description='Preprocessing RF data')
+    parser.add_argument("--region", help="Boundary region on Earth to take data. Must be one of: "
+                                         "globe, europe, asia, australia, north_america, west_europe, "
+                                         "east_europe, west_na, east_na.")
+    parser.add_argument("--split", help="Training or testing split")
+    parser.add_argument("--root_dir", help="Root directory for RF data")
+    parser.add_argument("--momo_data_dir", help="Directory of momo data")
+    parser.add_argument("--save_dir", help="Save directory")
+    return parser.parse_args()
 
-parser = argparse.ArgumentParser(description='Preprocessing RF data')
-parser.add_argument("--test_year", help="Specify year to use for test, all other years used for training.")
-parser.add_argument("--region", help="Boundary region on Earth to take data. Must be one of: "
-                                     "globe, europe, asia, australia, north_america, west_europe, "
-                                     "east_europe, west_na, east_na.")
-parser.add_argument("--root_dir", help="Root directory for RF data")
-parser.add_argument("--momo_data_dir", help="Directory of momo data")
-parser.add_argument("--bias_data_dir", help="Directory of bias data")
-parser.add_argument("--gee_data_dir", help="Directory of gee data")
-
-args = parser.parse_args()
-
-# Setting directories
-print('Setting directories')
-root_dir = '/Users/kelseyd/Desktop/random_forest/data'
-momo_data_dir = '/Volumes/MLIA_active_data/data_SUDSAQ/data/momo'
-gee_data_dir = '/Volumes/MLIA_active_data/data_SUDSAQ/gee'
-bias_data_dir = '/Volumes/MLIA_active_data/data_SUDSAQ/summaries/bias/gattaca.v4.bias-median.extended/combined_data'
 
 Timezones = [
     (0, (0.0, 7.5)),
@@ -61,11 +53,13 @@ Timezones = [
     (0, (-7.5, 0.0))
 ]
 
+'''
 # Top features from July RF experiments
 feature_list = ['momo.2dsfc.NH3', 'momo.2dsfc.PROD.HOX', 'momo.2dsfc.DMS', 'momo.co',
                 'momo.2dsfc.HNO3', 'momo.2dsfc.BrONO2', 'momo.t',
                 'momo.no2', 'momo.2dsfc.PAN', 'momo.ps', 'momo.2dsfc.HO2',
                 'momo.2dsfc.C5H8', 'momo.olrc', 'momo.oh', 'momo.slrc', 'momo.so2']
+'''
 
 # --- Hard-coding train years to be 2005-2016, test year 2017 ---
 train_years = [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015]
@@ -113,6 +107,7 @@ def daily(ds):
     data = []
     time_range = [8, 15]
     print('-- Using local timezones')
+    feature_list = list(ds.variables.keys())
     ns = ds[feature_list]
     local = []
     for offset, bounds in Timezones:
@@ -167,12 +162,12 @@ def filter_bounds(xr_ds, extent):
     input: xr_ds: xarray dataset to filter
     imput: extent: extent to clip bounds by
     """
-    if extent == 'na':
+    if extent == 'north_america':
         min_lat = 20.748
         max_lat = 54.392
         min_lon = -124.875
         max_lon = -70.875
-    if extent == 'eu':
+    if extent == 'europe':
         min_lat = 35.327
         max_lat = 64.485
         min_lon = -9.0
@@ -187,11 +182,11 @@ def generate_features(x):
     """
     x: xarray dataset
     """
-    features = x[feature_list]
-    daily_ds = daily(features)
-    data = daily_ds.to_array().stack({'loc': ['lat', 'lon', 'time']})
+    features = list(x.variables.keys())[:-3]
+    #daily_ds = daily(x)
+    data = x.to_array().stack({'loc': ['lat', 'lon', 'time']})
     data = data.transpose('loc', 'variable')
-    df = pd.DataFrame(data=data.values, columns=feature_list)
+    df = pd.DataFrame(data=data.values, columns=features)
     return df
 
 
@@ -213,32 +208,26 @@ def generate_labels(x):
     return final_labels
 
 
-def generate_ozone_training_data(t_years, geographic_extent, n_features):
+def generate_ozone_data(t_years, geo, n_features):
     """
-    Load training samples for training years, aoi
+    Load training samples for years, aoi
     """
 
-    months_dict = {'06': 'june',
-                   '07': 'july',
-                   '08': 'aug'}
+    months = ['June', 'July', 'Aug']
 
-    if geographic_extent == 'eu':
-        full_geo_name = 'Europe'
-    if geographic_extent == 'na':
-        full_geo_name = 'NorthAmerica'
-
-    for m in months_dict.keys():
+    for m in months:
         monthly_label = []
-        print('Generating training samples for month: {}'.format(m))
+        print('Generating samples for month: {}'.format(m))
         monthly_features = []
         for year in t_years:
             print('Processing year {}'.format(year))
-            ds = xr.open_mfdataset(['{}/{}/{}.nc'.format(momo_data_dir,year, m)])
+            ds = xr.open_mfdataset(['{}/MOMO_Target_And_Data_{}_2005-2020/Data/{}/{}/test.data.nc'.
+                                   format(momo_data_dir, m, m, year)])
             # Format lon
             ds = format_lon(ds)
 
             # Filter area based on geographic extent
-            ds = filter_bounds(ds, geographic_extent)
+            ds = filter_bounds(ds, geo)
 
             # Generate features
             features = generate_features(ds)
@@ -250,11 +239,9 @@ def generate_ozone_training_data(t_years, geographic_extent, n_features):
             #monthly_label.append(labels)
 
         # Save features
-
         df_features = pd.concat(monthly_features)
-        df_features.to_csv('{}/samples/{}/{}features/{}_{}-{}_features.csv'.format(root_dir, full_geo_name, n_features,
-                                                                                       months_dict[m],
-                                                                 t_years[0],t_years[-1]))
+        df_features.to_csv('{}/samples/{}features_{}_{}_{}-{}_features.csv'.format(root_dir, n_features,
+                                                                                   geo, m, t_years[0],t_years[-1]))
         '''
 
         # Save labels
@@ -403,21 +390,29 @@ def generate_bias_data(t_years, geographic_extent):
             target_df.to_csv('{}/target/{}/bias/{}_{}_target.csv'.format(root_dir, full_geo_name, months_dict[m],
                                                                             t_years[0]))
 
+if __name__ == '__main__':
+    args = get_args()
+    geo = args.region
+    root_dir = args.root_dir
+    momo_data_dir = args.momo_data_dir
+    split = args.split
 
+    if split == 'train':
+        years = range(2005, 2016)
+    if split == 'test':
+        years = [2016]
 
-geo = 'eu'
+    # --- Running Scripts ---
+    num_features = 28
+    generate_ozone_data(years, geo, num_features)
+    '''
+    num_features = 16
+    # Generate momo training, testing data
+    generate_ozone_training_data(train_years, geo, num_features)
+    generate_ozone_testing_data(test_year, geo, num_features)
+    '''
 
-# --- Running Scripts ---
-
-# mda8
-'''
-num_features = 16
-# Generate momo training, testing data
-generate_ozone_training_data(train_years, geo, num_features)
-generate_ozone_testing_data(test_year, geo, num_features)
-'''
-
-# Generate bias labels
-generate_bias_data(train_years, geo)
-generate_bias_data(test_year, geo)
+    # Generate bias labels
+    #generate_bias_data(train_years, geo)
+    #generate_bias_data(test_year, geo)
 

@@ -22,7 +22,7 @@ from sklearn.inspection import permutation_importance
 import argparse
 import math
 
-root_dir = '/Users/kelseydoerksen/Desktop/sudsaq_rf'
+
 
 bbox_dict = {'globe':[-180, 180, -90, 90],
             'europe': [-20, 40, 25, 80],
@@ -37,12 +37,13 @@ bbox_dict = {'globe':[-180, 180, -90, 90],
 
 def get_args():
     parser = argparse.ArgumentParser(description='Running UNet for mda8 or bias target')
+    parser.add_argument('--root_dir', help='Root directory of data')
     parser.add_argument('--analysis_time', help='Time of year to run analysis, must be one of '
                                                 'june, july, august, or summer', required=True)
     parser.add_argument('--target', help='Target to predict, must be one of: mda8, bias', required=True)
-    parser.add_argument('--n_features', help='Number of features, currently supports 9, 32, 39', required=True)
-    parser.add_argument('--region', help='Geographic region, currently supports na or eu', required=True)
-
+    parser.add_argument('--n_features', help='Number of features', required=True)
+    parser.add_argument('--region', help='Geographic region, currently supports north_america or europe', required=True)
+    parser.add_argument('--save_dir', help='Save Directory for run', required=True)
     return parser.parse_args()
 
 
@@ -285,23 +286,16 @@ if __name__ == '__main__':
     args = get_args()
     analysis_period = args.analysis_time
     target = args.target
-    aoi = args.region
+    region = args.region
     num_features = args.n_features
     results_dir = args.results_dir
 
-    if aoi == 'na':
-        full_geo_name = 'NorthAmerica'
-    if aoi == 'eu':
-        full_geo_name = 'Europe'
-    if aoi == 'globe':
-        full_geo_name = 'Globe'
-
     # --- Loading Training Data ---
-    train_df_data, train_df_target = load_train_data(analysis_period, target, num_features, full_geo_name)
+    train_df_data, train_df_target = load_train_data(analysis_period, target, num_features, region)
     #X_train, y_train = get_X_and_y_train(train_df_data, train_df_target)
 
     # --- Loading Testing Data ---
-    test_df_data, test_df_target = load_test_data(analysis_period, target, num_features, full_geo_name)
+    test_df_data, test_df_target = load_test_data(analysis_period, target, num_features, region)
     #X_test, y_test = get_X_and_y_test(test_df_data, test_df_target)
 
     #lat_list = list(y_test['lat'])
