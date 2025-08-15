@@ -179,7 +179,6 @@ def run_rf(X_train, y_train, X_val, y_val, X_test, save_dir, tuning=False):
             rf_cv = GridSearchCV(estimator=rf,
                                  param_grid=param_grid,
                                  scoring=['accuracy'],
-                                 refit='accuracy',
                                  cv=3,
                                  n_jobs=-1)
 
@@ -191,7 +190,7 @@ def run_rf(X_train, y_train, X_val, y_val, X_test, save_dir, tuning=False):
             best_forest = rf_cv.best_estimator_
 
             # Prediction on validation set with best forest
-            tuned_probs = best_forest.predict_proba(X_val)
+            tuned_probs = best_forest.predict(X_val)
             accuracy = best_forest.score(X_val, y_val)
 
             forest_dict = rf_cv.best_params_
