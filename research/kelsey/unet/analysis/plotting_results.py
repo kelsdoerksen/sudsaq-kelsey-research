@@ -120,6 +120,7 @@ def get_args():
     parser.add_argument('--model', help='Model type, standard, mcdropout or cqr')
     parser.add_argument('--analysis_period', help='Time of analysis period, june,'
                                                   'july, aug, summer')
+    parser.add_argument('--test_year', help='Year of analysis')
     parser.add_argument('--sensitivity', help='Specify if sensitivty analysis',
                         required=False, default=None)
     return parser.parse_args()
@@ -390,8 +391,14 @@ def calc_rmse(truth_list, predict_list, region, analysis_period):
     Calculate and return rmse per point in sample
     :param: analysis period: june, july, august, summer
     """
-    if analysis_period == 'june':
+    if analysis_period == 'June':
         num_samples = 30
+    if analysis_period == 'July':
+        num_samples = 31
+    if analysis_period == 'Aug':
+        num_samples = 31
+    if analysis_period == 'Summer':
+        num_samples = 92
 
     err_total = 0
     for i in range(len(truth_list)):
@@ -564,23 +571,23 @@ def generate_timeseries_plot(data_dict, datelist, location, data_type, savedir):
     plt.close()
 
 
-def timeseries_plots(final_dict, analysis_period, data_type, savedir):
+def timeseries_plots(final_dict, analysis_period, data_type, savedir, test_year):
     """
     Generate timeseries plots per location for test set
     """
     start, end = None, None
-    if analysis_period == 'june':
-        start = date(2019,6,1)
-        end = date(2019,6,30)
-    elif analysis_period == 'july':
-        start = date(2019, 7, 1)
-        end = date(2019, 7, 31)
-    elif analysis_period == 'aug':
-        start = date(2019, 8, 1)
-        end = date(2019, 8, 31)
-    elif analysis_period == 'summer':
-        start = date(2019, 6, 1)
-        end = date(2019, 8, 31)
+    if analysis_period == 'June':
+        start = date(test_year,6,1)
+        end = date(test_year,6,30)
+    elif analysis_period == 'July':
+        start = date(test_year, 7, 1)
+        end = date(test_year, 7, 31)
+    elif analysis_period == 'Aug':
+        start = date(test_year, 8, 1)
+        end = date(test_year, 8, 31)
+    elif analysis_period == 'Summer':
+        start = date(test_year, 6, 1)
+        end = date(test_year, 8, 31)
 
     datelist = daterange(start, end)
 
@@ -631,9 +638,6 @@ def plot_max_min_timeseries(length_dict, point_pred, gt, upper, lower, savedir):
     min_upper = upper[min_key]
     min_lower = lower[min_key]
 
-    import ipdb
-    ipdb.set_trace()
-
     fig, ax = plt.subplots()
     ax.plot(datelist, max_gt, '-', label='GroundTruth')
     ax.fill_between(datelist, max_lower, max_upper, alpha=0.2)
@@ -661,24 +665,24 @@ def plot_max_min_timeseries(length_dict, point_pred, gt, upper, lower, savedir):
     plt.close()
 
 
-def generate_loc_dict(arrays, region, analysis_period, data_type, savedir):
+def generate_loc_dict(arrays, region, analysis_period, data_type, savedir, test_year):
     """
     Generate dictionary of data per location
 
     """
     start, end = None, None
-    if analysis_period == 'june':
-        start = date(2019, 6, 1)
-        end = date(2019, 6, 30)
-    elif analysis_period == 'july':
-        start = date(2019, 7, 1)
-        end = date(2019, 7, 31)
-    elif analysis_period == 'aug':
-        start = date(2019, 8, 1)
-        end = date(2019, 8, 31)
-    elif analysis_period == 'summer':
-        start = date(2019, 6, 1)
-        end = date(2019, 8, 31)
+    if analysis_period == 'June':
+        start = date(test_year, 6, 1)
+        end = date(test_year, 6, 30)
+    elif analysis_period == 'July':
+        start = date(test_year, 7, 1)
+        end = date(test_year, 7, 31)
+    elif analysis_period == 'Aug':
+        start = date(test_year, 8, 1)
+        end = date(test_year, 8, 31)
+    elif analysis_period == 'Summer':
+        start = date(test_year, 6, 1)
+        end = date(test_year, 8, 31)
 
     datelist = daterange(start, end)
 
@@ -726,23 +730,23 @@ def generate_loc_dict(arrays, region, analysis_period, data_type, savedir):
 
     return final_dict
 
-def plot_r2_timeseries(r2_list, analysis_period, region, save_dir):
+def plot_r2_timeseries(r2_list, analysis_period, region, save_dir, test_year):
     """
     Generates plots for r2 timeseries
     """
     start, end = None, None
-    if analysis_period == 'june':
-        start = date(2019, 6, 1)
-        end = date(2019, 6, 30)
-    elif analysis_period == 'july':
-        start = date(2019, 7, 1)
-        end = date(2019, 7, 31)
-    elif analysis_period == 'aug':
-        start = date(2019, 8, 1)
-        end = date(2019, 8, 31)
-    elif analysis_period == 'summer':
-        start = date(2019, 6, 1)
-        end = date(2019, 8, 31)
+    if analysis_period == 'June':
+        start = date(test_year, 6, 1)
+        end = date(test_year, 6, 30)
+    elif analysis_period == 'July':
+        start = date(test_year, 7, 1)
+        end = date(test_year, 7, 31)
+    elif analysis_period == 'Aug':
+        start = date(test_year, 8, 1)
+        end = date(test_year, 8, 31)
+    elif analysis_period == 'Summer':
+        start = date(test_year, 6, 1)
+        end = date(test_year, 8, 31)
 
     datelist = daterange(start, end)
 
@@ -756,7 +760,7 @@ def plot_r2_timeseries(r2_list, analysis_period, region, save_dir):
     plt.close()
 
 
-def generate_standard_plots(channels, target, num_lats, num_lons, region, save_dir, analysis_period):
+def generate_standard_plots(channels, target, num_lats, num_lons, region, save_dir, analysis_period, test_year):
     """
     Generate appropriate plots for Standard model
     """
@@ -787,21 +791,20 @@ def generate_standard_plots(channels, target, num_lats, num_lons, region, save_d
     np.save('{}/avg_rmse.npy'.format(save_dir), rmse_calc)
     spatial_map(rmse_calc, target, 'rmse', region, save_dir)
 
-
     pred_list_nans = []
     for i in range(len(nan_mask_list)):
         pred_list_nans.append(pred_list[i])
 
-    groundtruth_dict = generate_loc_dict(groundtruth_list, region, analysis_period, 'groundtruth', save_dir)
-    pred_dict = generate_loc_dict(pred_list_nans, region, analysis_period, 'point_predictions', save_dir)
+    groundtruth_dict = generate_loc_dict(groundtruth_list, region, analysis_period, 'groundtruth', save_dir, test_year)
+    pred_dict = generate_loc_dict(pred_list_nans, region, analysis_period, 'point_predictions', save_dir, test_year)
 
     # Generate timeseries plots per location
-    timeseries_plots(pred_dict, analysis_period, 'point_predictions', save_dir)
-    timeseries_plots(groundtruth_dict, analysis_period, 'groundtruth', save_dir)
+    timeseries_plots(pred_dict, analysis_period, 'point_predictions', save_dir, test_year)
+    timeseries_plots(groundtruth_dict, analysis_period, 'groundtruth', save_dir, test_year)
 
 
 
-def generate_mcdropout_plots(channels, target, num_lats, num_lons, region, save_dir, analysis_period):
+def generate_mcdropout_plots(channels, target, num_lats, num_lons, region, save_dir, analysis_period, test_year):
     """
     Generate appropriate plots for MCDropout model
     """
@@ -861,21 +864,21 @@ def generate_mcdropout_plots(channels, target, num_lats, num_lons, region, save_
         total_unc_list_nans.append(total_uncertainty_list[i] * nan_mask_list[i])
         pred_list_nans.append(pred_list[i])
 
-    ale_dict = generate_loc_dict(ale_list_nans, region, analysis_period, 'aleatoric', save_dir)
-    epi_dict = generate_loc_dict(epi_list_nans, region, analysis_period, 'epistemic', save_dir)
-    total_unc_dict = generate_loc_dict(total_unc_list_nans, region, analysis_period, 'total_unc', save_dir)
-    groundtruth_dict = generate_loc_dict(groundtruth_list, region, analysis_period, 'groundtruth', save_dir)
-    pred_dict = generate_loc_dict(pred_list_nans, region, analysis_period, 'point_predictions', save_dir)
+    ale_dict = generate_loc_dict(ale_list_nans, region, analysis_period, 'aleatoric', save_dir, test_year)
+    epi_dict = generate_loc_dict(epi_list_nans, region, analysis_period, 'epistemic', save_dir, test_year)
+    total_unc_dict = generate_loc_dict(total_unc_list_nans, region, analysis_period, 'total_unc', save_dir, test_year)
+    groundtruth_dict = generate_loc_dict(groundtruth_list, region, analysis_period, 'groundtruth', save_dir, test_year)
+    pred_dict = generate_loc_dict(pred_list_nans, region, analysis_period, 'point_predictions', save_dir, test_year)
 
     # Generate timeseries plots per location
-    timeseries_plots(ale_dict, analysis_period, 'aleatoric', save_dir)
-    timeseries_plots(epi_dict, analysis_period, 'epistemic', save_dir)
-    timeseries_plots(total_unc_dict, analysis_period, 'total_unc', save_dir)
-    timeseries_plots(pred_dict, analysis_period, 'point_predictions', save_dir)
-    timeseries_plots(groundtruth_dict, analysis_period, 'groundtruth', save_dir)
+    timeseries_plots(ale_dict, analysis_period, 'aleatoric', save_dir, test_year)
+    timeseries_plots(epi_dict, analysis_period, 'epistemic', save_dir,test_year)
+    timeseries_plots(total_unc_dict, analysis_period, 'total_unc', save_dir, test_year)
+    timeseries_plots(pred_dict, analysis_period, 'point_predictions', save_dir, test_year)
+    timeseries_plots(groundtruth_dict, analysis_period, 'groundtruth', save_dir, test_year)
 
 
-def generate_cqr_plots(channels, target, num_lats, num_lons, region, save_dir, analysis_period):
+def generate_cqr_plots(channels, target, num_lats, num_lons, region, save_dir, analysis_period, test_year):
     """
     Generate appropriate plots for CQR model
     """
@@ -908,7 +911,7 @@ def generate_cqr_plots(channels, target, num_lats, num_lons, region, save_dir, a
     # Get r2 score and plot
     r2_timeseries = calc_r2(groundtruth_list, med_pred_list, nan_mask_list, region)
     np.save('{}/r2_timeseries.npy'.format(save_dir), r2_timeseries)
-    plot_r2_timeseries(r2_timeseries, analysis_period, region, save_dir)
+    plot_r2_timeseries(r2_timeseries, analysis_period, region, save_dir, test_year)
 
     spatial_map(pred_avg_arr_2d_lower, target, 'lower_bound_predictions', region, save_dir)
     spatial_map(pred_avg_arr_2d_upper, target, 'upper_bound_predictions', region, save_dir)
@@ -930,18 +933,18 @@ def generate_cqr_plots(channels, target, num_lats, num_lons, region, save_dir, a
         med_pred_list_nans.append(med_pred_list[i] * nan_mask_list[i])
         interval_length.append(upper_bound_pred_list_nans[i]-lower_bound_pred_list_nans[i])
 
-    lower_bound_dict = generate_loc_dict(lower_bound_pred_list_nans, region, analysis_period, 'lower_bound', save_dir)
-    upper_bound_dict = generate_loc_dict(upper_bound_pred_list_nans, region, analysis_period, 'upper_bound', save_dir)
-    med_dict = generate_loc_dict(med_pred_list_nans, region, analysis_period, 'point_predictions', save_dir)
-    groundtruth_dict = generate_loc_dict(groundtruth_list, region, analysis_period, 'groundtruth', save_dir)
-    interval_length_dict = generate_loc_dict(interval_length, region, analysis_period, 'interval_length', save_dir)
+    lower_bound_dict = generate_loc_dict(lower_bound_pred_list_nans, region, analysis_period, 'lower_bound', save_dir, test_year)
+    upper_bound_dict = generate_loc_dict(upper_bound_pred_list_nans, region, analysis_period, 'upper_bound', save_dir, test_year)
+    med_dict = generate_loc_dict(med_pred_list_nans, region, analysis_period, 'point_predictions', save_dir, test_year)
+    groundtruth_dict = generate_loc_dict(groundtruth_list, region, analysis_period, 'groundtruth', save_dir, test_year)
+    interval_length_dict = generate_loc_dict(interval_length, region, analysis_period, 'interval_length', save_dir, test_year)
 
     # Generate timeseries plots per location
-    #timeseries_plots(lower_bound_dict, analysis_period, 'lower_bound', save_dir)
-    #timeseries_plots(upper_bound_dict, analysis_period, 'upper_bound', save_dir)
-    #timeseries_plots(med_dict, analysis_period, 'point_predictions', save_dir)
-    #timeseries_plots(groundtruth_dict, analysis_period, 'groundtruth', save_dir)
-    timeseries_plots(interval_length_dict, analysis_period, 'interval_length', save_dir)
+    #timeseries_plots(lower_bound_dict, analysis_period, 'lower_bound', save_dir, test_year)
+    #timeseries_plots(upper_bound_dict, analysis_period, 'upper_bound', save_dir, test_year)
+    #timeseries_plots(med_dict, analysis_period, 'point_predictions', save_dir, test_year)
+    #timeseries_plots(groundtruth_dict, analysis_period, 'groundtruth', save_dir, test_year)
+    timeseries_plots(interval_length_dict, analysis_period, 'interval_length', save_dir, test_year)
 
     # Plot max and min timeseries
     plot_max_min_timeseries(interval_length_dict,med_dict,groundtruth_dict,upper_bound_dict,lower_bound_dict, save_dir)
@@ -998,7 +1001,7 @@ def calc_avg_from_file(metric, num_lats, num_lons, directory, model):
     return avg_arr_2d
 
 
-def generate_avg_run_plots(target, region, num_lats, num_lons, save_dir, model):
+def generate_avg_run_plots(target, region, num_lats, num_lons, save_dir, model, test_year):
     """
     Generate plots from multiple runs to obtain average to report
     """
@@ -1021,7 +1024,7 @@ def generate_avg_run_plots(target, region, num_lats, num_lons, save_dir, model):
         spatial_map(rmse, target, 'rmse', region, save_dir)
 
         # --- Generate time series map
-        #plot_r2_timeseries(r2, analysis_period, region, save_dir)
+        #plot_r2_timeseries(r2, analysis_period, region, save_dir, test_year)
 
         # --- Get overall min/max metrics
         with open("{}/avg_scores.txt".format(save_dir), "a") as f:
@@ -1049,7 +1052,7 @@ def generate_avg_run_plots(target, region, num_lats, num_lons, save_dir, model):
         spatial_map(rmse, target, 'rmse', region, save_dir)
 
         # --- Generate time series map
-        #plot_r2_timeseries(r2, analysis_period, region, save_dir)
+        plot_r2_timeseries(r2, analysis_period, region, save_dir, test_year)
 
         # --- Get overall min/max metrics
         with open("{}/avg_scores.txt".format(save_dir), "a") as f:
@@ -1059,7 +1062,7 @@ def generate_avg_run_plots(target, region, num_lats, num_lons, save_dir, model):
             print("Variance of epi is: {}".format(np.nanvar(epi_unc)), file=f)
 
 
-def generate_rfplots(channels, target, num_lats, num_lons, region, save_dir):
+def generate_rfplots(channels, target, num_lats, num_lons, region, save_dir, test_year):
     """
     Generate appropriate plots for Standard model
     """
@@ -1103,6 +1106,7 @@ if __name__ == '__main__':
     model = args.model
     analysis_period = args.analysis_period
     sensitivity = args.sensitivity
+    test_year = int(args.test_year)
 
     if sensitivity:
         channels = int(channels) -1
@@ -1120,16 +1124,16 @@ if __name__ == '__main__':
         num_lons = 320
 
     if model == 'standard':
-        generate_standard_plots(channels, target, num_lats, num_lons, region, save_dir, analysis_period)
+        generate_standard_plots(channels, target, num_lats, num_lons, region, save_dir, analysis_period, test_year)
 
     if model == 'mcdropout':
-        generate_mcdropout_plots(channels, target, num_lats, num_lons, region, save_dir, analysis_period)
+        generate_mcdropout_plots(channels, target, num_lats, num_lons, region, save_dir, analysis_period, test_year)
 
     if model == 'cqr':
-        generate_cqr_plots(channels, target, num_lats, num_lons, region, save_dir, analysis_period)
+        generate_cqr_plots(channels, target, num_lats, num_lons, region, save_dir, analysis_period, test_year)
 
     if model in ['cqr_avg', 'mcdropout_avg']:
-        generate_avg_run_plots(target, region, num_lats, num_lons, save_dir, model)
+        generate_avg_run_plots(target, region, num_lats, num_lons, save_dir, model, test_year)
 
     if model == 'rf':
-        generate_rfplots(channels, target, num_lats, num_lons, region, save_dir)
+        generate_rfplots(channels, target, num_lats, num_lons, region, save_dir, test_year)
