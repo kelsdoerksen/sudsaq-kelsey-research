@@ -38,6 +38,18 @@ bbox_dict = {'globe':[-180, 180, -90, 90],
             'east_na': [-95, -50, 10, 80],
             'east_europe1': [20, 35, 40, 50]}
 
+
+def get_args():
+    parser = argparse.ArgumentParser(description='Analysis of RF results')
+    parser.add_argument('--region', help='Region, north_america or europe')
+    parser.add_argument('--target', help='Target. mda8 or bias')
+    parser.add_argument('--month', help='Month of analysis')
+    parser.add_argument('--n_channels', help='Number of channels for model')
+    parser.add_argument('--save_dir', help='Save Directory for run', required=True)
+    parser.add_argument('--wandb_run', help='Wandb run', required=True)
+    return parser.parse_args()
+
+
 def calc_importances(model, feature_names, dir):
     '''
     Calculate feature importances, save as txt
@@ -135,7 +147,7 @@ def plot_histogram(target, pred, dir, region, analysis_time):
     plt.xlabel('bias')
     plt.ylabel('count')
 
-    if analysis_time in ['june', 'july', 'august']:
+    if analysis_time in ['June', 'July', 'Aug']:
         plt.ylim(0, 700)
     else:
         plt.ylim(0, 9000)
@@ -183,12 +195,12 @@ def plotting_spatial_data(avg_data, metric, model_target, anaylsis_date, save_di
                9., 10.125, 11.25, 12.375, 13.5, 14.625, 15.75, 16.875,
                18., 19.125, 20.25, 21.375, 22.5, 23.625, 24.75]
 
-    if extent == 'NorthAmerica':
+    if extent == 'north_america':
         lat_vals = na_lat_vals
         lon_vals = na_lon_vals
         bbox_extent = 'north america'
 
-    if extent == 'Europe':
+    if extent == 'europe':
         lat_vals = eu_lat_vals
         lon_vals = eu_lon_vals
         bbox_extent = 'europe'
@@ -271,9 +283,9 @@ def generate_array_from_df(avg_list, variable, latitudes, longitudes, geo_extent
     df['lat'] = latitudes
     df['lon'] = longitudes
 
-    if geo_extent == 'Europe':
+    if geo_extent == 'europe':
         total_lon = 31
-    if geo_extent == 'NorthAmerica':
+    if geo_extent == 'north_america':
         total_lon = 49
 
     var_list = []
@@ -286,13 +298,13 @@ def generate_array_from_df(avg_list, variable, latitudes, longitudes, geo_extent
 
     if pred_target == 'bias':
         # Need to account for the NaNs but have the output the size to match NA, EU extent
-        if geo_extent == 'NorthAmerica':
+        if geo_extent == 'north_america':
             lons = na_lon_vals
             lats = na_lat_vals
             num_lats = 31
             num_lons = 49
             total_elements = num_lons * num_lats
-        if geo_extent == 'Europe':
+        if geo_extent == 'europe':
             lons = eu_lon_vals
             lats = eu_lat_vals
             num_lats = 27
@@ -324,10 +336,10 @@ def calculating_spatial_results(df_sorted, target, analysis_date, save_directory
     analysis_date: will factor in for number of samples, 31 for july, august, 30 for june, 92 for summer
     """
     date_dict = {
-        'june': 30,
-        'july': 31,
-        'august': 31,
-        'summer': 92
+        'June': 30,
+        'July': 31,
+        'Aug': 31,
+        'Summer': 92
     }
     num_samples = int(date_dict['{}'.format(analysis_date)])
 
@@ -396,43 +408,38 @@ def calculating_spatial_results(df_sorted, target, analysis_date, save_directory
     plotting_spatial_data(residual_arr, 'residual', target, analysis_date, save_directory, geo_region)
 
 
-# Read in file of interest
-aoi = 'NorthAmerica'
-target = 'mda8'
-num_channels = 9
-analysis_period = 'summer'
-'''
-results_dir = '/Users/kelseyd/Desktop/random_forest/runs/{}/{}/{}channels/{}'.format(aoi, target, num_channels,
-                                                                                analysis_period)
-'''
-results_dir = '/Users/kelseydoerksen/Desktop/sudsaq/rf/runs/{}/mda8/{}channels/summer'.format(aoi, num_channels)
+if __name__ == '__main__':
+    args = get_args()
+    region = args.region
+    target = args.target
+    n_channels = args.n_channels
+    month = args.month
+    save_dir = args.save_dir
+    wandb_run = args.wandb_run
 
+    # Subset yhat (predictions), y_true (groundtruth)
+    results_df = pd.read_csv('{}/{}_prediction_groundtruth_rmse.csv'.format(save_dir, wandb_run))
 
-# Subset yhat (predictions), y_true (groundtruth)
-results_df = pd.read_csv('{}/prediction_groundtruth_rmse.csv'.format(results_dir))
+    # Change to type np.float.32 to match UNet
+    results_df['label'] = results_df['label'].astype('float32')
+    results_df['pred'] = results_df['pred'].astype('float32')
 
-# Change to type np.float.32 to match UNet
-results_df['label'] = results_df['label'].astype('float32')
-results_df['pred'] = results_df['pred'].astype('float32')
+    yhat = results_df['pred']
+    y_true = results_df['label']
 
-yhat = results_df['pred']
-y_true = results_df['label']
+    # --- Plot results ---
 
-# --- Plot results ---
+    # Spatial Mapping
+    print('plotting spatial results')
+    calculating_spatial_results(results_df, target, month, save_dir, region)
 
-# Spatial Map
+    # Plot true vs predicted
+    print('Plotting y_test vs y_hat')
+    truth_vs_predicted(y_true, yhat, save_dir, region)
 
-print('plotting spatial results')
-#calculating_spatial_results(results_df, target, analysis_period, results_dir, aoi)
+    # Plot histogram
+    print('plotting histogram')
+    plot_histogram(y_true, yhat, save_dir, region, month)
 
-# Plot true vs predicted
-#print('Plotting y_test vs y_hat')
-#truth_vs_predicted(y_true, yhat, results_dir, aoi)
-
-
-# Plot histogram
-#print('plotting histogram')
-plot_histogram(y_true, yhat, results_dir, aoi, analysis_period)
-
-# Plot importances -> To update
-#plot_importances(importances, perm_importances, results_dir, analysis_period, 2016, aoi)
+    # Plot importances -> To update
+    #plot_importances(importances, perm_importances, results_dir, analysis_period, 2016, aoi)

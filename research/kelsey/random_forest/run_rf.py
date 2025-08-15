@@ -8,6 +8,7 @@ testing year 2016
 """
 
 import numpy as np
+from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.utils import shuffle
 import os
 from sklearn.ensemble import RandomForestRegressor
@@ -21,8 +22,9 @@ from joblib import dump
 from sklearn.inspection import permutation_importance
 import argparse
 import math
-
-
+import pickle
+import joblib
+import wandb
 
 bbox_dict = {'globe':[-180, 180, -90, 90],
             'europe': [-20, 40, 25, 80],
@@ -36,18 +38,17 @@ bbox_dict = {'globe':[-180, 180, -90, 90],
             'east_europe1': [20, 35, 40, 50]}
 
 def get_args():
-    parser = argparse.ArgumentParser(description='Running UNet for mda8 or bias target')
+    parser = argparse.ArgumentParser(description='Running RF for bias or mda8')
     parser.add_argument('--root_dir', help='Root directory of data')
-    parser.add_argument('--analysis_time', help='Time of year to run analysis, must be one of '
-                                                'june, july, august, or summer', required=True)
+    parser.add_argument('--month', help='Time of year to run analysis, must be one of '
+                                                'june, july, august', required=True)
     parser.add_argument('--target', help='Target to predict, must be one of: mda8, bias', required=True)
-    parser.add_argument('--n_features', help='Number of features', required=True)
     parser.add_argument('--region', help='Geographic region, currently supports north_america or europe', required=True)
     parser.add_argument('--save_dir', help='Save Directory for run', required=True)
     return parser.parse_args()
 
 
-def calculate_rmse(preds, label, lat_list, lon_list, analysis_date, save_directory):
+def calculate_rmse(preds, label, lat_list, lon_list, analysis_date, save_directory, wandb_experiment):
     """
     Calculate rmse for preds, groundtruth and save for future plotting
     preds: predictions from rf model
@@ -57,10 +58,10 @@ def calculate_rmse(preds, label, lat_list, lon_list, analysis_date, save_directo
     save_directory: where to save
     """
     date_dict = {
-        'june': 30,
-        'july': 31,
-        'august': 31,
-        'summer': 92
+        'June': 30,
+        'July': 31,
+        'Aug': 31,
+        'Summer': 92
     }
     num_samples = int(date_dict['{}'.format(analysis_date)])
 
@@ -83,7 +84,7 @@ def calculate_rmse(preds, label, lat_list, lon_list, analysis_date, save_directo
 
     df_sorted['rmse'] = rmse_list
 
-    df_sorted.to_csv('{}/prediction_groundtruth_rmse.csv'.format(save_directory))
+    df_sorted.to_csv('{}/{}_prediction_groundtruth_rmse.csv'.format(save_directory, wandb_experiment.name), index=False)
 
 
 def calc_perm_importance(model, data, target, feature_names, dir):
@@ -109,111 +110,6 @@ def calc_perm_importance(model, data, target, feature_names, dir):
     return df
 
 
-def get_X_and_y_train(df_feature_list, df_target_list):
-    """
-    Given list of feature, target dataframes, return
-    X dataframe of features
-    y dataframe of target
-    """
-    df_data = pd.concat(df_feature_list)
-    df_target = pd.concat(df_target_list)
-    df_data = df_data.drop(columns=['Unnamed: 0'])
-    df_target = df_target.drop(columns=['Unnamed: 0'])
-
-    df = df_data
-    df['target'] = df_target['target']
-
-    # Remove NaN rows if they exist in target
-    df = df.dropna(axis=0)
-
-    df = shuffle(df)
-
-    y = df['target']
-    X = df.drop(columns=['target'])
-
-    return X, y
-
-def get_X_and_y_test(df_feature_list, df_target_list):
-    """
-    Given list of feature, target dataframes, return
-    X dataframe of features
-    y dataframe of target
-    """
-    df_data = pd.concat(df_feature_list)
-    df_target = pd.concat(df_target_list)
-    df_data = df_data.drop(columns=['Unnamed: 0'])
-    df_target = df_target.drop(columns=['Unnamed: 0'])
-
-    df = df_data
-    df['target'] = df_target['target']
-    df['lat'] = df_target['lat']
-    df['lon'] = df_target['lon']
-
-    # Remove NaN rows if they exist in target
-    df = df.dropna(axis=0)
-
-    df = shuffle(df)
-    y = df[['target', 'lat', 'lon']]
-    X = df.drop(columns=['target', 'lat', 'lon'])
-
-    return X, y
-
-def load_train_data(analysis_time, pred_target, n_features, region):
-    """
-    Loading training data accordingly to analysis time set
-    Takes in analysis time (june, jul, aug, summer)
-    pred_target (bias or mda8),
-    n_features (9, 32, 39 supported)
-    Hard coded that 2005-2015 is the training data
-    """
-
-    sample_dir = '/Volumes/PRO-G40/sudsaq/random_forest/rf_sample_data_northamerica/gee_only_combined'
-    target_dir = '/Volumes/PRO-G40/sudsaq/random_forest/tmp_target'
-
-    sample_list = []
-    years = ['2012', '2013', '2014', '2015']
-    for y in years:
-        sample_list.append(pd.read_csv('{}/{}_august_combined_gee.csv'.format(sample_dir, y)))
-
-    df_samples = pd.concat(sample_list)
-    df_labels = pd.read_csv('{}/august_2012-2015_target.csv'.format(target_dir))
-
-
-    '''
-    df_samples = []
-    df_labels = []
-
-    sample_dir = '{}/data/samples/{}/{}features'.format(root_dir, region, n_features)
-    target_dir = '{}/data/target/{}/{}'.format(root_dir, region, pred_target)
-
-    samples_june = pd.read_csv('{}/june_2005-2015_features.csv'.format(sample_dir))
-    samples_july = pd.read_csv('{}/july_2005-2015_features.csv'.format(sample_dir))
-    samples_august = pd.read_csv('{}/august_2005-2015_features.csv'.format(sample_dir))
-
-    target_june = pd.read_csv('{}/june_2005-2015_target.csv'.format(target_dir))
-    target_july = pd.read_csv('{}/july_2005-2015_target.csv'.format(target_dir))
-    target_august = pd.read_csv('{}/august_2005-2015_target.csv'.format(target_dir))
-    
-    
-
-
-    if analysis_time == 'summer':
-        df_samples = [samples_june, samples_july, samples_august]
-        df_labels = [target_june, target_july, target_august]
-    if analysis_time == 'june':
-        df_samples = [samples_june]
-        df_labels = [target_june]
-    if analysis_time == 'july':
-        df_samples = [samples_july]
-        df_labels = [target_july]
-    if analysis_time == 'august':
-        df_samples = [samples_august]
-        df_labels = [target_august]
-    '''
-
-    return df_samples, df_labels
-
-
 def calc_importances(model, feature_names):
     '''
     Calculate feature importances, save as txt
@@ -236,103 +132,189 @@ def calc_importances(model, feature_names):
 
     return df
 
-
-def load_test_data(analysis_time, pred_target, n_features, region):
+def run_rf(X_train, y_train, X_val, y_val, X_test, save_dir, tuning=False):
     """
-    Loading testing data accordingly to analysis time set
-    Takes in analysis time (june, jul, aug, summer)
-    pred_target (bias or mda8),
-    n_features (9, 32, 39 supported)
-    Hard coded that 2016 is test year
+    Run rf
     """
+    if not tuning:
+        model_state = 'No tuning'
+        # Create an instance of Random Forest
+        rf = RandomForestRegressor(n_estimators=100,
+                                   max_features=int(0.3 * (len(var_names))),
+                                   random_state=300,
+                                   verbose=1)
 
-    test_labels = pd.read_csv('/Volumes/PRO-G40/sudsaq/random_forest/target/NorthAmerica/mda8/august_2016_target_with_coords.csv')
-    test_samples = pd.read_csv('/Volumes/PRO-G40/sudsaq/random_forest/rf_sample_data_northamerica/gee_only_combined/'
-                               '2016_august_combined_gee.csv')
+        out_model = os.path.join(save_dir, 'random_forest_predictor.joblib')
+        dump(rf, out_model)
+        print('No model hyperparameter tuning')
+        # Concat the train and validation sets together to train on the entire available dataset
+        X_train = pd.concat([X_train, X_val], axis=0)
+        y_train = pd.concat([y_train, y_val], axis=0)
 
-    '''
-    df_samples = []
-    df_labels = []
+        # Fit the model
+        print('Fitting model...')
+        rf.fit(X_train, y_train)
+    else:
+        # Tune the model
+        model_state = 'tuned_best_params'
+        print('Tuning the model')
+        param_grid = {
+            'bootstrap': [True],
+            'max_depth': [3, 5, 7],
+            'min_samples_split': [4, 6, 8],
+            'n_estimators': [100, 200, 300]
+        }
 
-    sample_dir = '{}/data/samples/{}/{}features'.format(root_dir, region, n_features)
-    target_dir = '{}/data/target/{}/{}'.format(root_dir, region, pred_target)
+        tune_list = []
+        for i in range(3):
+            print('Tuning for iteration: {}'.format(i))
+            # Create an instance of Random Forest
+            rf = RandomForestRegressor(n_estimators=100,
+                                       max_features=int(0.3 * (len(var_names))),
+                                       random_state=300,
+                                       verbose=1)
+            # grid search cv
+            rf_cv = GridSearchCV(estimator=rf,
+                                 param_grid=param_grid,
+                                 scoring=['accuracy'],
+                                 refit='accuracy',
+                                 cv=3,
+                                 n_jobs=-1)
 
-    samples_june = pd.read_csv('{}/june_2016_features.csv'.format(sample_dir))
-    samples_july = pd.read_csv('{}/july_2016_features.csv'.format(sample_dir))
-    samples_august = pd.read_csv('{}/august_2016_features.csv'.format(sample_dir))
+            # Fit the grid search to the data
+            print('Running grid search cv on training set...')
+            rf_cv.fit(X_train, y_train)
 
-    target_june = pd.read_csv('{}/june_2016_target_with_coords.csv'.format(target_dir))
-    target_july = pd.read_csv('{}/july_2016_target_with_coords.csv'.format(target_dir))
-    target_august = pd.read_csv('{}/august_2016_target_with_coords.csv'.format(target_dir))
+            # Set model to the best estimator from grid search
+            best_forest = rf_cv.best_estimator_
 
-    if analysis_time == 'summer':
-        df_samples = [samples_june, samples_july, samples_august]
-        df_labels = [target_june, target_july, target_august]
-    if analysis_time == 'june':
-        df_samples = [samples_june]
-        df_labels = [target_june]
-    if analysis_time == 'july':
-        df_samples = [samples_july]
-        df_labels = [target_july]
-    if analysis_time == 'august':
-        df_samples = [samples_august]
-        df_labels = [target_august]
+            # Prediction on validation set with best forest
+            tuned_probs = best_forest.predict_proba(X_val)
+            accuracy = best_forest.score(X_val, y_val)
 
-    return df_samples, df_labels
-    '''
-    return test_samples, test_labels
+            forest_dict = rf_cv.best_params_
+            forest_dict['accuracy'] = accuracy
+            forest_dict['best_model'] = best_forest
+            tune_list.append(forest_dict)
+
+        # Get max F1 and use this as our best model
+        max_dict = max(tune_list, key=lambda x: x['f1'])
+        print('Max model stats after parameter tuning is: {}'.format(max_dict))
+        # Save the model to file
+        joblib.dump(max_dict['best_model'], '{}/rf_model.joblib'.format(save_dir))
+        # saving as pickle too
+        with open("{}/rf_model.pkl".format(save_dir), "wb") as file:
+            pickle.dump(max_dict['best_model'], file)
+        forest = max_dict['best_model']
+
+        # Fit the model
+        print('Fitting best model...')
+        forest.fit(X_train, y_train)
+
+
+    yhat = rf.predict(X_test)
+    return yhat, rf
+
+
+def load_summer(root_dir, region):
+    """
+    Loading summer data
+    """
+    # --- Combine the training data
+    # Load the training samples
+    june_sample_train = pd.read_csv('{}/samples/2005-2015_train_{}_June_momo_gee_features.csv'.format(root_dir, region))
+    july_sample_train = pd.read_csv('{}/samples/2005-2015_train_{}_July_momo_gee_features.csv'.format(root_dir, region))
+    aug_sample_train = pd.read_csv('{}/samples/2005-2015_train_{}_Aug_momo_gee_features.csv'.format(root_dir, region))
+
+    # Load the training labels
+    june_label_train = pd.read_csv('{}/target/{}/{}/June_2005-2015_target_with_coords.csv'.format(root_dir, region, target))
+    july_label_train = pd.read_csv(
+        '{}/target/{}/{}/July_2005-2015_target_with_coords.csv'.format(root_dir, region, target))
+    aug_label_train = pd.read_csv(
+        '{}/target/{}/{}/Aug_2005-2015_target_with_coords.csv'.format(root_dir, region, target))
+
+    # Concatenate together
+    train_data = pd.concat([june_sample_train, july_sample_train, aug_sample_train], axis=0)
+    train_label = pd.concat([june_label_train, july_label_train, aug_label_train], axis=0)
+
+    train_combined = pd.concat([train_data, train_label], axis=1)
+    train_combined = train_combined.drop(columns=['Unnamed: 0.1', 'Unnamed: 0'])
+    train_combined = train_combined.dropna()
+    train_features = train_combined.drop(columns=['lat', 'lon', 'target'])
+    train_labels = train_combined['target']
+
+    # --- Combine the testing data
+    june_sample_test = pd.read_csv('{}/samples/2016_test_{}_June_momo_gee_features.csv'.format(root_dir, region))
+    july_sample_test = pd.read_csv('{}/samples/2016_test_{}_July_momo_gee_features.csv'.format(root_dir, region))
+    aug_sample_test = pd.read_csv('{}/samples/2016_test_{}_Aug_momo_gee_features.csv'.format(root_dir, region))
+
+    # Load the training labels
+    june_label_test = pd.read_csv(
+        '{}/target/{}/{}/June_2016_target_with_coords.csv'.format(root_dir, region, target))
+    july_label_test = pd.read_csv(
+        '{}/target/{}/{}/July_2016_target_with_coords.csv'.format(root_dir, region, target))
+    aug_label_test = pd.read_csv(
+        '{}/target/{}/{}/Aug_2016_target_with_coords.csv'.format(root_dir, region, target))
+
+    # Concatenate together
+    test_data = pd.concat([june_sample_test, july_sample_test, aug_sample_test], axis=0)
+    test_label = pd.concat([june_label_test, july_label_test, aug_label_test], axis=0)
+
+    test_combined = pd.concat([test_data, test_label], axis=1)
+    test_combined = test_combined.drop(columns=['Unnamed: 0.1', 'Unnamed: 0'])
+    test_combined = test_combined.dropna()
+    lat_list = list(test_combined['lat'].iloc[:, 0])
+    lon_list = list(test_combined['lon'].iloc[:, 0])
+    test_features = test_combined.drop(columns=['lat', 'lon', 'target'])
+    test_labels = test_combined['target']
+
+    return train_features, train_labels, test_features, test_labels, lat_list, lon_list
 
 if __name__ == '__main__':
     args = get_args()
-    analysis_period = args.analysis_time
+    month = args.month
     target = args.target
     region = args.region
-    num_features = args.n_features
-    results_dir = args.results_dir
+    save_dir = args.save_dir
+    root_dir = args.root_dir
 
-    # --- Loading Training Data ---
-    train_df_data, train_df_target = load_train_data(analysis_period, target, num_features, region)
-    #X_train, y_train = get_X_and_y_train(train_df_data, train_df_target)
+    # Setting up wandb - project is U-Net Test but whatever I already have this setup
+    experiment = wandb.init(project='U-Net Test', resume='allow', anonymous='must')
+    experiment.config.update(
+        dict(analysis_month=month, target=target, region=region, model='rf', test_year=2016))
 
-    # --- Loading Testing Data ---
-    test_df_data, test_df_target = load_test_data(analysis_period, target, num_features, region)
-    #X_test, y_test = get_X_and_y_test(test_df_data, test_df_target)
+    if month == 'Summer':
+        train_features, train_labels, X_test, y_test, lat_list, lon_list = load_summer(root_dir, region)
+    else:
+        # --- Loading Training Data ---
+        train_data = pd.read_csv('{}/samples/2005-2015_train_{}_{}_momo_gee_features.csv'.format(root_dir, region, month))
+        train_label = pd.read_csv('{}/target/{}/{}/{}_2005-2015_target_with_coords.csv'.format(root_dir, region, target, month))
+        train_combined = pd.concat([train_data, train_label], axis=1)
+        train_combined = train_combined.drop(columns=['Unnamed: 0.1', 'Unnamed: 0'])
+        train_combined = train_combined.dropna()
+        train_features = train_combined.drop(columns=['lat', 'lon', 'target'])
+        train_labels = train_combined['target']
 
-    #lat_list = list(y_test['lat'])
-    #lon_list = list(y_test['lon'])
+        # --- Loading Testing Data ---
+        test_data = pd.read_csv('{}/samples/2016_test_{}_{}_momo_gee_features.csv'.format(root_dir, region, month))
+        test_label = pd.read_csv('{}/target/{}/{}/{}_2016_target_with_coords.csv'.format(root_dir, region, target, month))
+        test_combined = pd.concat([test_data, test_label], axis=1)
+        test_combined = test_combined.drop(columns=['Unnamed: 0.1', 'Unnamed: 0'])
+        test_combined = test_combined.dropna()
+        lat_list = list(test_combined['lat'].iloc[:,0])
+        lon_list = list(test_combined['lon'].iloc[:,0])
+        X_test = test_combined.drop(columns=['lat', 'lon', 'target'])
+        y_test = test_combined['target']
 
-    if num_features == '39':
-        train_cols_to_drop = ['index', 'index.1']
-        X_train = X_train.drop(columns=train_cols_to_drop)
-    if num_features == '32':
-        train_cols_to_drop = ['Unnamed: 0.1', 'index', 'index.1']
-        X_train = X_train.drop(columns=train_cols_to_drop)
-        X_test = X_test.drop(columns=['Unnamed: 0.1'])
-    if num_features == '9':
-        train_cols_to_drop = ['Unnamed: 0.1']
-        X_train = X_train.drop(columns=train_cols_to_drop)
-        X_test = X_test.drop(columns=['Unnamed: 0.1'])
-
-    y_test = y_test.drop(columns=['lat', 'lon'])
-
+    X_train, X_val, y_train, y_val = train_test_split(train_features, train_labels, test_size=0.10,
+                                                      random_state=np.random.RandomState())
     var_names = X_train.columns.values.tolist()
 
     print('Number of train samples: {}'.format(len(X_train)))
     print('Number of test samples: {}'.format(len(X_test)))
 
-
-    rf = RandomForestRegressor(n_estimators=100,
-                                   max_features=int(0.3*(len(var_names))),
-                                   random_state=300,
-                                   verbose=1)
-
-    rf.fit(X_train, y_train)
-    out_model = os.path.join(results_dir, 'random_forest_predictor.joblib')
-    dump(rf, out_model)
-
-    yhat = rf.predict(X_test)
-
-    calculate_rmse(yhat, y_test, lat_list, lon_list, analysis_period, results_dir)
+    yhat, rf = run_rf(X_train, y_train, X_val, y_val, X_test, save_dir, tuning=False)
+    calculate_rmse(yhat, y_test, lat_list, lon_list, month, save_dir, experiment)
 
     # Calculate rmse for entire run
     mse = mean_squared_error(y_test, yhat)
@@ -351,7 +333,7 @@ if __name__ == '__main__':
     #r2 = r2_score(y_test,yhat)
     #print('r2 score is: {}'.format(r2))
 
-    with open('{}/results.txt'.format(results_dir), 'w') as f:
+    with open('{}/{}_results.txt'.format(save_dir, experiment.name), 'w') as f:
         f.write(' rmse is {}'.format(rmse))
         f.write(' mean absolute percentage error is: {}'.format(mape))
         #f.write(" r correlation is: {}".format(r))
@@ -359,41 +341,9 @@ if __name__ == '__main__':
 
     # Calculate importances and save
     importances = calc_importances(rf, var_names)
-    importances.to_csv('{}/feature_importances.csv'.format(results_dir))
+    importances.to_csv('{}/{}_feature_importances.csv'.format(save_dir, experiment.name))
 
 
     # Calculate permutation importances and save -> To update
     #perm_importances = calc_perm_importance(rf, X_test, y_test, var_names, results_dir)
     #perm_importances.to_csv('{}/feature_importances_perm.csv'.format(results_dir))
-
-    '''
-    # OLD
-    if param_tuning:
-        Logger.info('Finding optimal hyperparameters')
-        params = [{
-                    'n_estimators': [50, 100, 150, 200],
-                    'max_depth': [3, 4, 5]
-                }]
-        kfold = KFold(n_splits=5, shuffle=True, random_state=1234)
-        clf = GridSearchCV(
-            RandomForestRegressor(), params, cv=kfold,
-            scoring='neg_root_mean_squared_error', n_jobs=10, error_score='raise'
-        )
-        clf.fit(X, y)
-        print('Parameter selection:')
-        print(f'n_estimators: {clf.best_params_["n_estimators"]}')
-        print(f'max_depth: {clf.best_params_["max_depth"]}')
-    
-        # Create the Gradient Boosting predictor
-        Logger.info('Training Random Forest')
-        rf = RandomForestRegressor(n_estimators=clf.best_params_['n_estimators'],
-                                   max_depth=clf.best_params_['max_depth'],
-                                   random_state=300,
-                                   verbose=1)
-    else:
-        rf = RandomForestRegressor(n_estimators=100,
-                                   max_features=int(0.3*(len(var_names))),
-                                   random_state=300,
-                                   verbose=1)
-    
-    '''
