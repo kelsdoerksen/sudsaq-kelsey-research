@@ -96,7 +96,8 @@ if __name__ == '__main__':
 
     # --- Making save directory
     if wandb_status == 'online':
-        save_dir = '{}/{}/{}/{}/{}_channels'.format(root_save_dir, region, target, analysis_month, channels)
+        save_dir = '{}/{}/{}/{}/{}_channels/{}'.format(root_save_dir, region, target, analysis_month, channels,
+                                                       experiment.name)
     else:
         save_dir = '{}/{}/{}/{}/{}_channels'.format(root_save_dir, region, target, analysis_month, channels)
     if not os.path.exists(save_dir):

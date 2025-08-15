@@ -46,11 +46,18 @@ class AQDataset(Dataset):
         if split == 'train':
             train_dates = []
             train_years = [x for x in valid_years if x <= int(test_year)]
-            for y in train_years:
-                valid_date_list.extend(daterange('{}-0{}-01'.format(y, month_dict[self.month]), '{}-{}-01'.
-                                             format(y, month_dict[self.month]+1)))
+            if self.month == 'Summer':
+                for y in train_years:
+                    valid_date_list.extend(daterange('{}-06-01'.format(y), '{}-09-01'.format(y)))
+            else:
+                for y in train_years:
+                    valid_date_list.extend(daterange('{}-0{}-01'.format(y, month_dict[self.month]), '{}-{}-01'.
+                                                 format(y, month_dict[self.month]+1)))
         if split == 'test':
-            valid_date_list.extend(daterange('{}-{}-01'.format(test_year, month_dict[self.month]), '{}-{}-01'
+            if self.month == 'Summer':
+                valid_date_list.extend(daterange('{}-06-01'.format(test_year), '{}-09-01'.format(test_year)))
+            else:
+                valid_date_list.extend(daterange('{}-{}-01'.format(test_year, month_dict[self.month]), '{}-{}-01'
                                              .format(test_year, month_dict[self.month]+1)))
 
         # Get list of dates from samples

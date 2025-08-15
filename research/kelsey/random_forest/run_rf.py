@@ -47,8 +47,8 @@ def get_args():
     parser.add_argument('--save_dir', help='Save Directory for run', required=True)
     parser.add_argument('--test_year', help='Test year', required=True)
     parser.add_argument('--n_channels', help='Number of channels', required=True)
+    parser.add_argument('--tuning', help='Specify if tuning model', default=None)
     return parser.parse_args()
-
 
 def calculate_rmse(preds, label, lat_list, lon_list, analysis_date, save_directory, wandb_experiment):
     """
@@ -281,6 +281,7 @@ if __name__ == '__main__':
     root_dir = args.root_dir
     test_year = args.test_year
     n_channels = int(args.n_channels)
+    tuning = args.tuning
 
     # Setting up wandb - project is U-Net Test but whatever I already have this setup
     experiment = wandb.init(project='U-Net Test', resume='allow', anonymous='must')
@@ -330,7 +331,7 @@ if __name__ == '__main__':
 
     var_names = X_train.columns.values.tolist()
 
-    yhat, rf = run_rf(X_train, y_train, X_val, y_val, X_test, save_dir, tuning=False)
+    yhat, rf = run_rf(X_train, y_train, X_val, y_val, X_test, save_dir, tuning=tuning)
     calculate_rmse(yhat, y_test, lat_list, lon_list, month, save_dir, experiment)
 
     # Calculate rmse for entire run
