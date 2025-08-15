@@ -97,7 +97,7 @@ def plot_importances(imp, perm, dir, month, year, region):
     plt.savefig('{}/importances.png'.format(dir))
     #plt.show()
 
-def truth_vs_predicted(target, predict, dir, region):
+def truth_vs_predicted(target, predict, dir, region, wandb_run):
     """
     """
     fig, ax = plt.subplots(figsize=(10, 10))
@@ -129,12 +129,12 @@ def truth_vs_predicted(target, predict, dir, region):
 
     plt.axis('equal')
     plt.tight_layout()
-    plt.savefig('{}/truth_vs_pred.png'.format(dir))
+    plt.savefig('{}/{}_truth_vs_pred.png'.format(dir, wandb_run))
     #plt.show()
     plt.close()
 
 
-def plot_histogram(target, pred, dir, region, analysis_time):
+def plot_histogram(target, pred, dir, region, analysis_time, wandb_run):
     '''
     Plot histogram of true vs predicted
     '''
@@ -159,7 +159,7 @@ def plot_histogram(target, pred, dir, region, analysis_time):
     df.to_csv('{}/histogram_data.csv'.format(dir))
 
     plt.title('Truth vs Predicted Histogram for {}'.format(region))
-    plt.savefig('{}/truth_vs_pred_hist.png'.format(dir))
+    plt.savefig('{}/{}_truth_vs_pred_hist.png'.format(dir, wandb_run))
     #plt.show()
     plt.close()
 
@@ -435,11 +435,11 @@ if __name__ == '__main__':
 
     # Plot true vs predicted
     print('Plotting y_test vs y_hat')
-    truth_vs_predicted(y_true, yhat, save_dir, region)
+    truth_vs_predicted(y_true, yhat, save_dir, region, wandb_run)
 
     # Plot histogram
     print('plotting histogram')
-    plot_histogram(y_true, yhat, save_dir, region, month)
+    plot_histogram(y_true, yhat, save_dir, region, month, wandb_run)
 
     # Plot importances -> To update
     #plot_importances(importances, perm_importances, results_dir, analysis_period, 2016, aoi)

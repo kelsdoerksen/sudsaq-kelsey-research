@@ -45,6 +45,8 @@ def get_args():
     parser.add_argument('--target', help='Target to predict, must be one of: mda8, bias', required=True)
     parser.add_argument('--region', help='Geographic region, currently supports north_america or europe', required=True)
     parser.add_argument('--save_dir', help='Save Directory for run', required=True)
+    parser.add_argument('--test_year', help='Test year', required=True)
+    parser.add_argument('--n_channels', help='Number of channels', required=True)
     return parser.parse_args()
 
 
@@ -277,11 +279,18 @@ if __name__ == '__main__':
     region = args.region
     save_dir = args.save_dir
     root_dir = args.root_dir
+    test_year = args.test_year
+    n_channels = int(args.n_channels)
 
     # Setting up wandb - project is U-Net Test but whatever I already have this setup
     experiment = wandb.init(project='U-Net Test', resume='allow', anonymous='must')
     experiment.config.update(
-        dict(analysis_month=month, target=target, region=region, model='rf', test_year=2016))
+        dict(analysis_month=month, target=target, region=region, model='rf', test_year=test_year,
+             n_channels=n_channels))
+
+    save_dir = '{}/{}'.format(save_dir, experiment.name)
+    if not os.path.exists(save_dir):
+        os.mkdir(save_dir)
 
     if month == 'Summer':
         train_features, train_labels, X_test, y_test, lat_list, lon_list = load_summer(root_dir, region)
@@ -308,10 +317,18 @@ if __name__ == '__main__':
 
     X_train, X_val, y_train, y_val = train_test_split(train_features, train_labels, test_size=0.10,
                                                       random_state=np.random.RandomState())
-    var_names = X_train.columns.values.tolist()
 
     print('Number of train samples: {}'.format(len(X_train)))
     print('Number of test samples: {}'.format(len(X_test)))
+
+    if n_channels == 28:
+        print('Running experiment with only momo features...')
+        columns_to_drop = X_train.columns[~X_train.columns.str.contains('momo', case=False)]
+        X_train = X_train.drop(columns=columns_to_drop)
+        X_val = X_val.drop(columns=columns_to_drop)
+        X_test = X_test.drop(columns=columns_to_drop)
+
+    var_names = X_train.columns.values.tolist()
 
     yhat, rf = run_rf(X_train, y_train, X_val, y_val, X_test, save_dir, tuning=False)
     calculate_rmse(yhat, y_test, lat_list, lon_list, month, save_dir, experiment)
