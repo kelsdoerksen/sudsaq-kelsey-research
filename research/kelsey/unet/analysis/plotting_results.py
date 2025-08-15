@@ -523,6 +523,29 @@ def spatial_map(avg_data, target, metric, region, savedir):
     plt.close()
 
 
+def pred_and_gt_df(pred_array_list, gt_array_list, nan_masks_list):
+    """
+    Generates a prediction and groundtruth dataframe for further plotting
+    """
+    predictions = []
+    for i in range(len(pred_array_list)):
+        arr = pred_array_list[i] * nan_masks_list[i]
+        arr_flat = arr.flatten().tolist()
+        predictions.extend(arr_flat)
+
+    ground_truth = []
+    for i in range(len(gt_array_list)):
+        arr = gt_array_list[i] * nan_masks_list[i]
+        arr_flat = arr.flatten().tolist()
+        ground_truth.extend(arr_flat)
+
+    df = pd.DataFrame()
+    df['predictions'] = predictions
+    df['groundtruth'] = ground_truth
+
+    return df
+
+
 def calculate_avg_2d_array(array_list, nan_masks_list, lat_count, lon_count):
     """
     Calculates the average over the test set samples
@@ -730,6 +753,7 @@ def generate_loc_dict(arrays, region, analysis_period, data_type, savedir, test_
 
     return final_dict
 
+
 def plot_r2_timeseries(r2_list, analysis_period, region, save_dir, test_year):
     """
     Generates plots for r2 timeseries
@@ -760,6 +784,79 @@ def plot_r2_timeseries(r2_list, analysis_period, region, save_dir, test_year):
     plt.close()
 
 
+def truth_vs_predicted(df, save_dir, region):
+    """
+    """
+    fig, ax = plt.subplots(figsize=(10, 10))
+    df = df.dropna()
+    target = df['groundtruth']
+    predict = df['predictions']
+
+    # Retrieve the limits and expand them by 5% so everything fits into a square grid
+    limits = min([target.min(), predict.min()]), max([target.max(), predict.max()])
+    limits = limits[0] - np.abs(limits[0] * .05), limits[1] + np.abs(limits[1] * .05)
+    ax.set_ylim(limits)
+    ax.set_xlim(limits)
+
+    # Create the horizontal line for reference
+    ax.plot((limits[0], limits[1]), (limits[0], limits[1]), '--', color='r')
+
+    # Create the density values
+    kernel = stats.gaussian_kde([target, predict])
+    density = kernel([target, predict])
+
+    plot = ax.scatter(target, predict, c=density, cmap='viridis', s=5)
+
+    # Create the colorbar without ticks
+    cbar = fig.colorbar(plot, ax=ax)
+    cbar.set_ticks([])
+
+    # Set labels
+    cbar.set_label('Density')
+    ax.set_xlabel('Truth')
+    ax.set_ylabel('Predicted')
+    ax.set_title('Truth vs Predicted for {}'.format(region))
+
+    plt.axis('equal')
+    plt.tight_layout()
+    plt.savefig('{}/truth_vs_pred.png'.format(save_dir))
+    #plt.show()
+    plt.close()
+
+
+def plot_histogram(df, save_dir, region, analysis_time):
+    '''
+    Plot histogram of true vs predicted
+    '''
+
+    target = df['groundtruth']
+    pred = df['predictions']
+
+    bins = np.linspace(-120, 120, 300)
+    plt.hist(target, bins, histtype='step', label=['target'])
+    plt.hist(pred, bins, histtype='step', label=['prediction'])
+    plt.legend(loc='upper right')
+    plt.tight_layout()
+    plt.xlabel('bias')
+    plt.ylabel('count')
+
+    if analysis_time in ['June', 'July', 'Aug']:
+        plt.ylim(0, 700)
+    else:
+        plt.ylim(0, 9000)
+
+    # save histogram data to plot with unet
+    df = pd.DataFrame()
+    df['gt'] = target
+    df['pred'] = pred
+    df.to_csv('{}/histogram_data.csv'.format(save_dir))
+
+    plt.title('Truth vs Predicted Histogram for {}'.format(region))
+    plt.savefig('{}/truth_vs_pred_hist.png'.format(save_dir))
+    #plt.show()
+    plt.close()
+
+
 def generate_standard_plots(channels, target, num_lats, num_lons, region, save_dir, analysis_period, test_year):
     """
     Generate appropriate plots for Standard model
@@ -774,6 +871,12 @@ def generate_standard_plots(channels, target, num_lats, num_lons, region, save_d
     gt_avg_arr_2d = calculate_avg_2d_array(groundtruth_list, nan_mask_list, num_lats, num_lons)
     np.save('{}/avg_groundtruth.npy'.format(save_dir), gt_avg_arr_2d)
     spatial_map(gt_avg_arr_2d, target, 'groundtruth', region, save_dir)
+
+    # Get the df of the groundtruth and predictions for histogram and rmse plots
+    pred_gt_df = pred_and_gt_df(pred_list, groundtruth_list, nan_mask_list)
+    pred_gt_df.to_csv('{}/pred_and_gt_df.csv'.format(save_dir))
+    truth_vs_predicted(pred_gt_df, save_dir, region)
+    plot_histogram(pred_gt_df, save_dir, region, analysis_period)
 
     # Calc avg pred and plot
     pred_avg_arr_2d = calculate_avg_2d_array(pred_list, nan_mask_list, num_lats, num_lons)
@@ -821,6 +924,12 @@ def generate_mcdropout_plots(channels, target, num_lats, num_lons, region, save_
     gt_avg_arr_2d = calculate_avg_2d_array(groundtruth_list, nan_mask_list, num_lats, num_lons)
     np.save('{}/avg_groundtruth.npy'.format(save_dir), gt_avg_arr_2d)
     spatial_map(gt_avg_arr_2d, target, 'groundtruth', region, save_dir)
+
+    # Get the df of the groundtruth and predictions for histogram and rmse plots
+    pred_gt_df = pred_and_gt_df(pred_list, groundtruth_list, nan_mask_list)
+    pred_gt_df.to_csv('{}/pred_and_gt_df.csv'.format(save_dir))
+    truth_vs_predicted(pred_gt_df, save_dir, region)
+    plot_histogram(pred_gt_df, save_dir, region, analysis_period)
 
     # Calc avg pred and plot
     pred_avg_arr_2d = calculate_avg_2d_array(pred_list, nan_mask_list, num_lats, num_lons)
@@ -893,6 +1002,7 @@ def generate_cqr_plots(channels, target, num_lats, num_lons, region, save_dir, a
     gt_avg_arr_2d = calculate_avg_2d_array(groundtruth_list, nan_mask_list, num_lats, num_lons)
     np.save('{}/avg_groundtruth.npy'.format(save_dir), gt_avg_arr_2d)
     spatial_map(gt_avg_arr_2d, target, 'groundtruth', region, save_dir)
+
 
     # Calc avg pred and plot
     pred_avg_arr_2d_lower = calculate_avg_2d_array(lower_bound_pred_list, nan_mask_list, num_lats, num_lons)
