@@ -178,7 +178,6 @@ def run_rf(X_train, y_train, X_val, y_val, X_test, save_dir, tuning=False):
             # grid search cv
             rf_cv = GridSearchCV(estimator=rf,
                                  param_grid=param_grid,
-                                 scoring=['accuracy'],
                                  cv=3,
                                  n_jobs=-1)
 
