@@ -43,8 +43,8 @@ def predict(in_model, target, test_dataset, wandb_experiment, channels, out_dir,
             test_mask = ~torch.isnan(labels)
 
             # Append first to preserve image shape for future plotting
-            gt.append(labels.detach().numpy())
-            preds.append(outputs.detach().numpy())
+            gt.append(labels.cpu().detach().numpy())
+            preds.append(outputs.cpu().detach().numpy())
 
             outputs = outputs[test_mask]
             labels = labels[test_mask]
