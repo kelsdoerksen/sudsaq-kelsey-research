@@ -35,6 +35,7 @@ def train_model(model,
                 ):
 
     # --- Split dataset into training and validation
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     seed = random.randint(0, 1000)
     n_val = int(len(dataset) * val_percent)
     n_train = len(dataset) - n_val
@@ -166,6 +167,7 @@ def evaluate_probabilistic(model, data_loader, device, num_reps):
     data_loader: data loader to load appropriate data (train or validation)
     num_reps: number of reps to do this for, for mc dropout
     """
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     sum_loss = 0.0
     sum_mse = 0.0
 
@@ -224,6 +226,7 @@ def train_probabilistic_model(model,
                               ):
 
     # --- Split dataset into training and validation
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     seed = random.randint(0, 1000)
     torch.manual_seed(seed)
     n_val = int(len(dataset) * val_percent)

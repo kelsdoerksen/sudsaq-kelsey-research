@@ -27,7 +27,7 @@ def cqr_training_loop(model,
                       device,
                       model_type,
                       save_dir):
-
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     global_step = 0
     epoch_number = 0
     for epoch in range(epochs):
@@ -108,6 +108,7 @@ def cqr_testing_loop(in_model,
     """
     Predict standard way
     """
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     # Setting model to eval mode
     pred_model = models.CQRUNet(n_channels=int(channels), quantiles = [float(alpha/2), 0.5, float(1-(alpha/2))])
     pred_model.load_state_dict(torch.load(in_model)['state_dict'])

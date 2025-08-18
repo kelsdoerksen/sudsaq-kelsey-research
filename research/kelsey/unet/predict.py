@@ -18,6 +18,7 @@ def predict(in_model, target, test_dataset, wandb_experiment, channels, out_dir,
     """
     Predict standard way (no dropout at test time)
     """
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     # Setting model to eval mode
     unet = models.UNet(n_channels=channels, n_classes=1)
     unet.load_state_dict(torch.load(in_model)['state_dict'])
