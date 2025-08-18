@@ -112,6 +112,7 @@ def cqr_testing_loop(in_model,
     # Setting model to eval mode
     pred_model = models.CQRUNet(n_channels=int(channels), quantiles = [float(alpha/2), 0.5, float(1-(alpha/2))])
     pred_model.load_state_dict(torch.load(in_model)['state_dict'])
+    pred_model.to(device)
     pred_model.eval()
 
     loss_score = 0

@@ -3,6 +3,7 @@ Pipeline script to:
 1. Train and validate model via train.py
 2. Run predictions on test set via predict.py
 3. Plot results using analysis/plotting_results.py
+
 """
 
 import argparse
@@ -197,7 +198,6 @@ if __name__ == '__main__':
             opt = args.optimizer,
             save_checkpoint=True)
 
-        trained_model.to(device)
         print('Running Test set...')
         predict(trained_model, target, aq_test_dataset, experiment, channel_count, save_dir, device=device)
 
@@ -218,6 +218,5 @@ if __name__ == '__main__':
         print('Running Test set...')
         # Running probabilistic method to quanitfy UQ
         device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        trained_model.to(device)
         predict_probabilistic(trained_model, target, aq_test_dataset, experiment, channel_count, save_dir,
                               device=device)
