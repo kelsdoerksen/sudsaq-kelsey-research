@@ -107,10 +107,13 @@ if __name__ == '__main__':
     logging.info(f'Using device {device}')
     if model_type in ['standard']:
         unet = models.UNet(n_channels=channel_count, n_classes=1)
+        unet.to(device)
     elif model_type in ['cqr']:
         unet = models.CQRUNet(n_channels=channel_count, quantiles=[0.1, 0.5, 0.9])
+        unet.to(device)
     elif model_type in ['mcdropout']:
         unet = models.MCDropoutProbabilisticUNet(n_channels=channel_count, n_classes=1)
+        unet.to(device)
 
     # ---- Grabbing Data ----
     print('Grabbing training data...')
@@ -180,6 +183,7 @@ if __name__ == '__main__':
 
     if model_type == 'standard':
         print('Training model...')
+        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         trained_model = train_model(
             model=unet,
             device=device,
@@ -193,6 +197,7 @@ if __name__ == '__main__':
             opt = args.optimizer,
             save_checkpoint=True)
 
+        trained_model.to(device)
         print('Running Test set...')
         predict(trained_model, target, aq_test_dataset, experiment, channel_count, save_dir, device=device)
 
@@ -212,5 +217,7 @@ if __name__ == '__main__':
 
         print('Running Test set...')
         # Running probabilistic method to quanitfy UQ
+        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        trained_model.to(device)
         predict_probabilistic(trained_model, target, aq_test_dataset, experiment, channel_count, save_dir,
                               device=device)
