@@ -341,6 +341,11 @@ if __name__ == '__main__':
     mape = mean_absolute_percentage_error(y_test, yhat)
     print('mean absolute percentage error is: {}'.format(mape))
 
+    experiment.log({
+        'test set mse': mse,
+        'test set rmse': rmse
+    })
+
     # Calculate r correlation value
     #r = pearsonr(y_test, yhat)[0]
     #print("r correlation is: {}".format(r))

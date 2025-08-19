@@ -121,21 +121,19 @@ def train_model(model,
                 vloss = criterion(voutputs, vlabels)
                 running_vloss += vloss
 
+        experiment.log({
+            'learning rate': optimizer.param_groups[0]['lr'],
+            'validation MSE loss': running_vloss/len(val_loader),
+            'validation RMSE': np.sqrt(running_vloss/len(val_loader)),
+            'step': global_step,
+            'epoch': epoch,
+            **histograms
+        })
+
         avg_vloss = running_vloss / len(val_loader)
         #scheduler.step(avg_vloss)
 
         logging.info('Validation MSE score: {}'.format(avg_vloss))
-        try:
-            experiment.log({
-                'learning rate': optimizer.param_groups[0]['lr'],
-                'validation MSE loss': avg_vloss,
-                'validation RMSE': np.sqrt(avg_vloss),
-                'step': global_step,
-                'epoch': epoch,
-                **histograms
-            })
-        except:
-            pass
 
         '''
         if save_checkpoint:
