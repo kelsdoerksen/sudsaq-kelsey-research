@@ -108,7 +108,7 @@ def train_model(model,
         # Run validation
         model.eval()
         # Disable gradient computation and reduce memory consumption.
-        running_vloss = 0.0
+        epoch_vloss = 0
         with torch.no_grad():
             for k, vdata in enumerate(val_loader):
                 vinputs, vlabels = vdata
@@ -119,21 +119,18 @@ def train_model(model,
                 voutputs = voutputs[val_mask]
                 vlabels = vlabels[val_mask]
                 vloss = criterion(voutputs, vlabels)
-                running_vloss += vloss
+                epoch_vloss += vloss.item()
 
         experiment.log({
             'learning rate': optimizer.param_groups[0]['lr'],
-            'validation MSE loss': running_vloss/len(val_loader),
-            'validation RMSE': np.sqrt(running_vloss/len(val_loader)),
+            'validation MSE loss': epoch_vloss/len(val_loader),
+            'validation RMSE': np.sqrt(epoch_vloss/len(val_loader)),
             'step': global_step,
             'epoch': epoch,
             **histograms
         })
 
-        avg_vloss = running_vloss / len(val_loader)
         #scheduler.step(avg_vloss)
-
-        logging.info('Validation MSE score: {}'.format(avg_vloss))
 
         '''
         if save_checkpoint:
