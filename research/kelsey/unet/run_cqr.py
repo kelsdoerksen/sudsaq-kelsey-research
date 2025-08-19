@@ -128,8 +128,8 @@ def cqr_testing_loop(in_model,
             outputs = pred_model(inputs)
 
             # Append first to preserve image shape for future plotting
-            gt.append(labels.detach().numpy())
-            preds.append(outputs.detach().numpy())
+            gt.append(labels.cpu().detach().numpy())
+            preds.append(outputs.cpu().detach().numpy())
 
             loss_score += loss_criterion(outputs, labels)
 
@@ -350,7 +350,7 @@ def run_cqr(model,
     for i, data in enumerate(test_loader):
         inputs, labels = data
         # Append first to preserve image shape for future plotting
-        gt.append(labels.detach().numpy())
+        gt.append(labels.cpu().detach().numpy())
     for i in range(len(gt)):
         np.save('{}/{}channels_bias_groundtruth_{}.npy'.format(save_dir, channels, i), gt[i])
 

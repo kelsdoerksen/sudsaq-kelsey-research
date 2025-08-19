@@ -52,11 +52,11 @@ def predict(in_model, target, test_dataset, wandb_experiment, channels, out_dir,
             mse_score += loss_criterion(outputs, labels)
 
     print('test set mse is: {}'.format(mse_score / len(test_loader)))
-    print('test set rmse is: {}'.format(np.sqrt((mse_score / len(test_loader)).detach().numpy())))
+    print('test set rmse is: {}'.format(np.sqrt((mse_score / len(test_loader)).cpu().detach().numpy())))
 
     wandb_experiment.log({
         'test set mse': mse_score / len(test_loader),
-        'test set rmse': np.sqrt((mse_score / len(test_loader)).detach().numpy())
+        'test set rmse': np.sqrt((mse_score / len(test_loader)).cpu().detach().numpy())
     })
 
     for i in range(len(gt)):
@@ -95,7 +95,7 @@ def predict_probabilistic(in_model, target, test_dataset, wandb_experiment, chan
             sampled_pred_maps, sampled_log_var_maps, sampled_aleatoric_maps = [], [], []
             inputs, labels = data
             inputs, labels = inputs.to(device), labels.to(device)
-            gt.append(labels.detach().numpy())
+            gt.append(labels.cpu().detach().numpy())
 
             # Running multiple forward passes to generate a set of predictions
             for rep in range(100):
@@ -126,11 +126,11 @@ def predict_probabilistic(in_model, target, test_dataset, wandb_experiment, chan
                                         torch.from_numpy(no_nan_outputs_log_vars), labels)
 
     print('test set mse is: {}'.format(mse_score / len(test_loader)))
-    print('test set rmse is: {}'.format(np.sqrt((mse_score / len(test_loader)).detach().numpy())))
+    print('test set rmse is: {}'.format(np.sqrt((mse_score / len(test_loader)).cpu().detach().numpy())))
 
     wandb_experiment.log({
         'test set mse': mse_score / len(test_loader),
-        'test set rmse': np.sqrt((mse_score / len(test_loader)).detach().numpy())
+        'test set rmse': np.sqrt((mse_score / len(test_loader)).cpu().detach().numpy())
     })
 
     total_pred_unc_list = list(map(add, ale_unc_list, epi_unc_list))
