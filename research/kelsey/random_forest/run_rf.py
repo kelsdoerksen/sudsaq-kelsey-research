@@ -6,8 +6,9 @@ Hard coding things for now because I want to use this
 as a direct comparison to the UNet model, training years 2005-2015,
 testing year 2016
 """
-
+import ipdb
 import numpy as np
+from dask.utils_test import import_or_none
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.utils import shuffle
 import os
@@ -197,78 +198,75 @@ def run_rf(X_train, y_train, X_val, y_val, X_test, save_dir, tuning=False):
             forest_dict['best_model'] = best_forest
             tune_list.append(forest_dict)
 
-        # Get max F1 and use this as our best model
-        max_dict = max(tune_list, key=lambda x: x['f1'])
+        # Get max accuracy and use this as our best model
+        max_dict = max(tune_list, key=lambda x: x['accuracy'])
         print('Max model stats after parameter tuning is: {}'.format(max_dict))
         # Save the model to file
         joblib.dump(max_dict['best_model'], '{}/rf_model.joblib'.format(save_dir))
         # saving as pickle too
         with open("{}/rf_model.pkl".format(save_dir), "wb") as file:
             pickle.dump(max_dict['best_model'], file)
-        forest = max_dict['best_model']
+        rf = max_dict['best_model']
 
         # Fit the model
         print('Fitting best model...')
-        forest.fit(X_train, y_train)
+        rf.fit(X_train, y_train)
 
 
     yhat = rf.predict(X_test)
     return yhat, rf
 
 
-def load_summer(root_dir, region):
+def load_training_data(df, month, n_channels):
     """
-    Loading summer data
+    Load training data from dataframe
     """
-    # --- Combine the training data
-    # Load the training samples
-    june_sample_train = pd.read_csv('{}/samples/2005-2015_train_{}_June_momo_gee_features.csv'.format(root_dir, region))
-    july_sample_train = pd.read_csv('{}/samples/2005-2015_train_{}_July_momo_gee_features.csv'.format(root_dir, region))
-    aug_sample_train = pd.read_csv('{}/samples/2005-2015_train_{}_Aug_momo_gee_features.csv'.format(root_dir, region))
+    # Subset for the years of interest
+    years_to_remove = [2016, 2017, 2018, 2019, 2020]
+    df_train = df[~df['Year'].isin(years_to_remove)]
 
-    # Load the training labels
-    june_label_train = pd.read_csv('{}/target/{}/{}/June_2005-2015_target_with_coords.csv'.format(root_dir, region, target))
-    july_label_train = pd.read_csv(
-        '{}/target/{}/{}/July_2005-2015_target_with_coords.csv'.format(root_dir, region, target))
-    aug_label_train = pd.read_csv(
-        '{}/target/{}/{}/Aug_2005-2015_target_with_coords.csv'.format(root_dir, region, target))
+    # subset for month of interest
+    if month == 'June':
+        df_train = df_train[df_train['Month'] == '06']
+    elif month == 'July':
+        df_train = df_train[df_train['Month'] == '07']
+    elif month == 'August':
+        df_train = df_train[df_train['Month'] == '08']
 
-    # Concatenate together
-    train_data = pd.concat([june_sample_train, july_sample_train, aug_sample_train], axis=0)
-    train_label = pd.concat([june_label_train, july_label_train, aug_label_train], axis=0)
+    if n_channels == 28:
+        momo_cols = [c for c in df.columns if c.lower()[:4] != 'momo']
+        df_train = df_train[momo_cols]
 
-    train_combined = pd.concat([train_data, train_label], axis=1)
-    train_combined = train_combined.drop(columns=['Unnamed: 0.1', 'Unnamed: 0'])
-    train_combined = train_combined.dropna()
-    train_features = train_combined.drop(columns=['lat', 'lon', 'target'])
-    train_labels = train_combined['target']
+    features = df_train.drop(columns=['Year', 'Month', 'Day', 'bias', 'lat', 'lon'])
+    labels = df_train['bias']
 
-    # --- Combine the testing data
-    june_sample_test = pd.read_csv('{}/samples/2016_test_{}_June_momo_gee_features.csv'.format(root_dir, region))
-    july_sample_test = pd.read_csv('{}/samples/2016_test_{}_July_momo_gee_features.csv'.format(root_dir, region))
-    aug_sample_test = pd.read_csv('{}/samples/2016_test_{}_Aug_momo_gee_features.csv'.format(root_dir, region))
+    return features, labels
 
-    # Load the training labels
-    june_label_test = pd.read_csv(
-        '{}/target/{}/{}/June_2016_target_with_coords.csv'.format(root_dir, region, target))
-    july_label_test = pd.read_csv(
-        '{}/target/{}/{}/July_2016_target_with_coords.csv'.format(root_dir, region, target))
-    aug_label_test = pd.read_csv(
-        '{}/target/{}/{}/Aug_2016_target_with_coords.csv'.format(root_dir, region, target))
 
-    # Concatenate together
-    test_data = pd.concat([june_sample_test, july_sample_test, aug_sample_test], axis=0)
-    test_label = pd.concat([june_label_test, july_label_test, aug_label_test], axis=0)
+def load_testing_data(df, month, n_channels):
+    """
+    Load training data from dataframe
+    """
+    df_test = df[df['Year'] == 2016]
+    # subset for month of interest
+    if month == 'June':
+        df_test = df_test[df_test['Month'] == '06']
+    elif month == 'July':
+        df_test = df_test[df_test['Month'] == '07']
+    elif month == 'August':
+        df_test = df_test[df_test['Month'] == '08']
 
-    test_combined = pd.concat([test_data, test_label], axis=1)
-    test_combined = test_combined.drop(columns=['Unnamed: 0.1', 'Unnamed: 0'])
-    test_combined = test_combined.dropna()
-    lat_list = list(test_combined['lat'].iloc[:, 0])
-    lon_list = list(test_combined['lon'].iloc[:, 0])
-    test_features = test_combined.drop(columns=['lat', 'lon', 'target'])
-    test_labels = test_combined['target']
+    if n_channels == 28:
+        momo_cols = [c for c in df.columns if c.lower()[:4] != 'momo']
+        df_test = df_test[momo_cols]
 
-    return train_features, train_labels, test_features, test_labels, lat_list, lon_list
+    lats = df_test['lat']
+    lons = df_test['lon']
+    features = df_test.drop(columns=['Year', 'Month', 'Day', 'bias', 'lat', 'lon'])
+    labels = df_test['bias']
+
+    return features, labels, lats.values, lons.values
+
 
 if __name__ == '__main__':
     args = get_args()
@@ -291,54 +289,30 @@ if __name__ == '__main__':
     if not os.path.exists(save_dir):
         os.mkdir(save_dir)
 
-    if month == 'Summer':
-        train_features, train_labels, X_test, y_test, lat_list, lon_list = load_summer(root_dir, region)
-    else:
-        # --- Loading Training Data ---
-        train_data = pd.read_csv('{}/samples/2005-2015_train_{}_{}_momo_gee_features.csv'.format(root_dir, region, month))
-        train_label = pd.read_csv('{}/target/{}/{}/{}_2005-2015_target_with_coords.csv'.format(root_dir, region, target, month))
-        train_combined = pd.concat([train_data, train_label], axis=1)
-        train_combined = train_combined.drop(columns=['Unnamed: 0.1', 'Unnamed: 0'])
-        train_combined = train_combined.dropna()
-        train_features = train_combined.drop(columns=['lat', 'lon', 'target'])
-        train_labels = train_combined['target']
-
-        # --- Loading Testing Data ---
-        test_data = pd.read_csv('{}/samples/2016_test_{}_{}_momo_gee_features.csv'.format(root_dir, region, month))
-        test_label = pd.read_csv('{}/target/{}/{}/{}_2016_target_with_coords.csv'.format(root_dir, region, target, month))
-        test_combined = pd.concat([test_data, test_label], axis=1)
-        test_combined = test_combined.drop(columns=['Unnamed: 0.1', 'Unnamed: 0'])
-        test_combined = test_combined.dropna()
-        lat_list = list(test_combined['lat'].iloc[:,0])
-        lon_list = list(test_combined['lon'].iloc[:,0])
-        X_test = test_combined.drop(columns=['lat', 'lon', 'target'])
-        y_test = test_combined['target']
+    # Hard coding train years to be 2005 - 2015 for now
+    data = pd.read_csv('{}/2005-2020_{}_51channels.csv'.format(root_dir, region))
+    train_features, train_labels = load_training_data(data, month, n_channels)
 
     X_train, X_val, y_train, y_val = train_test_split(train_features, train_labels, test_size=0.10,
                                                       random_state=np.random.RandomState())
 
     print('Number of train samples: {}'.format(len(X_train)))
-    print('Number of test samples: {}'.format(len(X_test)))
 
-    if n_channels == 28:
-        print('Running experiment with only momo features...')
-        columns_to_drop = X_train.columns[~X_train.columns.str.contains('momo', case=False)]
-        X_train = X_train.drop(columns=columns_to_drop)
-        X_val = X_val.drop(columns=columns_to_drop)
-        X_test = X_test.drop(columns=columns_to_drop)
+    test_features, test_labels, test_lats, test_lons = load_testing_data(data, month, n_channels)
+    print('Number of test samples: {}'.format(len(test_features)))
 
     var_names = X_train.columns.values.tolist()
 
-    yhat, rf = run_rf(X_train, y_train, X_val, y_val, X_test, save_dir, tuning=tuning)
-    calculate_rmse(yhat, y_test, lat_list, lon_list, month, save_dir, experiment)
+    yhat, rf = run_rf(X_train, y_train, X_val, y_val, test_features, save_dir, tuning=tuning)
+    calculate_rmse(yhat, test_labels, test_lats, test_lons, month, save_dir, experiment)
 
     # Calculate rmse for entire run
-    mse = mean_squared_error(y_test, yhat)
+    mse = mean_squared_error(test_labels, yhat)
     rmse = math.sqrt(mse)
     print('rmse is {}'.format(rmse))
 
     # Calculate mape
-    mape = mean_absolute_percentage_error(y_test, yhat)
+    mape = mean_absolute_percentage_error(test_labels, yhat)
     print('mean absolute percentage error is: {}'.format(mape))
 
     experiment.log({

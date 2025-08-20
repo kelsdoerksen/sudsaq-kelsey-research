@@ -226,6 +226,9 @@ def plotting_spatial_data(avg_data, metric, model_target, anaylsis_date, save_di
             vmin = -20
             vmax = 50
 
+    # fixing plotting upside down
+    avg_data = avg_data[::-1, :]
+    
     x, y = np.meshgrid(lon_vals, lat_vals, indexing='xy')
     fig, ax = plt.subplots(figsize=(10, 8), subplot_kw={'projection': ccrs.PlateCarree()})
     plt.pcolor(x, y, avg_data, cmap='coolwarm', vmin=vmin, vmax=vmax)
@@ -388,6 +391,7 @@ def calculating_spatial_results(df_sorted, target, analysis_date, save_directory
                 lat_points.append(point[0])
                 lon_points.append(point[1])
 
+
     # Get average lists as arrays
     rmse_arr = generate_array_from_df(avg_rmse_list, 'avg_rmse', lat_points, lon_points, geo_region, target)
     pred_arr = generate_array_from_df(avg_pred_list, 'avg_pred', lat_points, lon_points, geo_region, target)
@@ -427,8 +431,8 @@ if __name__ == '__main__':
     yhat = results_df['pred']
     y_true = results_df['label']
 
-    # --- Plot results ---
 
+    # --- Plot results ---
     # Spatial Mapping
     print('plotting spatial results')
     calculating_spatial_results(results_df, target, month, save_dir, region)
