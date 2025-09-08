@@ -25,6 +25,7 @@ import math
 import pickle
 import joblib
 import wandb
+import random
 
 bbox_dict = {'globe':[-180, 180, -90, 90],
             'europe': [-20, 40, 25, 80],
@@ -143,7 +144,7 @@ def run_rf(X_train, y_train, X_val, y_val, X_test, save_dir, tuning=False):
         # Create an instance of Random Forest
         rf = RandomForestRegressor(n_estimators=100,
                                    max_features=int(0.3 * (len(var_names))),
-                                   random_state=300,
+                                   random_state=random.randint(0, 1000),
                                    verbose=1)
 
         out_model = os.path.join(save_dir, 'random_forest_predictor.joblib')
