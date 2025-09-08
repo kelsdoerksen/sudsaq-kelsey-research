@@ -228,7 +228,7 @@ def plotting_spatial_data(avg_data, metric, model_target, anaylsis_date, save_di
 
     # fixing plotting upside down
     avg_data = avg_data[::-1, :]
-    
+
     x, y = np.meshgrid(lon_vals, lat_vals, indexing='xy')
     fig, ax = plt.subplots(figsize=(10, 8), subplot_kw={'projection': ccrs.PlateCarree()})
     plt.pcolor(x, y, avg_data, cmap='coolwarm', vmin=vmin, vmax=vmax)

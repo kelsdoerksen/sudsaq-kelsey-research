@@ -118,8 +118,11 @@ if __name__ == '__main__':
         # Subsample over north america
         filt_ds = filter_bounds(ds, region)
 
+        # Flip to the correct orientation
+        flipped_ds = filt_ds.reindex(lat=filt_ds.lat[::-1])
+
         # Make array
-        generate_array(filt_ds, 'population', '/Volumes/PRO-G40/sudsaq/GEE', y, full_name)
+        generate_array(flipped_ds, 'population', '/Volumes/PRO-G40/sudsaq/GEE', y, full_name)
 
 
     # --- Processing modis ---
@@ -134,8 +137,11 @@ if __name__ == '__main__':
         # Subsample over north america
         filtered_ds = filter_bounds(ds, region)
 
+        # Flip to the correct orientation
+        flipped_ds = filtered_ds.reindex(lat=filtered_ds.lat[::-1])
+
         # Make array
-        generate_array(filtered_ds, 'modis', '/Volumes/PRO-G40/sudsaq/GEE', y, full_name)
+        generate_array(flipped_ds, 'modis', '/Volumes/PRO-G40/sudsaq/GEE', y, full_name)
 
 
 

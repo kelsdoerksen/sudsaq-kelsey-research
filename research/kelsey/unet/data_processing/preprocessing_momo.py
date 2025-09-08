@@ -139,6 +139,7 @@ def generate_samples(sample_ds, feature_list, save_dir):
                 ds_feature = ds_feature.interpolate_na(dim='lon')
                 ds_feature = ds_feature.interpolate_na(dim='lat')
                 print('Linear interpolating NaNs for feature: {}'.format(feature))
+            ds_feature = ds_feature.reindex(lat=ds_feature.lat[::-1])   # Flipping so its oriented correctly
             arr = ds_feature.to_numpy()
             #norm_arr = zscore_normalize_array(arr)
             multi_channel_list.append(arr)
@@ -159,6 +160,7 @@ def generate_labels(label_ds, save_dir):
     for doy in date_list:
         save_name_date = str(doy)[0:10]
         ds_filt = label_ds.sel(indexers={'time': doy})
+        ds_filt = ds_filt.reindex(lat=ds_filt.lat[::-1])    # Flipping so its oriented correctly
         label_np = ds_filt.to_array()
         print('Saving file: {}'.format(save_name_date))
         np.save('{}/{}_label'.format(save_dir, save_name_date), label_np)
@@ -318,23 +320,20 @@ if __name__ == '__main__':
     save_dir = args.save_dir
 
     print('--- Loading Data for year {}---'.format(year))
-    sample_ds = xr.open_dataset('{}/{}/{}/test.data.nc'.format(sample_dir, month, year))
-    #label_ds = xr.open_dataset('{}/{}/{}/test.target.nc'.format(label_dir, month, year))
 
+    # ----- Generate samples
+
+    sample_ds = xr.open_dataset('{}/{}/{}/test.data.nc'.format(sample_dir, month, year))
     # Get list of features from xarray
     features = [i for i in sample_ds.data_vars]
-
     # Format lon
-    #ds = format_lon(ds)
-
+    sample_ds = format_lon(sample_ds)
     # Subsample over extent
     filt_sample_ds = filter_bounds(sample_ds, geo_extent)
-
-    #filt_label_ds = filter_bounds(label_ds, geo_extent)
-
-    # Generate samples
     run_generate_samples(filt_sample_ds, month, features, save_dir)
 
-    # Generate labels
-    #run_generate_labels(filt_label_ds, month, save_dir)
-
+    # ----- Generate labels
+    label_ds = xr.open_dataset('{}/{}/{}/test.target.nc'.format(label_dir, month, year))
+    label_ds = format_lon(label_ds)
+    filt_label_ds = filter_bounds(label_ds, geo_extent)
+    run_generate_labels(filt_label_ds, month, save_dir)
