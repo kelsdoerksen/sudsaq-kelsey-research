@@ -49,6 +49,7 @@ def get_args():
     parser.add_argument('--test_year', help='Test year', required=True)
     parser.add_argument('--n_channels', help='Number of channels', required=True)
     parser.add_argument('--tuning', help='Specify if tuning model', default=None)
+    parser.add_argument('--tag', help='Tag for wandb tracking', default=None)
     return parser.parse_args()
 
 def calculate_rmse(preds, label, lat_list, lon_list, analysis_date, save_directory, wandb_experiment):
@@ -278,9 +279,10 @@ if __name__ == '__main__':
     test_year = args.test_year
     n_channels = int(args.n_channels)
     tuning = args.tuning
+    tag = args.tag
 
     # Setting up wandb - project is U-Net Test but whatever I already have this setup
-    experiment = wandb.init(project='U-Net Test', resume='allow', anonymous='must')
+    experiment = wandb.init(project='U-Net Test', resume='allow', anonymous='must', tags=[tag])
     experiment.config.update(
         dict(analysis_month=month, target=target, region=region, model='rf', test_year=test_year,
              n_channels=n_channels))
