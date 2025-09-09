@@ -37,15 +37,19 @@ def train_model(model,
     # --- Split dataset into training and validation
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     seed = random.randint(0, 1000)
-    n_val = int(len(dataset) * val_percent)
-    n_train = len(dataset) - n_val
-    train_set, val_set = random_split(dataset, [n_train, n_val], generator=torch.Generator().manual_seed(seed))
+    if val_percent == 0:
+        n_train = len(dataset)
+        train_set = dataset
+    else:
+        n_val = int(len(dataset) * val_percent)
+        n_train = len(dataset) - n_val
+        train_set, val_set = random_split(dataset, [n_train, n_val], generator=torch.Generator().manual_seed(seed))
+        val_loader = DataLoader(val_set, batch_size=batch_size, shuffle=True)
 
     # --- DataLoaders
     # The DataLoader pulls instances of data from the Dataset, collects them in batches,
     # and returns them for consumption by your training loop.
     train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True)
-    val_loader = DataLoader(val_set, batch_size=batch_size, shuffle=True)
 
     # --- Setting up optimizer
     if opt == 'rms':
@@ -105,43 +109,44 @@ def train_model(model,
             if not (torch.isinf(value.grad) | torch.isnan(value.grad)).any():
                 histograms['Gradients/' + tag] = wandb.Histogram(value.grad.data.cpu())
 
-        # Run validation
-        model.eval()
-        # Disable gradient computation and reduce memory consumption.
-        epoch_vloss = 0
-        with torch.no_grad():
-            for k, vdata in enumerate(val_loader):
-                vinputs, vlabels = vdata
-                vinputs, vlabels = vinputs.to(device), vlabels.to(device)
-                val_mask = ~torch.isnan(vlabels)
-                voutputs = model(vinputs)
-                # Filter out nans
-                voutputs = voutputs[val_mask]
-                vlabels = vlabels[val_mask]
-                vloss = criterion(voutputs, vlabels)
-                epoch_vloss += vloss.item()
+        if val_percent !=0:
+            # Run validation
+            model.eval()
+            # Disable gradient computation and reduce memory consumption.
+            epoch_vloss = 0
+            with torch.no_grad():
+                for k, vdata in enumerate(val_loader):
+                    vinputs, vlabels = vdata
+                    vinputs, vlabels = vinputs.to(device), vlabels.to(device)
+                    val_mask = ~torch.isnan(vlabels)
+                    voutputs = model(vinputs)
+                    # Filter out nans
+                    voutputs = voutputs[val_mask]
+                    vlabels = vlabels[val_mask]
+                    vloss = criterion(voutputs, vlabels)
+                    epoch_vloss += vloss.item()
 
-        experiment.log({
-            'learning rate': optimizer.param_groups[0]['lr'],
-            'validation MSE loss': epoch_vloss/len(val_loader),
-            'validation RMSE': np.sqrt(epoch_vloss/len(val_loader)),
-            'step': global_step,
-            'epoch': epoch,
-            **histograms
-        })
+            experiment.log({
+                'learning rate': optimizer.param_groups[0]['lr'],
+                'validation MSE loss': epoch_vloss/len(val_loader),
+                'validation RMSE': np.sqrt(epoch_vloss/len(val_loader)),
+                'step': global_step,
+                'epoch': epoch,
+                **histograms
+            })
 
-        #scheduler.step(avg_vloss)
+            #scheduler.step(avg_vloss)
 
-        '''
-        if save_checkpoint:
-            out_model = '{}/checkpoint_epoch{}.pth'.format(save_dir, epoch)
-            Path(save_dir).mkdir(parents=True, exist_ok=True)
-            torch.save({'epoch': epoch,
-                        'state_dict': model.state_dict(),
-                        'optimizer': optimizer.state_dict()},
-                       out_model)
-            logging.info(f'Checkpoint {epoch} saved!')
-        '''
+            '''
+            if save_checkpoint:
+                out_model = '{}/checkpoint_epoch{}.pth'.format(save_dir, epoch)
+                Path(save_dir).mkdir(parents=True, exist_ok=True)
+                torch.save({'epoch': epoch,
+                            'state_dict': model.state_dict(),
+                            'optimizer': optimizer.state_dict()},
+                           out_model)
+                logging.info(f'Checkpoint {epoch} saved!')
+            '''
 
 
     # Saving model at end of epoch with experiment name
@@ -224,13 +229,20 @@ def train_probabilistic_model(model,
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     seed = random.randint(0, 1000)
     torch.manual_seed(seed)
-    n_val = int(len(dataset) * val_percent)
-    n_train = len(dataset) - n_val
-    train_set, val_set = random_split(dataset, [n_train, n_val], generator=torch.Generator().manual_seed(seed))
+
+    if val_percent == 0:
+        n_train = len(dataset)
+        train_set = dataset
+    else:
+        n_val = int(len(dataset) * val_percent)
+        n_train = len(dataset) - n_val
+        train_set, val_set = random_split(dataset, [n_train, n_val], generator=torch.Generator().manual_seed(seed))
+        val_loader = DataLoader(val_set, batch_size=batch_size, shuffle=True)
 
     # --- DataLoaders
+    # The DataLoader pulls instances of data from the Dataset, collects them in batches,
+    # and returns them for consumption by your training loop.
     train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True)
-    val_loader = DataLoader(val_set, batch_size=batch_size, shuffle=True)
 
     # --- Initialize small random log_weights
     torch.nn.init.normal_(model.log_var.conv.weight, mean=0.0, std=1e-6)
@@ -300,52 +312,53 @@ def train_probabilistic_model(model,
                 histograms['Gradients/' + tag] = wandb.Histogram(value.grad.data.cpu())
         '''
 
-        # Run validation
-        for i, data in enumerate(val_loader):
-            inputs, labels = data
-            inputs, labels = inputs.to(device), labels.to(device)
-            # Zero gradients for every batch
-            optimizer.zero_grad()
+        if val_percent != 0:
+            # Run validation
+            for i, data in enumerate(val_loader):
+                inputs, labels = data
+                inputs, labels = inputs.to(device), labels.to(device)
+                # Zero gradients for every batch
+                optimizer.zero_grad()
 
-            pred_map_means, pred_map_log_vars = model(inputs)
+                pred_map_means, pred_map_log_vars = model(inputs)
 
-            # Filter out nans to ignore for bias to calculate losses
-            mask = ~torch.isnan(labels)
-            pred_map_means = pred_map_means[mask]
-            labels = labels[mask]
-            pred_map_log_vars = pred_map_log_vars[mask]
+                # Filter out nans to ignore for bias to calculate losses
+                mask = ~torch.isnan(labels)
+                pred_map_means = pred_map_means[mask]
+                labels = labels[mask]
+                pred_map_log_vars = pred_map_log_vars[mask]
 
-            val_loss = criterion(pred_map_means, pred_map_log_vars, labels)
-            val_mse = mse_criterion(pred_map_means, labels)
-            val_loss += loss.item()
-            val_mse += mse_loss.item()
+                val_loss = criterion(pred_map_means, pred_map_log_vars, labels)
+                val_mse = mse_criterion(pred_map_means, labels)
+                val_loss += loss.item()
+                val_mse += mse_loss.item()
 
-        val_loss, val_mse = evaluate_probabilistic(model, val_loader, device=device, num_reps=5)
+            val_loss, val_mse = evaluate_probabilistic(model, val_loader, device=device, num_reps=5)
 
-        logging.info('Validation MSE score: {}'.format(val_mse))
-        print('Val NLL: {}'.format(val_loss))
-        try:
-            experiment.log({
-                'learning rate': optimizer.param_groups[0]['lr'],
-                'validation NLL loss': val_loss,
-                'validation MSE loss': val_mse,
-                'validation RMSE': np.sqrt(val_mse),
-                'step': global_step,
-                'epoch': epoch
-            })
-        except:
-            pass
+            logging.info('Validation MSE score: {}'.format(val_mse))
+            print('Val NLL: {}'.format(val_loss))
+            try:
+                experiment.log({
+                    'learning rate': optimizer.param_groups[0]['lr'],
+                    'validation NLL loss': val_loss,
+                    'validation MSE loss': val_mse,
+                    'validation RMSE': np.sqrt(val_mse),
+                    'step': global_step,
+                    'epoch': epoch
+                })
+            except:
+                pass
 
-        '''
-        if save_checkpoint:
-            out_model = '{}/checkpoint_epoch{}.pth'.format(save_dir, epoch)
-            Path(save_dir).mkdir(parents=True, exist_ok=True)
-            torch.save({'epoch': epoch,
-                        'state_dict': model.state_dict(),
-                        'optimizer': optimizer.state_dict()},
-                       out_model)
-            logging.info(f'Checkpoint {epoch} saved!')
-        '''
+            '''
+            if save_checkpoint:
+                out_model = '{}/checkpoint_epoch{}.pth'.format(save_dir, epoch)
+                Path(save_dir).mkdir(parents=True, exist_ok=True)
+                torch.save({'epoch': epoch,
+                            'state_dict': model.state_dict(),
+                            'optimizer': optimizer.state_dict()},
+                           out_model)
+                logging.info(f'Checkpoint {epoch} saved!')
+            '''
 
     # Saving model at end of epoch with experiment name
     out_model = '{}/{}_last_epoch.pth'.format(save_dir, experiment.name)
