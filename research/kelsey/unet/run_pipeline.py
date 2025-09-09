@@ -189,7 +189,7 @@ if __name__ == '__main__':
             model=unet,
             device=device,
             dataset=aq_train_dataset,
-            save_dir=args.save_dir,
+            save_dir=save_dir,
             experiment=experiment,
             val_percent=float(args.val_percent),
             epochs=args.epochs,
