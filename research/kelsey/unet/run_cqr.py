@@ -279,6 +279,7 @@ def run_cqr(model,
             epochs: int,
             batch_size: int,
             learning_rate: float,
+            val_percent: float,
             weight_decay: float=0,
             save_checkpoint: bool=True):
     """
@@ -293,13 +294,17 @@ def run_cqr(model,
     train_set, cal_set = random_split(train_dataset, [n_train, n_cal], generator=torch.Generator().manual_seed(seed))
 
     # --- Split training dataset into train and val to monitor for overfitting
-    n_val = int(len(train_set) * 0.1)
-    n_train_final = len(train_set) - n_val
-    train_set, val_set = random_split(train_set, [n_train_final, n_val], generator=torch.Generator().manual_seed(seed))
+    if val_percent == 0:
+        n_train = len(train_set)
+        train_set = train_set
+    else:
+        n_val = int(len(train_set) * 0.1)
+        n_train_final = len(train_set) - n_val
+        train_set, val_set = random_split(train_set, [n_train_final, n_val], generator=torch.Generator().manual_seed(seed))
+        val_loader = DataLoader(val_set, batch_size=batch_size, shuffle=True)
 
     # --- DataLoaders
     train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True)
-    val_loader = DataLoader(val_set, batch_size=batch_size, shuffle=True)
     cal_loader = DataLoader(cal_set, batch_size=batch_size, shuffle=True)
     test_loader = DataLoader(test_datatset, batch_size=batch_size, shuffle=False)   # Set shuffle to false to preserve order of data for timeseries generation
 

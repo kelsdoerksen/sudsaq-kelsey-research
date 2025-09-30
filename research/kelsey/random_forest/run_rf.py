@@ -213,7 +213,6 @@ def run_rf(X_train, y_train, X_val, y_val, X_test, save_dir, tuning=False):
         print('Fitting best model...')
         rf.fit(X_train, y_train)
 
-
     yhat = rf.predict(X_test)
     return yhat, rf
 

@@ -176,7 +176,7 @@ if __name__ == '__main__':
 
     if model_type == 'cqr':
         run_cqr(unet, device, aq_train_dataset, aq_test_dataset, save_dir, experiment, 0.1, channel_count,
-                args.epochs, args.batch_size, args.lr, 0, save_checkpoint=True)
+                args.epochs, args.batch_size, args.lr, args.val_percent, 0, save_checkpoint=True)
 
     if model_type == 'ensemble':
         ensemble_size = 10
