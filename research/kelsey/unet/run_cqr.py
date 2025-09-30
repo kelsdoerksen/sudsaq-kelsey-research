@@ -62,27 +62,28 @@ def cqr_training_loop(model,
 
         print('{}_train Quantile loss is: {}'.format(model_type, epoch_loss / len(data_loader)))
 
-        # Run validation
-        model.eval()
-        # Disable gradient computation and reduce memory consumption.
-        running_vloss = 0.0
-        with torch.no_grad():
-            for k, vdata in enumerate(val_data_loader):
-                vinputs, vlabels = vdata
-                vinputs, vlabels = vinputs.to(device), vlabels.to(device)
-                voutputs = model(vinputs)
-                vloss = loss_criterion(voutputs, vlabels)
-                running_vloss += vloss
+        if val_data_loader is not None:
+            # Run validation
+            model.eval()
+            # Disable gradient computation and reduce memory consumption.
+            running_vloss = 0.0
+            with torch.no_grad():
+                for k, vdata in enumerate(val_data_loader):
+                    vinputs, vlabels = vdata
+                    vinputs, vlabels = vinputs.to(device), vlabels.to(device)
+                    voutputs = model(vinputs)
+                    vloss = loss_criterion(voutputs, vlabels)
+                    running_vloss += vloss
 
-        avg_vloss = running_vloss / len(val_data_loader)
-        # scheduler.step(avg_vloss)
+            avg_vloss = running_vloss / len(val_data_loader)
+            # scheduler.step(avg_vloss)
 
-        try:
-            experiment.log({
-                '{}_val Quantile loss'.format(model_type): avg_vloss
-            })
-        except:
-            pass
+            try:
+                experiment.log({
+                    '{}_val Quantile loss'.format(model_type): avg_vloss
+                })
+            except:
+                pass
 
     # Saving model at end of epoch with experiment name
     out_model = '{}/{}_{}_last_epoch.pth'.format(save_dir, experiment.name, model_type)
@@ -297,6 +298,7 @@ def run_cqr(model,
     if val_percent == 0:
         n_train = len(train_set)
         train_set = train_set
+        val_loader = None
     else:
         n_val = int(len(train_set) * 0.1)
         n_train_final = len(train_set) - n_val
