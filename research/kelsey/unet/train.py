@@ -190,6 +190,7 @@ def evaluate_probabilistic(model, data_loader, device, num_reps):
             pred_log_vars = np.mean(np.array(sampled_log_vars), axis=0)
 
             # apply mask
+            mask = mask.detach().cpu().numpy()
             pred_means = pred_means[mask]
             pred_log_vars = pred_log_vars[mask]
             labels = labels[mask]
