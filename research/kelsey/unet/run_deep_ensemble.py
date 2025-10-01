@@ -108,6 +108,7 @@ def predict_ensembles(ensemble,
     """
     Run prediction on ensemble models
     """
+    print('Running inference...')
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     test_loader = DataLoader(test_dataset, batch_size=10, shuffle=True)
     loss_criterion = NLL()
