@@ -120,12 +120,12 @@ def predict_probabilistic(in_model, target, test_dataset, wandb_experiment, chan
             # Applying mask to remove nans
             no_nan_outputs_means = pred_maps[test_mask]
             no_nan_outputs_log_vars = log_var_maps[test_mask]
-            no_nan_outputs_torch = torch.from_numpy(no_nan_outputs_means)
-            test_mask = torch.from_numpy(test_mask)
-            labels = labels[test_mask]
+            no_nan_outputs_torch = torch.from_numpy(no_nan_outputs_means).to(device)
+            test_mask = torch.from_numpy(test_mask).to(device)
+            labels = labels[test_mask].to(device)
             mse_score += mse_loss(no_nan_outputs_torch, labels)
-            nll_score += loss_criterion(torch.from_numpy(no_nan_outputs_means),
-                                        torch.from_numpy(no_nan_outputs_log_vars), labels)
+            nll_score += loss_criterion(torch.from_numpy(no_nan_outputs_means).to(device),
+                                        torch.from_numpy(no_nan_outputs_log_vars).to(device), labels)
 
     print('test set mse is: {}'.format(mse_score / len(test_loader)))
     print('test set rmse is: {}'.format(np.sqrt((mse_score / len(test_loader)).cpu().detach().numpy())))
