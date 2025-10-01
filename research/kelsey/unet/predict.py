@@ -115,11 +115,13 @@ def predict_probabilistic(in_model, target, test_dataset, wandb_experiment, chan
 
             # For bias, need to remove nans
             test_mask = ~torch.isnan(labels)
+            test_mask = test_mask.detach().cpu().numpy()
 
             # Applying mask to remove nans
             no_nan_outputs_means = pred_maps[test_mask]
             no_nan_outputs_log_vars = log_var_maps[test_mask]
             no_nan_outputs_torch = torch.from_numpy(no_nan_outputs_means)
+            test_mask = torch.from_numpy(test_mask)
             labels = labels[test_mask]
             mse_score += mse_loss(no_nan_outputs_torch, labels)
             nll_score += loss_criterion(torch.from_numpy(no_nan_outputs_means),
