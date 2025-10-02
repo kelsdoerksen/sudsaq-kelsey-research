@@ -172,34 +172,6 @@ def truth_vs_predicted(target, predict, dir, region):
     plt.close()
     #plt.show()
 
-def plot_histogram(groundtruth, pred, dir, region, target_var):
-    '''
-    Plot histogram of true vs predicted
-    '''
-    bins = np.linspace(-120, 120, 300)
-    plt.hist(groundtruth, bins, histtype='step', label=['target'])
-    plt.hist(pred, bins, histtype='step', label=['prediction'])
-    plt.legend(loc='upper right')
-    plt.xlabel('{}'.format(target_var))
-    plt.ylabel('count')
-
-    # save histogram so I can plot it with rf later
-    df = pd.DataFrame()
-    df['pred'] = pred
-    df['gt'] = groundtruth
-    df.to_csv('{}/histogram_data.csv'.format(dir))
-
-    # to update not to be hardcoded
-    plt.ylim(0, 2000)
-
-    plt.title('Truth vs Predicted Histogram for {}'.format(region))
-
-    # Calculate Kolmogorov-Smirnov test, assuming continuous distribution
-    ks_val = ks_2samp(pred, groundtruth)
-
-    plt.savefig('{}/truth_vs_pred_hist.png'.format(dir))
-    #plt.show()
-    plt.close()
 
 def get_number_of_samples(directory, target_var, total_channels):
     """
@@ -832,18 +804,18 @@ def plot_histogram(df, save_dir, region, analysis_time):
     target = df['groundtruth']
     pred = df['predictions']
 
-    bins = np.linspace(-120, 120, 300)
+    bins = np.linspace(-100, 100, 300)
     plt.hist(target, bins, histtype='step', label=['target'])
     plt.hist(pred, bins, histtype='step', label=['prediction'])
     plt.legend(loc='upper right')
     plt.tight_layout()
-    plt.xlabel('bias')
-    plt.ylabel('count')
+    plt.xlabel('MOMO-Chem bias')
+    plt.ylabel('Count')
 
     if analysis_time in ['June', 'July', 'Aug']:
         plt.ylim(0, 700)
     else:
-        plt.ylim(0, 9000)
+        plt.ylim(0, 3000)
 
     # save histogram data to plot with unet
     df = pd.DataFrame()
@@ -852,7 +824,7 @@ def plot_histogram(df, save_dir, region, analysis_time):
     df.to_csv('{}/histogram_data.csv'.format(save_dir))
 
     plt.title('Truth vs Predicted Histogram for {}'.format(region))
-    plt.savefig('{}/truth_vs_pred_hist.png'.format(save_dir))
+    plt.savefig('{}/truth_vs_pred_hist.png'.format(save_dir), bbox_inches="tight")
     #plt.show()
     plt.close()
 
@@ -902,8 +874,8 @@ def generate_standard_plots(channels, target, num_lats, num_lons, region, save_d
     pred_dict = generate_loc_dict(pred_list_nans, region, analysis_period, 'point_predictions', save_dir, test_year)
 
     # Generate timeseries plots per location
-    timeseries_plots(pred_dict, analysis_period, 'point_predictions', save_dir, test_year)
-    timeseries_plots(groundtruth_dict, analysis_period, 'groundtruth', save_dir, test_year)
+    #timeseries_plots(pred_dict, analysis_period, 'point_predictions', save_dir, test_year)
+    #timeseries_plots(groundtruth_dict, analysis_period, 'groundtruth', save_dir, test_year)
 
 
 
@@ -980,11 +952,11 @@ def generate_mcdropout_plots(channels, target, num_lats, num_lons, region, save_
     pred_dict = generate_loc_dict(pred_list_nans, region, analysis_period, 'point_predictions', save_dir, test_year)
 
     # Generate timeseries plots per location
-    timeseries_plots(ale_dict, analysis_period, 'aleatoric', save_dir, test_year)
-    timeseries_plots(epi_dict, analysis_period, 'epistemic', save_dir,test_year)
-    timeseries_plots(total_unc_dict, analysis_period, 'total_unc', save_dir, test_year)
-    timeseries_plots(pred_dict, analysis_period, 'point_predictions', save_dir, test_year)
-    timeseries_plots(groundtruth_dict, analysis_period, 'groundtruth', save_dir, test_year)
+    #timeseries_plots(ale_dict, analysis_period, 'aleatoric', save_dir, test_year)
+    #timeseries_plots(epi_dict, analysis_period, 'epistemic', save_dir,test_year)
+    #timeseries_plots(total_unc_dict, analysis_period, 'total_unc', save_dir, test_year)
+    #timeseries_plots(pred_dict, analysis_period, 'point_predictions', save_dir, test_year)
+    #timeseries_plots(groundtruth_dict, analysis_period, 'groundtruth', save_dir, test_year)
 
 
 def generate_cqr_plots(channels, target, num_lats, num_lons, region, save_dir, analysis_period, test_year):
@@ -1032,6 +1004,7 @@ def generate_cqr_plots(channels, target, num_lats, num_lons, region, save_dir, a
     np.save('{}/avg_length.npy'.format(save_dir), avg_2d_length)
     spatial_map(avg_2d_length, target, 'avg_length', region, save_dir)
 
+    '''
     # Apply nan mask and plot timeseries
     lower_bound_pred_list_nans = []
     upper_bound_pred_list_nans = []
@@ -1054,10 +1027,11 @@ def generate_cqr_plots(channels, target, num_lats, num_lons, region, save_dir, a
     #timeseries_plots(upper_bound_dict, analysis_period, 'upper_bound', save_dir, test_year)
     #timeseries_plots(med_dict, analysis_period, 'point_predictions', save_dir, test_year)
     #timeseries_plots(groundtruth_dict, analysis_period, 'groundtruth', save_dir, test_year)
-    timeseries_plots(interval_length_dict, analysis_period, 'interval_length', save_dir, test_year)
+    #timeseries_plots(interval_length_dict, analysis_period, 'interval_length', save_dir, test_year)
 
     # Plot max and min timeseries
-    plot_max_min_timeseries(interval_length_dict,med_dict,groundtruth_dict,upper_bound_dict,lower_bound_dict, save_dir)
+    #plot_max_min_timeseries(interval_length_dict,med_dict,groundtruth_dict,upper_bound_dict,lower_bound_dict, save_dir)
+    '''
 
 def calc_avg_from_file(metric, num_lats, num_lons, directory, model):
     """
@@ -1190,7 +1164,7 @@ def generate_rfplots(channels, target, num_lats, num_lons, region, save_dir, tes
         lower_pred.append(rf_lower)
         upper_pred.append(rf_higher)
 
-    groundtruth_list = get_groundtruth_list(save_dir, channels, target)
+    groundtruth_list = get_groundtruth_list(save_dir, chafnnels, target)
     nan_mask_list = get_nanmask_list(groundtruth_list)
 
     avg_2d_length = get_cqr_length(np.array(lower_pred), np.array(upper_pred))

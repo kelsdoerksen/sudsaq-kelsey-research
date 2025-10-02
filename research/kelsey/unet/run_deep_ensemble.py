@@ -18,6 +18,7 @@ from pathlib import Path
 from predict import *
 from losses import *
 from utils import *
+from typing import List
 
 
 def train_ensembles(device,
@@ -67,11 +68,10 @@ def train_ensembles(device,
                 optimizer.zero_grad()
                 inputs, labels = data
                 inputs, labels = inputs.to(device), labels.to(device)
-                # Zero gradients for every batch
-                optimizer.zero_grad()
-                pred_map_means, pred_map_log_vars = model(inputs)
                 # Filter out nans to ignore for bias to calculate losses
                 mask = ~torch.isnan(labels)
+
+                pred_map_means, pred_map_log_vars = model(inputs)
                 pred_map_means = pred_map_means[mask]
                 labels = labels[mask]
                 pred_map_log_vars = pred_map_log_vars[mask]
@@ -113,37 +113,43 @@ def predict_ensembles(ensemble,
     test_loader = DataLoader(test_dataset, batch_size=10, shuffle=True)
     loss_criterion = NLL()
 
-    # iterate over the test set
-    for i in range(len(ensemble)):
-        model = ensemble[i]
+    pred_mean_list: List[List[torch.Tensor]] = []
+    pred_var_list: List[List[torch.Tensor]] = []
+
+    for i, model in enumerate(ensemble):
         model.to(device)
-        gt = []
-        pred_mean_list = []
-        pred_var_list = []
-        nll_score = 0
+        model.eval()
         with torch.no_grad():
-            for i, data in enumerate(test_loader):
-                inputs, labels = data
+            for j, (inputs, labels) in enumerate(test_loader):
+                if j >= len(pred_mean_list):
+                    pred_mean_list.append([])
+                    pred_var_list.append([])
+
                 inputs, labels = inputs.to(device), labels.to(device)
-                gt.append(labels.cpu().detach().numpy())
-
                 pred_map_means, pred_map_log_vars = model(inputs)
-                pred_mean_list.append(pred_map_means.cpu().detach().numpy())
-                pred_var_list.append(pred_map_log_vars.cpu().detach().numpy())
 
-                # For bias, need to remove nans
-                test_mask = ~torch.isnan(labels)
+                pred_mean_list[j].append(pred_map_means.cpu())
+                pred_var_list[j].append(pred_map_log_vars.cpu())
 
-                # Applying mask to remove nans
-                no_nan_outputs_means = pred_map_means[test_mask]
-                no_nan_outputs_log_vars = pred_map_log_vars[test_mask]
-                labels = labels[test_mask]
-                nll_score += loss_criterion(no_nan_outputs_means, no_nan_outputs_log_vars, labels)
+    # Now aggregate per batch
+    for bidx in range(len(pred_mean_list)):
+        means_stack = torch.stack(pred_mean_list[bidx], dim=0)
+        logvars_stack = torch.stack(pred_var_list[bidx], dim=0)
 
-        for i in range(len(gt)):
-            np.save('{}/{}channels_{}_groundtruth_{}.npy'.format(save_dir, channels, target, i), gt[i])
-            np.save('{}/{}channels_{}_pred_mean_{}.npy'.format(save_dir, channels, target, i), pred_mean_list[i])
-            np.save('{}/{}channels_{}_pred_var_{}.npy'.format(save_dir, channels, target, i), pred_var_list[i])
+        pred_mean = means_stack.mean(dim=0)
+        aleatoric = torch.exp(logvars_stack).mean(dim=0)
+        epistemic = means_stack.pow(2).mean(dim=0) - pred_mean.pow(2)
+        unc_total = aleatoric + epistemic
+
+        # Save per-batch aggregates
+        np.save(f'{save_dir}/{channels}channels_{target}_pred_{bidx}.npy',
+                pred_mean.detach().cpu().numpy())
+        np.save(f'{save_dir}/{channels}channels_{target}_total_pred_unc_map_{bidx}.npy',
+                unc_total.detach().cpu().numpy())
+        np.save(f'{save_dir}/{channels}channels_{target}_ale_unc_map_{bidx}.npy',
+                aleatoric.detach().cpu().numpy())
+        np.save(f'{save_dir}/{channels}channels_{target}_epi_unc_map_{bidx}.npy',
+                epistemic.detach().cpu().numpy())
 
     return
 
