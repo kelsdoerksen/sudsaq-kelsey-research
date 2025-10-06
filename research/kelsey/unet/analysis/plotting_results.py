@@ -462,6 +462,8 @@ def spatial_map(avg_data, target, metric, region, savedir):
                 vmax = 80
             if region == 'NorthAmerica':
                 vmax = 200
+            if region == 'Globe':
+                vmax = 200
             vmin = 10
         elif metric == 'upper_bound_predictions':
             vmin = 20
@@ -476,7 +478,8 @@ def spatial_map(avg_data, target, metric, region, savedir):
             vmin = -5
             vmax = 50
 
-    x, y = np.meshgrid(lon_vals, lat_vals, indexing='xy')
+    lat_plot = lat_vals[::-1]
+    x, y = np.meshgrid(lon_vals, lat_plot, indexing='xy')
     fig, ax = plt.subplots(figsize=(12, 10), subplot_kw={'projection': ccrs.PlateCarree()})
     plt.pcolor(x, y, avg_data, cmap='coolwarm', vmin=vmin, vmax=vmax)
     ax.coastlines(linewidth=2)

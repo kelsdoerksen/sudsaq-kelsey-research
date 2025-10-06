@@ -45,6 +45,7 @@ def get_args():
     parser.add_argument('--target', help='Target. mda8 or bias')
     parser.add_argument('--month', help='Month of analysis')
     parser.add_argument('--n_channels', help='Number of channels for model')
+    parser.add_argument('--root_dir', help='Root directory of runs')
     parser.add_argument('--save_dir', help='Save Directory for run', required=True)
     parser.add_argument('--wandb_run', help='Wandb run', required=True)
     return parser.parse_args()
@@ -139,7 +140,7 @@ def plot_histogram(target, pred, dir, region, analysis_time, wandb_run):
     Plot histogram of true vs predicted
     '''
 
-    bins = np.linspace(-120, 120, 300)
+    bins = np.linspace(-120, 100, 300)
     plt.hist(target, bins, histtype='step', label=['target'])
     plt.hist(pred, bins, histtype='step', label=['prediction'])
     plt.legend(loc='upper right')
@@ -223,7 +224,7 @@ def plotting_spatial_data(avg_data, metric, model_target, anaylsis_date, save_di
             vmin = -25
             vmax = 25
         else:
-            vmin = -20
+            vmin = -5
             vmax = 50
 
     # fixing plotting upside down
@@ -418,8 +419,11 @@ if __name__ == '__main__':
     target = args.target
     n_channels = args.n_channels
     month = args.month
+    root_dir = args.root_dir
     save_dir = args.save_dir
     wandb_run = args.wandb_run
+
+    save_dir = root_dir + '/' + save_dir
 
     # Subset yhat (predictions), y_true (groundtruth)
     results_df = pd.read_csv('{}/{}_prediction_groundtruth_rmse.csv'.format(save_dir, wandb_run))

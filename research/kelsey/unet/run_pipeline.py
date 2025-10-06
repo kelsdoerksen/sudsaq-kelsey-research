@@ -129,40 +129,18 @@ if __name__ == '__main__':
     std = torch.zeros(n_channels)
     global_min = torch.full((n_channels,), float('inf'))
     global_max = torch.full((n_channels,), float('-inf'))
-    n_samples = 0
 
     if args.norm == 'zscore':
-        print("Computing per-channel mean and std...")
+        print("Computing global per-channel mean and std (exact)...")
+        all_images = []
         for images, _ in aq_train_dataset:
-            images = images.float().contiguous()
-            # Reshape to (32, 6000)
-            images_flat = images.view(n_channels, -1)
-
-            # Calculate mean and std
-            mean += images_flat.mean(dim=1)
-            std += images_flat.std(dim=1)
-            n_samples += 1
-
-        mean /= n_samples
-        std /= n_samples
+            all_images.append(images.float().contiguous())
+        all_images = torch.stack(all_images)  # shape [N, C, H, W]
+        mean = all_images.mean(dim=(0, 2, 3))
+        std = all_images.std(dim=(0, 2, 3))
         max_val = None
         min_val = None
 
-    if args.norm == 'minmax':
-        print("Computing per-channel min and max...")
-        for images, _ in aq_train_dataset:
-            images = images.float().contiguous()
-            # Reshape to (32, 6000)
-            images_flat = images.view(n_channels, -1)
-
-            # Calculating min and max
-            min_vals = images_flat.min(dim=1).values
-            max_vals = images_flat.max(dim=1).values
-
-            global_min = torch.min(global_min, min_vals)
-            global_max = torch.max(global_max, max_vals)
-            mean = None
-            std = None
 
     aq_train_dataset = AQDataset(sample_dir_root, label_dir_root, 'train', analysis_month, test_year, channels,
                                  region, sensitivity_feature, mean=mean, std=std, max_val= max_val, min_val= min_val,
